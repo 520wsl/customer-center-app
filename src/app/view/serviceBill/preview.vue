@@ -4,10 +4,6 @@
     <h3 class="m-title">附件预览</h3>
     <div class="file">
       <img src="" alt="图片404">
-      <img src="" alt="图片404">
-      <img src="" alt="图片404">
-      <img src="" alt="图片404">
-      <img src="" alt="图片404">
     </div>
   </div>
 </template>

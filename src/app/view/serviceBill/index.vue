@@ -1,48 +1,60 @@
 <template>
   <div>
     <!-- <sixiheader title="服务工单" class="top"></sixiheader> -->
-    <div class="servicebill">
-      <h3>显示工单类型如店铺美化问题</h3>
+    <div class="servicebill" v-for="el in list" :key="el.id">
+      <!-- <h3>【后端文档没更新】</h3> -->
+      <router-link :to="{ name: 'serviceBillInfo', query: { id: el.id } }" tag="h3">【后端文档没更新】</router-link>
       <p class="BillId">工单编号：
-        <b>TBDYY201806231001</b>
+        <b>{{el.identifier}}</b>
       </p>
       <ul class="item">
-        <li>工单创建时间：2018-08-09</li>
-        <li>持续时间：30h</li>
-        <li>客服人员：李某某</li>
+        <!-- <li>工单创建时间：{{formatTime(el.startTime)}}</li> -->
+        <li>工单创建时间：{{getTime(el.startTime,'YYYY-MM-DD')}}</li>
+        <li>持续时间：{{el.hourSum}}</li>
+        <li>客服人员：【后端文档没更新】</li>
       </ul>
       <p class="status">
-        <span>状态：处理中</span>
-        <mt-button class="btn">评价</mt-button>
-      </p>
-    </div>
-
-    <div class="servicebill">
-      <h3>显示工单类型如店铺美化问题</h3>
-      <p class="BillId">工单编号：
-        <b>TBDYY201806231001</b>
-      </p>
-      <ul class="item">
-        <li>工单创建时间：2018-08-09</li>
-        <li>持续时间：30h</li>
-        <li>客服人员：李某某</li>
-      </ul>
-      <p class="status">
-        <span>状态：处理中</span>
-        <mt-button class="btn">评价</mt-button>
+        <span>状态：{{handleType[el.type] || ''}}</span>
+        <!-- <mt-button class="btn">评价</mt-button> -->
+        <router-link :to="{ name: 'serviceEvaluationInfo', query: { id: el.id } }" tag="mt-button" class="btn">评价</router-link>
       </p>
     </div>
   </div>
 </template>
 <script>
+// 这里还剩下一些字段没有更新，需要补充，接口请求的id来源暂时也没有确定
 // import sixiheader from "@/components/app/header.vue";
+import servicebillApi from "@/api/serviceBill";
+import { formatTime } from "@/libs/util/time";
+import { mapState } from "vuex";
 export default {
-  components: {  },
-   created() {
+  components: {},
+  created() {
     this.$parent.$parent.setTitle("服务工单");
   },
   data() {
-    return {};
+    return {
+      list: {}
+    };
+  },
+  mounted() {
+    this.getWorkSheetList();
+  },
+  computed: {
+    ...mapState({
+      handleType: state => state.Servicebill.handleType
+    })
+  },
+  methods: {
+    getWorkSheetList() {
+      servicebillApi.getWorkSheetList().then(e => {
+        if (e.status !== 200) return;
+        this.list = e.data;
+      });
+    },
+    getTime(time, norms) {
+      return formatTime(time, norms);
+    }
   }
 };
 </script>
