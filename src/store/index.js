@@ -1,14 +1,15 @@
 /*
  * @Author: Mad Dragon 395548460@qq.com 
  * @Date: 2018-11-08 09:15:59 
- * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-11-08 14:16:54
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-11-14 09:18:01
  * @explanatory:  # 我们组装模块并导出 store 的地方
  */
 import Vue from "vue";
 import Vuex from "vuex";
 import actions from "./actions";
 import mutations from "./mutations";
+import Servicebill from "./modules/servicebill";
 // import createLogger from "vuex/dist/logger";
 
 import User from "./modules/user";
@@ -17,13 +18,14 @@ Vue.use(Vuex);
 const debug = process.env.NODE_ENV !== "production";
 
 const Store = new Vuex.Store({
-	modules: {
-		User
-	},
-	// plugins: debug ? [createLogger()] : [],
-	strict: debug,
-	actions,
-	mutations
+  modules: {
+    User,
+    Servicebill
+  },
+  // plugins: debug ? [createLogger()] : [],
+  strict: debug,
+  actions,
+  mutations
 });
 
 export default Store;

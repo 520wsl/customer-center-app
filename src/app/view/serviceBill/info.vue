@@ -1,70 +1,54 @@
 <template>
-  <div>
-    <!-- <sixiheader title="服务工单" class="top"></sixiheader> -->
-    <p class="BillId">工单编号：
-      <b>TBDYY201806231001</b>
-    </p>
-    <div class="s-title">
-      <span>工单信息</span>
-    </div>
-    <div class="servicebill">
-      <ul class="item">
-        <li>工单状态：已完结</li>
-        <li>工单类型：店铺美化类型</li>
-        <li>工单创建时间：2018-08-09</li>
-        <li>客服人员：李某某</li>
-      </ul>
-      <div class="status">
-        <h3>服务记录</h3>
-
-        <div class="remark">
-          <div class="left">
-            <span class="date radius">2018.01.01</span>
-            <b class="time">11:50</b>
-          </div>
-          <div class="right">
-            <span class="waiter">向婷</span>
-            <span class="serviceItemName">工单记录</span>
-            <p class="content">
-              客户要求美工的图做的再精细一点再精细一 点再精细一点，但实际上我们的图已经做的 很靖西很精细了但客户说的总是对的，所以 我反馈给客户说我们会努力的把图做的更精 细一
-            </p>
-          </div>
-        </div>
-        <div class="remark">
-          <div class="left">
-            <span class="date radius">2018.01.01</span>
-            <b class="time">11:50</b>
-          </div>
-          <div class="right">
-            <span class="waiter">向婷</span>
-            <span class="serviceItemName">工单记录</span>
-            <p class="content">
-              客户要求美工的图做的再精细一点再精细一 点再精细一点，但实际上我们的图已经做的 很靖西很精细了但客户说的总是对的，所以 我反馈给客户说我们会努力的把图做的更精 细一
-            </p>
-          </div>
-        </div>
-
-        <div class="more remark">
-          <div class="left">
-            <span class="radius">过往</span>
-          </div>
-          <div class="right">
-            <b>查看往期记录</b>
-          </div>
-        </div>
-
-        <h4>工单附件</h4>
-        <div class="file">
-          <img src="" alt="附件">
-          <img src="" alt="附件">
-          <img src="" alt="附件">
-          <img src="" alt="附件">
-          <img src="" alt="附件">
-          <img src="" alt="附件">
-          <img src="" alt="附件">
-        </div>
+  <div class="billInfo">
+    <div class="baseInfo">
+      <!-- <sixiheader title="服务工单" class="top"></sixiheader> -->
+      <p class="BillId">工单编号：
+        <b>{{detail.identifier}}</b>
+      </p>
+      <div class="s-title" @click="isShow=!isShow">
+        <span>工单信息</span>
+        <!--这里需要一个动画-->
       </div>
+      <transition name="fade">
+        <ul class="item" v-show="isShow">
+          <li>工单状态：{{handleType[detail.handleType] || ''}}</li>
+          <li>工单类型：{{workType[detail.workType] || ''}}</li>
+          <li>工单创建时间：{{getTime(detail.startTime,'YYYY-MM-DD')}}</li>
+          <li>客服人员：【后端暂时没有返回】</li>
+        </ul>
+      </transition>
+      <h3>服务记录</h3>
     </div>
+    <mt-loadmore :top-method="loadTop" ref="loadmore" class="serviceRemark">
+      <!--
+        userType：用户类型
+        textType：文本类型
+        src：视频地址,音频地址,图片地址
+        audioPlayFlag：当前音频播放控制（点击播放，停止状态）
+      -->
+      <!-- <message :userType="2" :textType="3" src="http://editerupload.eepw.com.cn/201809/61001537857032.jpg"></message> -->
+      <message
+        v-for="(el,index) in talknews"
+        :key="index"
+        :userType="el.userSixiId === detail.userid ? 1:2"
+        :textType="el.type"
+        :src="el.enclosure">
+        <!-- :audioPlayFlag=""> -->
+      </message>
+      <!--示例模板-->
+      <!--
+        <message :userType="1" :textType="1"></message>
+        <message :userType="2" :textType="1"></message>
+
+        <message :userType="1" :textType="2" :audioPlayFlag="audioPlayFlag1" @click.native="playAudio(index)" src="https://wdd.js.org/element-audio/static/falling-star.mp3"></message>
+        <message :userType="2" :textType="2" :audioPlayFlag="audioPlayFlag2" @click.native="playAudio(index)" src="http://www.w3school.com.cn/i/song.ogg"></message>
+
+        <message :userType="2" :textType="3" src="http://editerupload.eepw.com.cn/201809/61001537857032.jpg"></message>
+        <message :userType="1" :textType="3"></message>
+        <message :userType="2" :textType="4" src="http://www.w3school.com.cn/i/song.ogg"></message>
+        <message :userType="1" :textType="4" src="http://www.w3school.com.cn/i/song.ogg"></message>
+      -->
+    </mt-loadmore>
     <div class="assess">
       <img :src="$CDN('/work_list_logo.png')" alt="">
       <span class="assessTime">
@@ -76,142 +60,132 @@
 </template>
 <script>
 // import sixiheader from "@/components/app/header.vue";
+import message from "@/components/app/serviceBill/message";
+import servicebillApi from "@/api/serviceBill";
+import { formatTime } from "@/libs/util/time";
+import { mapState } from "vuex";
 export default {
-  components: {},
-  created() {
-    this.$parent.$parent.setTitle("服务工单");
-  },
+  components: { message },
   data() {
-    return {};
+    return {
+      isShow: true,
+      detail: {},
+      talknews: []
+    };
+  },
+  computed: {
+    ...mapState({
+      handleType: state => state.Servicebill.handleType,
+      workType: state => state.Servicebill.workType
+    })
+  },
+  mounted() {
+    this.$parent.$parent.setTitle("服务工单");
+    this.getDetail();
+    this.getTalknews();
+  },
+  methods: {
+    // 获取基本详情
+    getDetail() {
+      let workSheetId = 1;
+      servicebillApi.getDetail(workSheetId).then(e => {
+        if (e.status !== 200) return;
+        this.detail = e.data;
+      });
+    },
+    // 获取工单记录详情
+    getTalknews() {
+      let workSheetId = 1;
+      servicebillApi.getTalknews(workSheetId, 1, 20).then(e => {
+        if (e.status !== 200) return;
+        this.talknews = e.data;
+        console.log(this.talknews);
+      });
+    },
+    getTime(time, norms) {
+      return formatTime(time, norms);
+    },
+    loadTop() {
+      console.log("触发更新");
+      this.$refs.loadmore.onTopLoaded();
+    },
+    playAudio() {}
   }
 };
 </script>
 <style lang="less" scoped>
-.BillId {
-  color: #6e7790;
+.billInfo {
   display: flex;
-  align-items: center;
-  margin: 10px 0 20px 0;
-  padding-left: 28px;
-  background: #fff;
-  height: 110px;
-  font-size: 28px;
-  b {
-    color: #444444;
-  }
+  flex-direction: column;
+  height: 100%;
+  /* 顶部标题固定问题解决 */
+  margin-top: -90px;
 }
-.s-title {
-  padding: 40px 0 30px 0;
-  background: #fff;
-  font-size: 28px;
-  color: #444444;
-  span {
-    margin-left: 28px;
-    padding-left: 16px;
-    font-weight: bold;
-    border-left: 6px solid #697eff;
-  }
-}
-.servicebill {
-  padding-left: 28px;
-  background: #fff;
+.baseInfo {
+  /* 顶部标题固定问题解决 */
+  padding-top: 90px;
   color: #6e7790;
-  padding-bottom: 20px;
-  .item {
+  overflow: hidden;
+  .BillId {
+    color: #6e7790;
+    display: flex;
+    align-items: center;
+    margin: 10px 0 20px 0;
+    padding-left: 28px;
+    background: #fff;
+    height: 110px;
     font-size: 28px;
-    margin-bottom: 20px;
-    overflow: hidden;
-    li {
-      padding-bottom: 20px;
+    b {
+      color: #444444;
     }
   }
-  .status {
-    font-size: 26px;
-    h3 {
-      display: flex;
-      align-items: center;
-      border-top: 1px solid #f4f4f4;
-      height: 100px;
-      font-size: 30px;
-      color: #444444;
+  .s-title {
+    padding: 40px 0 30px 0;
+    background: #fff;
+    font-size: 28px;
+    color: #444444;
+    span {
+      padding-left: 16px;
+      font-weight: bold;
+      margin-left: 28px;
+      border-left: 6px solid #697eff;
     }
-    .remark {
-      display: flex;
-      .left {
-        width: 155px;
-        position: relative;
-        .date {
-          font-size: 20px;
-          display: block;
-        }
-        .time {
-          padding: 10px 0 0 10px;
-          font-size: 32px;
-        }
-        .radius::after {
-          content: "";
-          display: inline-block;
-          position: absolute;
-          top: 2px;
-          left: 146px;
-          height: 20px;
-          width: 20px;
-          box-sizing: border-box;
-          border-radius: 40px;
-          background: #fff;
-          border: 3px solid #697eff;
-        }
-      }
-      .right {
-        flex: 1;
-        width: 480px;
-        padding: 0 52px 54px 46px;
-        border-left: 1px solid #e0e0e0;
-        .waiter {
-          color: #6e7790;
-        }
-        .serviceItemName {
-          padding-left: 46px;
-          color: #bcbcbc;
-        }
-        .content {
-          margin-top: 28px;
-        }
-      }
+  }
+  .item {
+    padding-left: 28px;
+    background: #fff;
+    font-size: 28px;
+    li {
+      padding-bottom: 30px;
     }
-    .more {
-      & > .left {
-        color: #929eaa;
-        text-align: center;
-      }
-      & > .right {
-        color: #6a9ce4;
-        padding-bottom: 20px;
-      }
-    }
-    h4 {
-      height: 30px;
-      font-size: 30px;
-      color: #444444;
-    }
-    .file {
-      display: flex;
-      flex-wrap: wrap;
-      img {
-        margin: 0 0 22px 22px;
-        width: 100px;
-        height: 100px;
-        // border: 1px solid #bcbcbc;
-      }
-    }
+  }
+  h3 {
+    height: 100px;
+    line-height: 100px;
+    font-size: 30px;
+    color: #444444;
+    background: #fff;
+    margin: 0;
+    padding: 0 0 0 28px;
+    border-top: 1px solid #f4f4f4;
   }
 }
+.serviceRemark {
+  flex: 1;
+  overflow-y: auto;
+  color: #6e7790;
+  background: #fff;
+  font-size: 28px;
+  padding: 10px 28px;
+  // border: 1px solid red;
+}
+
 .assess {
   display: flex;
-  font-size: 28px;
   align-items: center;
-  margin: 20px 0 20px 0;
+  font-size: 28px;
   height: 100px;
+  margin: 15px 0 15px 0;
   padding: 0 38px 0 38px;
   background: #fff;
   color: #6e7790;
@@ -229,5 +203,11 @@ export default {
     width: 120px;
   }
 }
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 </style>
-
