@@ -1,16 +1,21 @@
 <template>
   <div>
-    <div class="evaluation" @click="getClick">请你为{{severType==1?"美工":"运营"}}
-      <span>{{name}}</span>，本次拟服务做个评价</div>
+    <div class="evaluation">请你为{{severType==1?"美工":"运营"}}
+      <span>{{name}}</span>，本次服务做个评价</div>
     <editEvaluation :list='list' :isEdit='true'></editEvaluation>
     <div class="submit-btn">
-      <mt-button class="btn">提交</mt-button>
+      <mt-button class="btn" @click="addEvaluate">提交</mt-button>
     </div>
   </div>
 </template>
 <script>
 import editEvaluation from "@/components/app/editEvaluation";
-import { postEvaluateTemplatedetails } from "@/api/evaluate";
+import {
+  postTemplateInfo
+  // postEvaluateeAdd,
+  // postEvaluateeInfo
+} from "@/api/evaluate";
+import { MessageBox } from "mint-ui";
 export default {
   data() {
     return {
@@ -23,21 +28,52 @@ export default {
   components: { editEvaluation },
   created() {
     this.$parent.$parent.setTitle(this.title);
-    let data = postEvaluateTemplatedetails({ id: 8 });
-    data.then(res => {
-      console.log(res.data[0].content);
-      let list = res.data[0].content;
-      list.forEach(item => {
-        if (item.type == "checkbox" && item.otherAttribute.showType == "tag") {
-          item.value = [];
-        }
-      });
-      this.list = list;
-    });
+    this.getList();
+    // postEvaluateeAdd(1, 1).then(res => {
+    //   console.log(res);
+    // });
+    // postEvaluateeInfo(1, 1).then(res => {
+    //   console.log(res);
+    // });
   },
   methods: {
-    getClick() {
-      console.log(this.list);
+    getList() {
+      let data = postTemplateInfo(4);
+      data.then(res => {
+        // if (res.data) {
+        //   return;
+        // }
+        console.log(res.data);
+        let list = res.data[0].content;
+        list.forEach(item => {
+          if (
+            (item.type == "checkbox" &&
+              item.otherAttribute.showType == "tag") ||
+            (item.type == "radio" && item.otherAttribute.showType == "tag")
+          ) {
+            item.value = [];
+          }
+        });
+        this.list = list;
+      });
+    },
+    addEvaluate() {
+      let bool = false;
+      this.list.forEach(item => {
+        if (item.isRequired == 1 && (item.value == "" || item.value == [])) {
+          bool = true;
+        }
+      });
+      if (bool) {
+        return MessageBox("提示", "请填写必填选项！");
+      }
+      MessageBox.confirm("确定提交评价?")
+        .then(action => {
+          console.log(action, this.list);
+        })
+        .catch(res => {
+          console.log(res);
+        });
     }
   }
 };

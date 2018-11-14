@@ -1,7 +1,6 @@
 <template>
   <div>
     <!-- <sixiheader title="支付结果" :isBack="true"></sixiheader> -->
-    <div class="line"></div>
     <div class="success-body">
       <img :src="$CDN('/success_icon.png')">
       <span>支付成功</span>
@@ -23,11 +22,8 @@ export default {
 };
 </script>
 <style scoped>
-.line {
-  background: #f4f4f4;
-  height: 10px;
-}
 .success-body {
+  border-top: 10px solid #f4f4f4;
   padding: 0 100px;
 }
 .success-body img {
