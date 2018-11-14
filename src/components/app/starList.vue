@@ -57,12 +57,6 @@ export default {
   align-items: flex-end;
   width: 400px;
 }
-/* .star-list .star-item {
-  margin-right: 60px;
-}
-.star-list .star-item:last-child {
-  margin-right: 0;
-} */
 .star-item {
   position: relative;
   width: 40px;
@@ -71,7 +65,6 @@ export default {
 .star-item img {
   width: 40px;
   position: absolute;
-  /* clip: rect(0px 40px 40px 20px); */
 }
 .clip-left {
   clip: rect(0px 20px 40px 0px);
