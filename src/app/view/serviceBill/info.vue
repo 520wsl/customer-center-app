@@ -18,6 +18,7 @@
       </transition>
       <h3>服务记录</h3>
     </div>
+    <!--弹性盒兼容问题 x5内核-->
     <mt-loadmore :top-method="loadTop" ref="loadmore" class="serviceRemark">
       <!--
         userType：用户类型,将用户id与当前记录id比对，若匹配则为客户
@@ -29,9 +30,11 @@
         <msgTextImg v-if="el.type === 1 || el.type === 2 " :key="index" :userType="el.userSixiId === detail.userId ? 1:2" :src="el.enclosure">
           {{el.record}}
         </msgTextImg>
-        <msgAudio v-else-if="el.type === 3" :key="index" @click.native="playAudio(index,el.audioPlayFlag,el.type)" :userType="el.userSixiId === detail.userId ? 1:2" :src="el.enclosure" :audioPlayFlag="el.audioPlayFlag">
+        <!--这里存在一个点击问题，点击整个消息块都触发了-->
+        <msgAudio v-else-if="el.type === 3" v-model="el.audioPlayFlag" :key="index" @click.native="playAudio(index,el.audioPlayFlag,el.type)" :userType="el.userSixiId === detail.userId ? 1:2" :src="el.enclosure" >
           {{el.record}}
         </msgAudio>
+        <!--视频播放的罩着层在iphone下无效-->
         <msgVedio v-else-if="el.type === 4" :key="index" :userType="el.userSixiId === detail.userId ? 1:2" :src="el.enclosure">
           {{el.record}}
         </msgVedio>
@@ -91,18 +94,20 @@ export default {
           e.audioPlayFlag = true;
           return e;
         });
-        console.log(this.talknews);
       });
     },
     getTime(time, norms) {
       return formatTime(time, norms);
     },
+    // 下拉加载更多
     loadTop() {
+      // 成功后进行的操作
       this.$refs.loadmore.onTopLoaded();
     },
     playAudio(index, audioPlayFlag, type) {
       // 仅语音执行
       if (type !== 3) return;
+      // 关闭所有语音，仅当前点击的语音打开
       this.talknews.forEach(e => {
         e.audioPlayFlag = true;
       });
@@ -155,8 +160,7 @@ export default {
     .iconDirection {
       float: right;
       margin-right: 50px;
-      width: 26px;
-      height: 26px;
+      width: 30px;
     }
   }
   .item {

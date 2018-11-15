@@ -18,11 +18,11 @@
     <!--视频的默认缩略图 poster="http://editerupload.eepw.com.cn/201809/61001537857032.jpg" controls,出现播放控制-->
     <div @click="videoPlay()" v-show="showVedio" class="vedioBox">
       <video ref="vedio" class="vedio" type="video/mp4" controls preload="auto" webkit-playsinline="true" playsinline>
-        <source :src="src" type="video/mp4" />
-        <source :src="src" type="video/webm" />
-        <source :src="src" type="video/ogg" />
-        <object :data="src" style="width: 100%">
-          <embed :src="src" style="width: 100%" />
+        <source :src="audioSrc" type="video/mp4" />
+        <source :src="audioSrc" type="video/webm" />
+        <source :src="audioSrc" type="video/ogg" />
+        <object :data="audioSrc" style="width: 100%">
+          <embed :src="audioSrc" style="width: 100%" />
         </object>
         浏览器版本低，或不支持的版本格式。
       </video>
@@ -30,6 +30,7 @@
   </div>
 </template>
 <script>
+import config from '@/config'
 export default {
   // userType：用户类型
   // textType：附件类型 0:未知 1:文本 2:图片 3:音乐 4:图文 5:链接
@@ -49,6 +50,11 @@ export default {
       e.target.vedio.pause();
       e.target.vedio.currentTime = 0;
     });
+  },
+  computed:{
+    audioSrc(){
+      return config.AUDIOCDN + this.src
+    }
   },
   methods: {
     // 视频播放

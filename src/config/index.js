@@ -10,5 +10,6 @@ export default {
     dev: "/api",
     pro: "/api"
   },
-  CDN: "http://custom-center.oss-cn-hangzhou.aliyuncs.com/customerCenter/image"
+  CDN: "http://custom-center.oss-cn-hangzhou.aliyuncs.com/customerCenter/image",
+  AUDIOCDN:"http://wechat-base-images.oss-cn-hangzhou.aliyuncs.com/"
 };

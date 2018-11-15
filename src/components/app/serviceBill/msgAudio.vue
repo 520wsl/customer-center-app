@@ -1,4 +1,5 @@
 <template>
+  <!--该语音播放存在bug,自动播放结束后状态未变更-->
   <div :class="userType === 1 ?['message']:['message msg-r']">
     <div class="portrait">
       <img :src="$CDN(portraitUrl)" alt="404">
@@ -11,11 +12,12 @@
       </div>
       <!--语音类型-->
       <div class="audio">
-        <img class="gif" :src="$CDN('/audio.png')" alt="404">
-        <span>11&ensp;"</span>
+        <img v-show="currentValue" class="gif" :src="$CDN('/audio.png')" alt="404">
+        <img v-show="!currentValue" class="gif" src="./audioGif.gif" alt="404">
+        <span>{{audioTime}}&ensp;"</span>
         <audio ref="audio" preload="auto" hidden="true">
-          <source :src="src" type="audio/mpeg">
-          <source :src="src" type="audio/MP3">
+          <source :src="audioSrc" type="audio/mpeg">
+          <source :src="audioSrc" type="audio/MP3">
         </audio>
         <img v-if="userType === 1" class="horn_l" :src="$CDN('/purple_horn_left.png')" alt="">
         <img v-if="userType === 2" class="horn_r" :src="$CDN('/purple_horn.png')" alt="">
@@ -24,31 +26,57 @@
   </div>
 </template>
 <script>
+import config from '@/config'
 export default {
   // userType：用户类型
   // textType：附件类型 0:未知 1:文本 2:图片 3:音乐 4:图文 5:链接
   // src：音频地址
-  // audioPlayFlag：当前音频播放控制（点击播放，停止状态）
-  props: ["userType", "textType", "src", "audioPlayFlag"],
+  // audioPlayFlag(value)：双向绑定，当前音频播放控制（点击播放，停止状态）
+  props: ["userType", "textType", "src", "value"],
   data() {
     return {
       portraitUrl: "/customer_service.png",
-      showVedio: false
+      audioTime: 0
     };
+  },
+  mounted() {
+    // 给声音赋值时长（可持续播放音频时事件，canplaythrough）
+    this.$refs.audio.addEventListener("canplaythrough", e => {
+      this.audioTime = e.target.duration.toFixed(0);
+    });
+  },
+  computed: {
+    audioSrc(){
+      return config.AUDIOCDN + this.src
+    },
+    // 子组件同父组件双向绑定
+    currentValue: {
+      get: function() {
+        return this.value;
+      },
+      set: function(val) {
+        this.$emit("input", val);
+      }
+    }
   },
   methods: {
     // 播放音频
     play() {
       this.$refs.audio.play();
+      // 设置定时器更新播放状态（根据语音的时长）
+      setTimeout(() => {
+        this.pause();
+      }, this.$refs.audio.duration * 1000);
     },
     // 暂停音频
     pause() {
+      this.currentValue = true; // 停止时设置播放状态为FALSE
       this.$refs.audio.pause();
       this.$refs.audio.currentTime = 0;
     }
   },
   watch: {
-    audioPlayFlag(val) {
+    currentValue(val) {
       val ? this.pause() : this.play();
     }
   }
