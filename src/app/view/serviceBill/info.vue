@@ -1,53 +1,41 @@
 <template>
   <div class="billInfo">
     <div class="baseInfo">
-      <!-- <sixiheader title="服务工单" class="top"></sixiheader> -->
       <p class="BillId">工单编号：
         <b>{{detail.identifier}}</b>
       </p>
       <div class="s-title" @click="isShow=!isShow">
         <span>工单信息</span>
-        <!--这里需要一个动画-->
+        <img :class="[isShow?'fa fa-arrow-down go':'fa fa-arrow-down aa']" :src="$CDN('/iconDirection.png')" class="iconDirection">
       </div>
       <transition name="fade">
         <ul class="item" v-show="isShow">
           <li>工单状态：{{handleType[detail.handleType] || ''}}</li>
           <li>工单类型：{{workType[detail.workType] || ''}}</li>
           <li>工单创建时间：{{getTime(detail.startTime,'YYYY-MM-DD')}}</li>
-          <li>客服人员：【后端暂时没有返回】</li>
+          <li>客服人员：{{detail.executorName}}</li>
         </ul>
       </transition>
       <h3>服务记录</h3>
     </div>
     <mt-loadmore :top-method="loadTop" ref="loadmore" class="serviceRemark">
       <!--
-        userType：用户类型
+        userType：用户类型,将用户id与当前记录id比对，若匹配则为客户
         textType：文本类型
         src：视频地址,音频地址,图片地址
         audioPlayFlag：当前音频播放控制（点击播放，停止状态）
       -->
-      <!-- <message :userType="2" :textType="3" src="http://editerupload.eepw.com.cn/201809/61001537857032.jpg"></message> -->
-      <message
-        v-for="(el,index) in talknews"
-        :key="index"
-        :userType="el.userSixiId === detail.userid ? 1:2"
-        :textType="el.type"
-        :src="el.enclosure">
-        <!-- :audioPlayFlag=""> -->
-      </message>
-      <!--示例模板-->
-      <!--
-        <message :userType="1" :textType="1"></message>
-        <message :userType="2" :textType="1"></message>
-
-        <message :userType="1" :textType="2" :audioPlayFlag="audioPlayFlag1" @click.native="playAudio(index)" src="https://wdd.js.org/element-audio/static/falling-star.mp3"></message>
-        <message :userType="2" :textType="2" :audioPlayFlag="audioPlayFlag2" @click.native="playAudio(index)" src="http://www.w3school.com.cn/i/song.ogg"></message>
-
-        <message :userType="2" :textType="3" src="http://editerupload.eepw.com.cn/201809/61001537857032.jpg"></message>
-        <message :userType="1" :textType="3"></message>
-        <message :userType="2" :textType="4" src="http://www.w3school.com.cn/i/song.ogg"></message>
-        <message :userType="1" :textType="4" src="http://www.w3school.com.cn/i/song.ogg"></message>
-      -->
+      <template v-for="(el,index) in talknews">
+        <msgTextImg v-if="el.type === 1 || el.type === 2 " :key="index" :userType="el.userSixiId === detail.userId ? 1:2" :src="el.enclosure">
+          {{el.record}}
+        </msgTextImg>
+        <msgAudio v-else-if="el.type === 3" :key="index" @click.native="playAudio(index,el.audioPlayFlag,el.type)" :userType="el.userSixiId === detail.userId ? 1:2" :src="el.enclosure" :audioPlayFlag="el.audioPlayFlag">
+          {{el.record}}
+        </msgAudio>
+        <msgVedio v-else-if="el.type === 4" :key="index" :userType="el.userSixiId === detail.userId ? 1:2" :src="el.enclosure">
+          {{el.record}}
+        </msgVedio>
+      </template>
     </mt-loadmore>
     <div class="assess">
       <img :src="$CDN('/work_list_logo.png')" alt="">
@@ -59,13 +47,14 @@
   </div>
 </template>
 <script>
-// import sixiheader from "@/components/app/header.vue";
-import message from "@/components/app/serviceBill/message";
+import msgTextImg from "@/components/app/serviceBill/msgTextImg";
+import msgAudio from "@/components/app/serviceBill/msgAudio";
+import msgVedio from "@/components/app/serviceBill/msgVedio";
 import servicebillApi from "@/api/serviceBill";
 import { formatTime } from "@/libs/util/time";
 import { mapState } from "vuex";
 export default {
-  components: { message },
+  components: { msgTextImg, msgAudio, msgVedio },
   data() {
     return {
       isShow: true,
@@ -98,7 +87,10 @@ export default {
       let workSheetId = 1;
       servicebillApi.getTalknews(workSheetId, 1, 20).then(e => {
         if (e.status !== 200) return;
-        this.talknews = e.data;
+        this.talknews = e.data.map(e => {
+          e.audioPlayFlag = true;
+          return e;
+        });
         console.log(this.talknews);
       });
     },
@@ -106,10 +98,16 @@ export default {
       return formatTime(time, norms);
     },
     loadTop() {
-      console.log("触发更新");
       this.$refs.loadmore.onTopLoaded();
     },
-    playAudio() {}
+    playAudio(index, audioPlayFlag, type) {
+      // 仅语音执行
+      if (type !== 3) return;
+      this.talknews.forEach(e => {
+        e.audioPlayFlag = true;
+      });
+      this.talknews[index].audioPlayFlag = !audioPlayFlag;
+    }
   }
 };
 </script>
@@ -140,7 +138,11 @@ export default {
     }
   }
   .s-title {
-    padding: 40px 0 30px 0;
+    // padding: 40px 0 30px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 90px;
     background: #fff;
     font-size: 28px;
     color: #444444;
@@ -149,6 +151,12 @@ export default {
       font-weight: bold;
       margin-left: 28px;
       border-left: 6px solid #697eff;
+    }
+    .iconDirection {
+      float: right;
+      margin-right: 50px;
+      width: 26px;
+      height: 26px;
     }
   }
   .item {
@@ -167,7 +175,7 @@ export default {
     background: #fff;
     margin: 0;
     padding: 0 0 0 28px;
-    border-top: 1px solid #f4f4f4;
+    border-top: 2px solid #f4f4f4;
   }
 }
 .serviceRemark {
@@ -177,11 +185,16 @@ export default {
   background: #fff;
   font-size: 28px;
   padding: 10px 28px;
-  // border: 1px solid red;
+  // display: flex;
+  // flex-direction: column-reverse;
+  /** flex-direction: column-reverse; // 该样式在某Q国产X5内核浏览器下不支持 */
+  /* 去掉部分机型点击产生的罩着层，*/
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 .assess {
   display: flex;
+  position: relative;
   align-items: center;
   font-size: 28px;
   height: 100px;
@@ -203,11 +216,20 @@ export default {
     width: 120px;
   }
 }
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
+// .fade-enter-active,
+// .fade-leave-active {
+//   transition: opacity 0.5s;
+// }
+// .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+//   opacity: 0;
+// }
+
+.aa {
+  transition: all 0.25s;
+  transform: rotate(-90deg);
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
+.go {
+  transform: rotate(0deg);
+  transition: all 0.25s;
 }
 </style>
