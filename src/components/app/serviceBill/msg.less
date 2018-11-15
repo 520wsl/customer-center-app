@@ -1,0 +1,130 @@
+.message {
+  display: flex;
+  padding: 20px 0;
+  .portrait {
+    margin-right: 20px;
+    img {
+      margin-top: 48px;
+      border-radius: 100%;
+      height: 64px;
+      width: 64px;
+      background: #697eff;
+    }
+  }
+  .content {
+    .time {
+      font-size: 18px;
+      color: #697eff;
+      margin-bottom: 16px;
+      .customer {
+        float: left;
+        margin-right: 18px;
+        padding: 2px 18px;
+        border-radius: 5px;
+        color: #fff;
+        background: #697eff;
+        text-align: center;
+      }
+    }
+    .text {
+      display: inline-block;
+      position: relative;
+      max-width: 450px;
+      padding: 15px 20px;
+      border-radius: 0 10px 10px 10px;
+      box-shadow: 5px 5px 20px 2px #d6d6d6;
+      word-wrap: break-word; // box-shadow: 5px 5px 20px 2px #000000;
+    }
+    .image>img {
+      max-width: 450px;
+    }
+    .moive {
+      img {
+        max-width: 450px;
+      }
+      max-width: 450px;
+      position: relative;
+      z-index: 2;
+    }
+    .audio {
+      height: 68px;
+      line-height: 68px;
+      padding: 0 40px;
+      width: 160px;
+      color: #fff;
+      background: #697eff;
+      border-radius: 0 10px 10px 10px;
+      box-shadow: 5px 5px 20px 2px #d6d6d6;
+      position: relative;
+      .gif {
+        position: absolute;
+        top: 50%;
+        margin-top: -15px;
+        width: 30px;
+        height: 30px;
+      }
+      span {
+        margin-left: 110px;
+      }
+    }
+  }
+}
+
+.msg-r {
+  flex-direction: row-reverse;
+  .portrait {
+    margin-left: 20px;
+    margin-right: 0;
+  }
+  .content {
+    text-align: right;
+    .customer {
+      float: right !important;
+      background: #fc7946 !important;
+      margin-right: 0 !important;
+    }
+    .text,
+    .moive,
+    .audio {
+      display: inline-block;
+      text-align: left;
+      border-radius: 10px 0 10px 10px !important;
+    }
+  }
+}
+
+.horn_r {
+  content: " ";
+  position: absolute;
+  display: block;
+  width: 20px;
+  right: -20px;
+  top: 0px;
+}
+
+.horn_l {
+  content: " ";
+  position: absolute;
+  display: block;
+  width: 20px;
+  left: -20px;
+  top: 0px;
+}
+
+.vedioBox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  overflow-y: "hidden";
+  .vedio {
+    position: relative;
+    margin: 0 auto;
+    margin-top: -25%;
+    top: 50%;
+    width: 100%;
+  }
+}

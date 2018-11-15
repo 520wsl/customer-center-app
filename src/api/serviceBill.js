@@ -2,7 +2,7 @@
  * @Author: xzx
  * @Date: 2018-11-13
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-11-13 19:45:56
+ * @Last Modified time: 2018-11-14 15:42:19
  * @explanatory:  api 调用
  */
 import api from "@/libs/api.request";
@@ -22,7 +22,7 @@ export default {
   },
   // 
   getTalknews: (workSheetId, pageNum = 1, pageSize = 20) => {
-    return api.post("/talknews/list", {
+    return api.post("/work-order-service/talknews/list", {
       workSheetId,
       pageNum,
       pageSize
