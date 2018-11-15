@@ -1,7 +1,7 @@
 <template>
   <div class="checkbox-list">
     <div v-for="(item,index1) in showList" :key="index1" :class="item.isChoose?'checkbox-item checkbox-active':'checkbox-item checkbox-default'" @click="chooseItem(index1)">
-      {{item.name}}
+      {{item.tag}}
     </div>
   </div>
 </template>
@@ -17,7 +17,7 @@ export default {
       let arr = [];
       this.list.forEach(item => {
         this.value.forEach(item2 => {
-          if (item.id == item2) {
+          if (item.tag == item2) {
             // 不可编辑状态
             if (!this.isEdit) {
               arr.push(item);
@@ -42,14 +42,14 @@ export default {
       // 已经选中的
       if (this.showList[index1].isChoose) {
         this.value.forEach((item, index) => {
-          if (item == this.showList[index1].id) {
+          if (item == this.showList[index1].tag) {
             this.value.splice(index, 1);
             this.showList[index1].isChoose = false;
           }
         });
         // 点击未选中
       } else {
-        this.value.push(this.showList[index1].id);
+        this.value.push(this.showList[index1].tag);
       }
       this.$emit("getValue", { value: this.value, index: this.index });
     }
