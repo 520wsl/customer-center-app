@@ -11,9 +11,9 @@
 <script>
 import editEvaluation from "@/components/app/editEvaluation";
 import {
-  postTemplateInfo
-  // postEvaluateeAdd,
-  // postEvaluateeInfo
+  postTemplateInfo,
+  postEvaluateAdd
+  // postEvaluateInfo
 } from "@/api/evaluate";
 import { MessageBox } from "mint-ui";
 export default {
@@ -29,16 +29,13 @@ export default {
   created() {
     this.$parent.$parent.setTitle(this.title);
     this.getList();
-    // postEvaluateeAdd(1, 1).then(res => {
-    //   console.log(res);
-    // });
-    // postEvaluateeInfo(1, 1).then(res => {
+    // postEvaluateInfo(1, 1).then(res => {
     //   console.log(res);
     // });
   },
   methods: {
     getList() {
-      let data = postTemplateInfo(4);
+      let data = postTemplateInfo(1);
       data.then(res => {
         // if (res.data) {
         //   return;
@@ -70,6 +67,9 @@ export default {
       MessageBox.confirm("确定提交评价?")
         .then(action => {
           console.log(action, this.list);
+          postEvaluateAdd(3, 3, JSON.stringify(this.list)).then(res => {
+            console.log(res);
+          });
         })
         .catch(res => {
           console.log(res);

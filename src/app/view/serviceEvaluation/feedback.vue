@@ -10,9 +10,9 @@
 <script>
 import editEvaluation from "@/components/app/editEvaluation";
 import {
-  // postTemplateInfo
+  // postTemplateInfo,
   // postEvaluateeAdd,
-  postEvaluateeInfo
+  postEvaluateInfo
 } from "@/api/evaluate";
 export default {
   data() {
@@ -23,7 +23,7 @@ export default {
   components: { editEvaluation },
   created() {
     this.$parent.$parent.setTitle("美工服务评价");
-    postEvaluateeInfo(1, 1).then(res => {
+    postEvaluateInfo(1, 1).then(res => {
       console.log(res);
       this.list = res.data[0].evaluateContent;
     });

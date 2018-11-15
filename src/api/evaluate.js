@@ -6,14 +6,15 @@ export const postTemplateInfo = id => {
   });
 };
 
-export const postEvaluateeAdd = (sixiId, orderNumber) => {
+export const postEvaluateAdd = (sixiId, orderNumber, evaluateContent) => {
   return api.post("/evaluate/add", {
     sixiId,
-    orderNumber
+    orderNumber,
+    evaluateContent
   });
 };
 
-export const postEvaluateeInfo = (sixiId, orderNumber) => {
+export const postEvaluateInfo = (sixiId, orderNumber) => {
   return api.post("/evaluate/info", {
     sixiId,
     orderNumber
