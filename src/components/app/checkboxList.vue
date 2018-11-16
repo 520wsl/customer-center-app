@@ -15,43 +15,44 @@ export default {
   computed: {
     showList: function() {
       let arr = [];
-      this.list.forEach(item => {
+      this.list.forEach(item1 => {
+        let bool = false;
         this.value.forEach(item2 => {
-          if (item.tag == item2) {
-            // 不可编辑状态
-            if (!this.isEdit) {
-              arr.push(item);
-            }
-            item.isChoose = true;
+          if (item1 == item2) {
+            bool = true;
           }
         });
-        // 可编辑状态
         if (this.isEdit) {
-          arr.push(item);
+          arr.push({
+            tag: item1,
+            isChoose: bool
+          });
+        } else {
+          if (bool) {
+            arr.push({
+              tag: item1,
+              isChoose: bool
+            });
+          }
         }
       });
       return arr;
     }
   },
   methods: {
-    chooseItem(index1) {
+    chooseItem(num) {
       // 不可编辑状态跳出
       if (!this.isEdit) {
         return;
       }
-      // 已经选中的
-      if (this.showList[index1].isChoose) {
-        this.value.forEach((item, index) => {
-          if (item == this.showList[index1].tag) {
-            this.value.splice(index, 1);
-            this.showList[index1].isChoose = false;
-          }
-        });
-        // 点击未选中
-      } else {
-        this.value.push(this.showList[index1].tag);
-      }
-      this.$emit("getValue", { value: this.value, index: this.index });
+      this.showList[num].isChoose = !this.showList[num].isChoose;
+      let value = [];
+      this.showList.forEach(item => {
+        if (item.isChoose) {
+          value.push(item.tag);
+        }
+      });
+      this.$emit("getValue", { value: value, index: this.index });
     }
   }
 };
