@@ -15,53 +15,44 @@ export default {
   computed: {
     showList: function() {
       let arr = [];
-      this.list.forEach(item => {
+      this.list.forEach(item1 => {
+        let bool = false;
         this.value.forEach(item2 => {
-          if (item.tag == item2) {
-            // 不可编辑状态
-            if (!this.isEdit) {
-              arr.push(item);
-            }
-            item.isChoose = true;
-          } else {
-            item.isChoose = false;
+          if (item1 == item2) {
+            bool = true;
           }
         });
-        // 可编辑状态
         if (this.isEdit) {
-          arr.push(item);
+          arr.push({
+            tag: item1,
+            isChoose: bool
+          });
+        } else {
+          if (bool) {
+            arr.push({
+              tag: item1,
+              isChoose: bool
+            });
+          }
         }
       });
       return arr;
     }
   },
   methods: {
-    chooseItem(index) {
+    chooseItem(num) {
       // 不可编辑跳出函数
       if (!this.isEdit) {
         return;
       }
-      let value = JSON.parse(JSON.stringify(this.value));
-      // 点击已经选中状态
-      if (this.showList[index].isChoose) {
-        this.setItem(index);
-        this.showList[index].isChoose = false;
-        value = [];
-        // 点击未选中状态
-      } else {
-        this.setItem(index);
-        value = [this.showList[index].tag];
-      }
-      this.$emit("getValue", { value, index: this.index });
-    },
-    setItem(num) {
-      this.showList.forEach((item, index) => {
-        if (index == num) {
-          item.isChoose = true;
-        } else {
-          item.isChoose = false;
+      this.showList[num].isChoose = !this.showList[num].isChoose;
+      let value = [];
+      this.showList.forEach(item => {
+        if (item.isChoose) {
+          value.push(item.tag);
         }
       });
+      this.$emit("getValue", { value, index: this.index });
     }
   }
 };

@@ -141,6 +141,40 @@ export default [{
     }]
   },
   {
+    path: "/message",
+    name: "_message",
+    redirect: { name: "message" },
+    component: Main1,
+    children: [
+      {
+        path: "index",
+        name: "message",
+        meta: {
+          title: "留言"
+        },
+        component: r =>
+          require.ensure(
+            [],
+            () => r(require("@/app/view/message/index")),
+            "message"
+          )
+      },
+      {
+        path: "success",
+        name: "messageSuccess",
+        meta: {
+          title: "留言提交成功"
+        },
+        component: r =>
+          require.ensure(
+            [],
+            () => r(require("@/app/view/message/success")),
+            "message"
+          )
+      }
+    ]
+  },
+  {
     path: "/personal",
     name: "_personal",
     redirect: {
