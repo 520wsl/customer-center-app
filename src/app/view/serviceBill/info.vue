@@ -18,35 +18,43 @@
       </transition>
       <h3>服务记录</h3>
     </div>
-    <mt-loadmore :top-method="loadTop" ref="loadmore" class="serviceRemark">
-      <!--
+    <!--弹性盒兼容问题 x5内核-->
+    <div class="serviceRemark" ref="serviceRemark">
+      <mt-loadmore :top-method="loadTop" ref="loadmore" class="msg">
+        <!--
         userType：用户类型,将用户id与当前记录id比对，若匹配则为客户
         textType：文本类型
         src：视频地址,音频地址,图片地址
         audioPlayFlag：当前音频播放控制（点击播放，停止状态）
       -->
-      <template v-for="(el,index) in talknews">
-        <msgTextImg v-if="el.type === 1 || el.type === 2 " :key="index" :userType="el.userSixiId === detail.userId ? 1:2" :src="el.enclosure">
-          {{el.record}}
-        </msgTextImg>
-        <msgAudio v-else-if="el.type === 3" :key="index" @click.native="playAudio(index,el.audioPlayFlag,el.type)" :userType="el.userSixiId === detail.userId ? 1:2" :src="el.enclosure" :audioPlayFlag="el.audioPlayFlag">
-          {{el.record}}
-        </msgAudio>
-        <msgVedio v-else-if="el.type === 4" :key="index" :userType="el.userSixiId === detail.userId ? 1:2" :src="el.enclosure">
-          {{el.record}}
-        </msgVedio>
-      </template>
-    </mt-loadmore>
-    <div class="assess">
+        <msgTpl v-for="(el,index) in talknews" :key="index" :info="el">
+          <msgTextImg v-if="el.type === 1 || el.type === 2" :textType="el.type" :userType="el.userType">
+            {{el.record}}
+          </msgTextImg>
+          <msgAudio v-else-if="el.type === 3" v-model="el.audioPlayFlag" :key="index" @click.native="playAudio(index,el.audioPlayFlag,el.type)" :userType="el.userType" :src="el.enclosure">
+          </msgAudio>
+          <!--视频播放的罩着层在iphone6下无效-->
+          <msgVedio v-else-if="el.type === 4" :key="index" :userType="el.userType" :src="el.enclosure">
+          </msgVedio>
+        </msgTpl>
+      </mt-loadmore>
+      <div v-if="identity === 2" class="hr"></div>
+    </div>
+    <!--客户可见-->
+    <div v-if="identity === 1" class="assess">
       <img :src="$CDN('/work_list_logo.png')" alt="">
       <span class="assessTime">
         <strong>工作评价</strong>（2018-10-10 10:23)
       </span>
       <span class="waitAssess">待评价&emsp;</span>&gt;
     </div>
+    <!--客服可见-->
+    <tab v-if="identity !== 1 && type !== 1" class="tab" :type="detail.handleType"></tab>
   </div>
 </template>
 <script>
+import tab from "@/components/app/serviceBill/tab";
+import msgTpl from "@/components/app/serviceBill/msgTpl";
 import msgTextImg from "@/components/app/serviceBill/msgTextImg";
 import msgAudio from "@/components/app/serviceBill/msgAudio";
 import msgVedio from "@/components/app/serviceBill/msgVedio";
@@ -54,12 +62,18 @@ import servicebillApi from "@/api/serviceBill";
 import { formatTime } from "@/libs/util/time";
 import { mapState } from "vuex";
 export default {
-  components: { msgTextImg, msgAudio, msgVedio },
+  components: { msgTpl, msgTextImg, msgAudio, msgVedio, tab },
   data() {
     return {
       isShow: true,
+      // 身份 1客服，2客户
+      identity: this.$route.query.identity,
+      type: 0,
+      id: this.$route.query.id,
       detail: {},
-      talknews: []
+      talknews: [],
+      num: 1,
+      size: 10
     };
   },
   computed: {
@@ -73,36 +87,54 @@ export default {
     this.getDetail();
     this.getTalknews();
   },
+  updated: function() {
+    this.$nextTick(function() {
+      if (this.num === 2) {
+        this.setScrool();
+      }
+    });
+  },
   methods: {
+    setScrool() {
+      var serviceRemark = document.querySelector(".serviceRemark");
+      var msg = document.querySelector(".msg");
+      var msgheight = msg.offsetHeight; //高度
+      serviceRemark.scrollTop = msgheight;
+    },
     // 获取基本详情
     getDetail() {
-      let workSheetId = 1;
-      servicebillApi.getDetail(workSheetId).then(e => {
+      servicebillApi.getDetail(this.id).then(e => {
         if (e.status !== 200) return;
         this.detail = e.data;
       });
     },
     // 获取工单记录详情
-    getTalknews() {
-      let workSheetId = 1;
-      servicebillApi.getTalknews(workSheetId, 1, 20).then(e => {
+    getTalknews(size = this.size) {
+      servicebillApi.getTalknews(this.id, this.num, size).then(e => {
         if (e.status !== 200) return;
-        this.talknews = e.data.map(e => {
+        e.data.list.forEach(e => {
+          // 获取当前消息的身份类别
+          e.userType = e.userSixiId === this.detail.userId ? 1 : 2;
+          // 记录用户语音的播放状态
           e.audioPlayFlag = true;
-          return e;
+          this.talknews.unshift(e);
         });
-        console.log(this.talknews);
+        this.num = ++e.data.num;
       });
     },
     getTime(time, norms) {
       return formatTime(time, norms);
     },
+    // 下拉加载更多
     loadTop() {
+      // 成功后进行的操作
+      this.getTalknews(5);
       this.$refs.loadmore.onTopLoaded();
     },
     playAudio(index, audioPlayFlag, type) {
       // 仅语音执行
       if (type !== 3) return;
+      // 关闭所有语音，仅当前点击的语音打开
       this.talknews.forEach(e => {
         e.audioPlayFlag = true;
       });
@@ -155,8 +187,7 @@ export default {
     .iconDirection {
       float: right;
       margin-right: 50px;
-      width: 26px;
-      height: 26px;
+      width: 30px;
     }
   }
   .item {
@@ -184,14 +215,21 @@ export default {
   color: #6e7790;
   background: #fff;
   font-size: 28px;
-  padding: 10px 28px;
   // display: flex;
   // flex-direction: column-reverse;
   /** flex-direction: column-reverse; // 该样式在某Q国产X5内核浏览器下不支持 */
   /* 去掉部分机型点击产生的罩着层，*/
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  .msg {
+    padding: 10px 28px;
+  }
 }
-
+.hr {
+  border-bottom: 20px solid #f4f4f4;
+}
+.tab {
+  display: flex;
+}
 .assess {
   display: flex;
   position: relative;

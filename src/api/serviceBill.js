@@ -2,16 +2,18 @@
  * @Author: xzx
  * @Date: 2018-11-13
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-11-14 15:42:19
+ * @Last Modified time: 2018-11-16 20:46:09
  * @explanatory:  api 调用
  */
 import api from "@/libs/api.request";
 
 export default {
   // 获取工单列表
-  getWorkSheetList: (id) => {
+  getWorkSheetList: (id, pageNum = 1, pageSize = 20) => {
     return api.post("/worksheet/list", {
-      sixiId: id
+      sixiId: id,
+      pageNum,
+      pageSize
     });
   },
   // 获取工单单条记录详情
