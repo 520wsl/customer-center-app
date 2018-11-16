@@ -27,7 +27,7 @@ export default {
   },
   components: { editEvaluation },
   created() {
-    // alert(JSON.stringify(this.$route.query));
+    alert(JSON.stringify(this.$route.query));
     this.$parent.$parent.setTitle(this.title);
     this.getList();
     // postEvaluateInfo(1, 1).then(res => {

@@ -158,6 +158,19 @@ export default [
             () => r(require("@/app/view/message/index")),
             "message"
           )
+      },
+      {
+        path: "success",
+        name: "messageSuccess",
+        meta: {
+          title: "留言提交成功"
+        },
+        component: r =>
+          require.ensure(
+            [],
+            () => r(require("@/app/view/message/success")),
+            "message"
+          )
       }
     ]
   },
