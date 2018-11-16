@@ -1,8 +1,8 @@
 /*
  * @Author: Mad Dragon 395548460@qq.com
  * @Date: 2018-11-07 22:22:23
- * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-11-10 17:49:13
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-11-16 09:24:06
  * @explanatory: Routers Config   路由 路径 配置
  */
 /**
@@ -22,8 +22,7 @@
  */
 const Main1 = r =>
   require.ensure([], () => r(require("_c/template/main1")), "main"); //模板页 不带底部导航
-export default [
-  {
+export default [{
     path: "/demo/test01",
     name: "demoTest01",
     component: r =>
@@ -41,31 +40,32 @@ export default [
   {
     path: "/",
     name: "_home",
-    redirect: { name: "home" },
+    redirect: {
+      name: "home"
+    },
     component: Main1,
-    children: [
-      {
-        path: "home",
-        name: "home",
-        meta: {
-          title: "首页"
-        },
-        component: r =>
-          require.ensure(
-            [],
-            () => r(require("@/app/view/home/home")),
-            "appLogin"
-          ) //首页
-      }
-    ]
+    children: [{
+      path: "home",
+      name: "home",
+      meta: {
+        title: "首页"
+      },
+      component: r =>
+        require.ensure(
+          [],
+          () => r(require("@/app/view/home/home")),
+          "appLogin"
+        ) //首页
+    }]
   },
   {
     path: "/contract",
     name: "_contract",
-    redirect: { name: "contract" },
+    redirect: {
+      name: "contract"
+    },
     component: Main1,
-    children: [
-      {
+    children: [{
         path: "index",
         name: "contract",
         meta: {
@@ -122,23 +122,23 @@ export default [
   {
     path: "/log",
     name: "_log",
-    redirect: { name: "saleRecord" },
+    redirect: {
+      name: "saleRecord"
+    },
     component: Main1,
-    children: [
-      {
-        path: "saleRecord",
-        name: "saleRecord",
-        meta: {
-          title: "记录"
-        },
-        component: r =>
-          require.ensure(
-            [],
-            () => r(require("@/app/view/log/saleRecord")),
-            "appLog"
-          )
-      }
-    ]
+    children: [{
+      path: "saleRecord",
+      name: "saleRecord",
+      meta: {
+        title: "记录"
+      },
+      component: r =>
+        require.ensure(
+          [],
+          () => r(require("@/app/view/log/saleRecord")),
+          "appLog"
+        )
+    }]
   },
   {
     path: "/message",
@@ -177,10 +177,11 @@ export default [
   {
     path: "/personal",
     name: "_personal",
-    redirect: { name: "personal" },
+    redirect: {
+      name: "personal"
+    },
     component: Main1,
-    children: [
-      {
+    children: [{
         path: "index",
         name: "personal",
         meta: {
@@ -211,10 +212,11 @@ export default [
   {
     path: "/question",
     name: "_question",
-    redirect: { name: "question" },
+    redirect: {
+      name: "question"
+    },
     component: Main1,
-    children: [
-      {
+    children: [{
         path: "index",
         name: "question",
         meta: {
@@ -245,10 +247,11 @@ export default [
   {
     path: "/serviceBill",
     name: "_serviceBill",
-    redirect: { name: "serviceBill" },
+    redirect: {
+      name: "serviceBill"
+    },
     component: Main1,
-    children: [
-      {
+    children: [{
         path: "index",
         name: "serviceBill",
         meta: {
@@ -259,6 +262,20 @@ export default [
             [],
             () => r(require("@/app/view/serviceBill/index")),
             "appServiceBill"
+          )
+      },
+      // customerService
+      {
+        path: "customerService",
+        name: "customerService",
+        meta: {
+          title: "我的工单"
+        },
+        component: r =>
+          require.ensure(
+            [],
+            () => r(require("@/app/view/serviceBill/customerService")),
+            "customerService"
           )
       },
       {
@@ -292,10 +309,11 @@ export default [
   {
     path: "/serviceEvaluation",
     name: "_serviceEvaluation",
-    redirect: { name: "serviceEvaluation" },
+    redirect: {
+      name: "serviceEvaluation"
+    },
     component: Main1,
-    children: [
-      {
+    children: [{
         path: "index",
         name: "serviceEvaluation",
         meta: {
