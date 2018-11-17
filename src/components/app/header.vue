@@ -7,17 +7,17 @@
             <span :class="background?'white':'black'">{{title}}</span>
           </div>
           <a v-else @click="routerBack()" href="javascript:void(0);" :class="background?'white left':'black left'">
-            <mt-button icon="back"></mt-button>
+            <mt-button icon="back" class="back"></mt-button>
             <span :class="background?'white':'black'">&nbsp;{{title}}</span>
           </a>
         </slot>
       </div>
-      <div slot="right">
+      <!-- <div slot="right">
         <slot name="headright" class="right">
           <img v-if="background" :src="$CDN('/header_white_logo.png')" class="img">
           <img v-else :src="$CDN('/header_black_logo.png')" class="img">
         </slot>
-      </div>
+      </div> -->
     </mt-header>
   </div>
 </template>
@@ -77,7 +77,13 @@ export default {
 }
 
 .title .mintui {
-  font-size: 35px;
+  font-size: 34px;
+  color: #444444;
+}
+.title .mintui-back {
+  font-size: 22px;
+  color: #6e7790;
+  margin-right: 12px;
 }
 </style>
 
