@@ -1,7 +1,4 @@
 <template>
-  <!-- <div>
-    {{info}}
-  </div> -->
   <div :class="info.userType === 1 ?['message']:['message msg-r']">
     <div class="portrait">
       <img :src="$CDN(portraitUrl)" alt="404">
@@ -24,7 +21,7 @@ export default {
   data() {
     return {
       showVedio: false,
-      portraitUrl:'/customer_service.png'
+      portraitUrl: "/customer_service.png"
     };
   },
   computed: {
@@ -38,7 +35,7 @@ export default {
       billStatus: state => state.Servicebill.billStatus
     })
   },
-  methods:{
+  methods: {
     getTime(time, norms) {
       return formatTime(time, norms);
     }

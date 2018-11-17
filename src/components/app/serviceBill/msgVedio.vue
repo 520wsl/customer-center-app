@@ -38,6 +38,18 @@ export default {
       e.target.vedio.pause();
       e.target.vedio.currentTime = 0;
     });
+    // function detectWeixinApi(callback) {
+    //   if (
+    //     typeof window.WeixinJSBridge == "undefined" ||
+    //     typeof window.WeixinJSBridge.invoke == "undefined"
+    //   ) {
+    //     setTimeout(function() {
+    //       detectWeixinApi(callback);
+    //     }, 200);
+    //   } else {
+    //     callback();
+    //   }
+    // }
   },
   computed: {
     audioSrc() {

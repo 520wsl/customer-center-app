@@ -3,7 +3,7 @@
     <div class="servicebill" v-for="(el,index) in billList" :key="index">
       <router-link :to="{ name: 'serviceBillInfo', query: { id: el.id,identity:1 } }" tag="h3">
         【该字段后端没有返回】的工单
-        <span>处理中{{handleType[el.type] || ''}}</span>
+        <span>{{handleType[el.type] || ''}}</span>
       </router-link>
       <p class="BillId">工单编号：
         <b>{{el.identifier}}</b>
@@ -55,7 +55,7 @@ export default {
         });
         this.num = ++e.data.num;
         this.loading = false;
-        console.log(this.num);
+        // console.log(this.num);
       });
     },
     loadMore() {
@@ -89,6 +89,7 @@ export default {
   }
   .BillId {
     font-size: 28px;
+    margin-top: 20px;
     padding-bottom: 32px;
     margin-bottom: 20px;
     border-bottom: 2px solid #f4f4f4;
