@@ -1,10 +1,10 @@
 <template>
   <div class="tabBox">
-    <div class="unit" v-for="(el,index) in tabList" :key="index" @click="showHiddenList(index,el.routeName)">
+    <div class="unit" v-for="(el,index) in tabList" :key="index" @click="showHiddenList(index,el.callBackFun)" :style="el.icon?iconStyle:''">
       <template v-if="el.click === true">
         {{el.title}}
         <ul class="list">
-          <li v-for="el2 in el.list" :key="el2.title" @click="routerTo(el2.routeName)">{{el2.title}}</li>
+          <li v-for="el2 in el.list" :key="el2.title" @click="fun(el2.callBackFun)">{{el2.title}}</li>
         </ul>
       </template>
       <template v-else>{{el.title}}</template>
@@ -12,7 +12,12 @@
   </div>
 </template>
 <script>
-// handleTypeBODY
+// 1、<a href="weixin://contacts/profile/微信号原始ID（如：gh_dd4b2c2ada8b）">Baidufe</a>
+// 这种方法能直接打开该号的微信资料页，直接关注；但获取原始ID比较麻烦。
+
+// 2、<a href="weixin://contacts/profile/微信号（如：www_baidufe_com）">Baidufe</a>
+// 这种方法会打开“加入到通讯录”的界面，然后再是资料页
+import servicebillApi from "@/api/serviceBill";
 export default {
   props: ["type"],
   data() {
@@ -23,11 +28,25 @@ export default {
         [
           {
             title: "工单确认",
-            routeName: ""
+            callBackFun: () => {
+              let workSheetId = this.$route.query.id;
+              // 确认工单接口
+              servicebillApi.confirm(workSheetId, 2).then(e => {
+                if (e.status !== 200) {
+                  console.log("失败");
+                  return;
+                }
+                this.$router.go();
+              });
+            }
           },
           {
             title: "我的工单",
-            routeName: "customerService"
+            callBackFun: () => {
+              let identity = this.$route.query.identity,
+                routeName = identity == 1 ? "customerService" : "serviceBill"; // identity 身份 1客服 2客户
+              this.$router.push({ name: routeName });
+            }
           }
         ],
         // 已超时
@@ -36,42 +55,85 @@ export default {
         [
           {
             title: "采集信息",
-            routeName: "",
             click: false,
+            icon: "/footer.png",
             list: [
-              { title: "账号密码账号密码", routeName: "" },
-              { title: "账号密码", routeName: "" }
+              {
+                title: "电话号码",
+                callBackFun: () => {
+                  console.log("跳转至小程序");
+                }
+              },
+              {
+                title: "账号密码",
+                callBackFun: () => {
+                  console.log("跳转至小程序");
+                }
+              }
             ]
           },
           {
             title: "设为完结",
-            routeName: ""
+            callBackFun: () => {
+              let workSheetId = this.$route.query.id;
+              // 确认工单接口
+              servicebillApi.confirm(workSheetId, 3).then(e => {
+                if (e.status !== 200) {
+                  console.log("失败");
+                  return;
+                }
+                this.$router.go();
+              });
+            }
           },
           {
             title: "我的工单",
-            routeName: "customerService"
+            callBackFun: () => {
+              let identity = this.$route.query.identity,
+                routeName = identity == 1 ? "customerService" : "serviceBill"; // identity 身份 1客服 2客户
+              this.$router.push({ name: routeName });
+            }
           }
         ],
         // 已完结
         [
           {
             title: "我的工单",
-            routeName: "customerService"
+            callBackFun: () => {
+              let identity = this.$route.query.identity,
+                routeName = identity == 1 ? "customerService" : "serviceBill"; // identity 身份 1客服 2客户
+              this.$router.push({ name: routeName });
+            }
           }
         ],
         // 已评价
         [
           {
             title: "查看评价",
-            routeName: ""
+            callBackFun: () => {
+              let id = this.$route.query.id;
+              this.$router.push({
+                name: "serviceEvaluationInfo",
+                query: { id: id }
+              });
+            }
           },
           {
             title: "我的工单",
-            routeName: "customerService"
+            callBackFun: () => {
+              let identity = this.$route.query.identity,
+                routeName = identity == 1 ? "customerService" : "serviceBill"; // identity 身份 1客服 2客户
+              this.$router.push({ name: routeName });
+            }
           }
         ]
       ],
-      tabList: []
+      tabList: [],
+      iconStyle: {
+        background: "url(" + this.$CDN("/footer.png") + ") no-repeat",
+        "background-position": "0.285rem 0.089rem",
+        "background-size": "0.03733rem 0.03733rem"
+      }
     };
   },
   mounted() {
@@ -79,11 +141,12 @@ export default {
     this.tabList = this.list[this.type];
   },
   methods: {
-    showHiddenList(index, name) {
-      // 若没有二级菜单，直接跳转路由
+    showHiddenList(index, callBackFun) {
+      // 若没有二级菜单，直接触发回调
       if (!this.tabList[index].hasOwnProperty("click")) {
-        if (!name) return;
-        this.routerTo(name);
+        // if (!name) return;
+        // this.routerTo(name);,
+        callBackFun();
         return;
       }
       // 关闭其他二级菜单
@@ -95,9 +158,9 @@ export default {
       // 打开当前点击的二级菜单
       this.tabList[index].click = !this.tabList[index].click;
     },
-    routerTo(name) {
-      console.log(11);
-      this.$router.push({ name: name });
+    fun(callBackFun) {
+      console.log("执行回调");
+      callBackFun();
     }
   },
   watch: {

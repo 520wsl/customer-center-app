@@ -2,7 +2,7 @@
   <!--语音类型-->
   <div class="audio">
     <img v-show="currentValue" class="gif" :src="$CDN('/audio.png')" alt="404">
-    <img v-show="!currentValue" class="gif" src="./audioGif.gif" alt="404">
+    <img v-show="!currentValue" class="gif" :src="$CDN('/audioGif.gif')" alt="404">
     <span>{{audioTime}}&ensp;"</span>
     <audio ref="audio" preload="auto" hidden="true">
       <source :src="audioSrc" type="audio/mpeg">
@@ -25,17 +25,15 @@ export default {
       audioTime: 0
     };
   },
+  created() {},
   mounted() {
     // alert('浏览器版本：'+navigator.appCodeName)
     // 给声音赋值时长（可持续播放音频时事件，canplaythrough）
-    // console.log("测试");
-    // console.log(this.$refs.audio);
     this.$refs.audio.addEventListener("loadedmetadata", e => {
       // console.log("测试");
       this.audioTime = e.target.duration.toFixed(0);
       // console.log(this.audioTime, "音频时长");
     });
-    // this.audioTime = this.$refs.audio.duration.toFixed(0);
   },
   computed: {
     audioSrc() {

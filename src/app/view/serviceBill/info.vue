@@ -22,11 +22,11 @@
     <div class="serviceRemark" ref="serviceRemark">
       <mt-loadmore :top-method="loadTop" ref="loadmore" class="msg">
         <!--
-        userType：用户类型,将用户id与当前记录id比对，若匹配则为客户
-        textType：文本类型
-        src：视频地址,音频地址,图片地址
-        audioPlayFlag：当前音频播放控制（点击播放，停止状态）
-      -->
+          userType：用户类型,将用户id与当前记录id比对，若匹配则为客户
+          textType：文本类型
+          src：视频地址,音频地址,图片地址
+          audioPlayFlag：当前音频播放控制（点击播放，停止状态）
+        -->
         <msgTpl v-for="(el,index) in talknews" :key="index" :info="el">
           <msgTextImg v-if="el.type === 1 || el.type === 2" :textType="el.type" :userType="el.userType">
             {{el.record}}
@@ -41,15 +41,16 @@
       <div v-if="identity === 2" class="hr"></div>
     </div>
     <!--客户可见-->
-    <div v-if="identity === 1" class="assess">
+    <div v-if="identity == 2" class="assess">
       <img :src="$CDN('/work_list_logo.png')" alt="">
       <span class="assessTime">
         <strong>工作评价</strong>（2018-10-10 10:23)
       </span>
-      <span class="waitAssess">待评价&emsp;</span>&gt;
+      <router-link :to="{ name: 'serviceEvaluationInfo', query: { id: id } }" tag="span" class="btn">待评价&emsp;</router-link>&gt;
     </div>
     <!--客服可见-->
-    <tab v-if="identity !== 1 && type !== 1" class="tab" :type="detail.handleType"></tab>
+    <tab v-if="identity == 1 && detail.handleType != 1" class="tab" :type="detail.handleType"></tab>
+    <!-- <tab v-if="identity == 1 && detail.handleType != 1" class="tab" :type="2"></tab> -->
   </div>
 </template>
 <script>
@@ -61,6 +62,7 @@ import msgVedio from "@/components/app/serviceBill/msgVedio";
 import servicebillApi from "@/api/serviceBill";
 import { formatTime } from "@/libs/util/time";
 import { mapState } from "vuex";
+
 export default {
   components: { msgTpl, msgTextImg, msgAudio, msgVedio, tab },
   data() {
@@ -68,13 +70,26 @@ export default {
       isShow: true,
       // 身份 1客服，2客户
       identity: this.$route.query.identity,
-      type: 0,
       id: this.$route.query.id,
       detail: {},
       talknews: [],
       num: 1,
-      size: 10
+      size: 10,
+      // 滑动到底部
+      bottom: true
     };
+  },
+  mounted() {
+    this.$parent.$parent.setTitle("服务工单");
+    this.getDetail();
+    this.getTalknews();
+  },
+  updated() {
+    this.$nextTick(function() {
+      if (this.bottom === true) {
+        this.setScrool();
+      }
+    });
   },
   computed: {
     ...mapState({
@@ -82,24 +97,13 @@ export default {
       workType: state => state.Servicebill.workType
     })
   },
-  mounted() {
-    this.$parent.$parent.setTitle("服务工单");
-    this.getDetail();
-    this.getTalknews();
-  },
-  updated: function() {
-    this.$nextTick(function() {
-      if (this.num === 2) {
-        this.setScrool();
-      }
-    });
-  },
   methods: {
     setScrool() {
       var serviceRemark = document.querySelector(".serviceRemark");
       var msg = document.querySelector(".msg");
       var msgheight = msg.offsetHeight; //高度
       serviceRemark.scrollTop = msgheight;
+      this.bottom = false;
     },
     // 获取基本详情
     getDetail() {
