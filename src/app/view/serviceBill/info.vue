@@ -13,7 +13,7 @@
           <li>工单状态：{{handleType[detail.handleType] || ''}}</li>
           <li>工单类型：{{workType[detail.workType] || ''}}</li>
           <li>工单创建时间：{{getTime(detail.startTime,'YYYY-MM-DD')}}</li>
-          <li>客服人员：{{detail.executorName}}</li>
+          <li>客服人员：{{detail.leadingUser.userName}}</li>
         </ul>
       </transition>
       <h3>服务记录</h3>
@@ -25,13 +25,12 @@
           userType：用户类型,将用户id与当前记录id比对，若匹配则为客户
           textType：文本类型
           src：视频地址,音频地址,图片地址
-          audioPlayFlag：当前音频播放控制（点击播放，停止状态）
         -->
         <msgTpl v-for="(el,index) in talknews" :key="index" :info="el">
           <msgTextImg v-if="el.type === 1 || el.type === 2" :textType="el.type" :userType="el.userType">
             {{el.record}}
           </msgTextImg>
-          <msgAudio v-else-if="el.type === 3" v-model="el.audioPlayFlag" :key="index" @click.native="playAudio(index,el.audioPlayFlag,el.type)" :userType="el.userType" :src="el.enclosure">
+          <msgAudio v-else-if="el.type === 3" :key="index" :userType="el.userType" :src="el.enclosure">
           </msgAudio>
           <!--视频播放的罩着层在iphone6下无效-->
           <msgVedio v-else-if="el.type === 4" :key="index" :userType="el.userType" :src="el.enclosure">
@@ -46,7 +45,16 @@
       <span class="assessTime">
         <strong>工作评价</strong>（2018-10-10 10:23)
       </span>
-      <router-link :to="{ name: 'serviceEvaluationInfo', query: { id: id } }" tag="span" class="btn">待评价&emsp;</router-link>&gt;
+      <router-link
+        :to="{ name: 'serviceEvaluationInfo', query: {
+          type: detail.workType,
+          customerId: detail.workerOrderDetailVo.sixiId,
+          workSheetId: id,
+          servicePersonnel: detail.leadingUser.userName
+          }
+        }"
+        tag="span" class="btn">待评价&emsp;
+      </router-link>&gt;
     </div>
     <!--客服可见-->
     <tab v-if="identity == 1 && detail.handleType != 1" class="tab" :type="detail.handleType"></tab>
@@ -120,7 +128,6 @@ export default {
           // 获取当前消息的身份类别
           e.userType = e.userSixiId === this.detail.userId ? 1 : 2;
           // 记录用户语音的播放状态
-          e.audioPlayFlag = true;
           this.talknews.unshift(e);
         });
         this.num = ++e.data.num;
@@ -134,15 +141,6 @@ export default {
       // 成功后进行的操作
       this.getTalknews(5);
       this.$refs.loadmore.onTopLoaded();
-    },
-    playAudio(index, audioPlayFlag, type) {
-      // 仅语音执行
-      if (type !== 3) return;
-      // 关闭所有语音，仅当前点击的语音打开
-      this.talknews.forEach(e => {
-        e.audioPlayFlag = true;
-      });
-      this.talknews[index].audioPlayFlag = !audioPlayFlag;
     }
   }
 };
