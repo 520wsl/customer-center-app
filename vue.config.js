@@ -13,7 +13,7 @@ module.exports = {
     proxy: {
       "/api": {
         // target: "http://172.30.34.78:8201/",
-        target: "http://172.30.34.109:8202/",
+        target: "http://test.base.internal.sixi.com",
         changeOrigin: true,
         pathRewrite: {
           "^/api": ""
@@ -41,7 +41,7 @@ module.exports = {
     app: {
       entry: "src/app/main.js",
       template: "public/app.html",
-      filename: "app.html",
+      filename: "index.html",
       title: "app",
       chunks: ["chunk-vendors", "chunk-common", "app"]
     }
