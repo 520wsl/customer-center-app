@@ -8,7 +8,7 @@
       <ul class="item">
         <li>工单创建时间：{{getTime(el.startTime,'YYYY-MM-DD')}}</li>
         <li>持续时间：{{el.hourSum}}h</li>
-        <li>客服人员：【后端文档没更新】</li>
+        <li>客服人员：{{el.userVo.userName}}</li>
       </ul>
       <p class="status">
         <span>状态：{{handleType[el.type] || ''}}</span>
