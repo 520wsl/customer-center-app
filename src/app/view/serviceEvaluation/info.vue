@@ -32,19 +32,19 @@ export default {
   created() {
     // alert(JSON.stringify(this.$route.query));
     if (this.$route.query) {
-      this.id = this.$route.query.templetId || 1; // 模板id
+      this.id = this.$route.query.templetId || 3; // 评价模板id
       this.type = this.$route.query.type || 0; // 人员类型
       this.customerId = this.$route.query.customerId || ""; // 人员id
       this.workSheetId = this.$route.query.workSheetId || ""; // 工单id
       this.name = this.$route.query.servicePersonnel || ""; // 服务人员
-      if (this.type == 2) {
-        this.typeName = "续开";
-      } else if (this.type == 3) {
+      if (this.id == 1) {
         this.typeName = "美工";
-      } else if (this.type == 4) {
-        this.typeName = "深度运营";
-      } else if (this.type == 5) {
+      } else if (this.id == 2) {
         this.typeName = "运营";
+      } else if (this.id == 3) {
+        this.typeName = "旺旺";
+      } else if (this.id == 4) {
+        this.typeName = "工单";
       } else {
         this.typeName = "其他";
       }

@@ -32,12 +32,16 @@ export default {
       loading: false,
       billList: [],
       size: 10,
-      num: 1
+      num: 1,
+      sixiId: ""
     };
   },
   mounted() {
     // 存在请求两次的情况，暂时去除触发
     // this.getWorkSheetList();
+    if (this.$route.query) {
+      this.sixiId = this.$route.query.sixiId || "";
+    }
   },
   computed: {
     ...mapState({
@@ -48,7 +52,7 @@ export default {
   methods: {
     getWorkSheetList() {
       this.loading = true;
-      let id = 1;
+      let id = this.sixiId;
       servicebillApi.getWorkSheetList(id, this.num, this.size).then(e => {
         if (e.status !== 200) return;
         e.data.list.forEach(e => {
