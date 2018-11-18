@@ -14,17 +14,25 @@ import {
   // postEvaluateeAdd,
   postEvaluateInfo
 } from "@/api/evaluate";
+import { MessageBox } from "mint-ui";
 export default {
   data() {
     return {
-      list: []
+      list: [],
+      sixiId: "",
+      orderNumber: ""
     };
   },
   components: { editEvaluation },
   created() {
     this.$parent.$parent.setTitle("美工服务评价");
-    postEvaluateInfo(1, 1).then(res => {
+    let sixiId = this.$route.query.customerId;
+    let orderNumber = this.$route.query.workSheetId;
+    postEvaluateInfo(sixiId, orderNumber).then(res => {
       console.log(res);
+      if (res.status != 200) {
+        return MessageBox("提示", "服务器繁忙，请稍后再试！");
+      }
       this.list = res.data[0].evaluateContent;
     });
   },

@@ -8,7 +8,7 @@
       <ul class="item">
         <li>工单创建时间：{{getTime(el.startTime,'YYYY-MM-DD')}}</li>
         <li>持续时间：{{el.hourSum}}h</li>
-        <li>客服人员：【后端文档没更新】</li>
+        <li>客服人员：{{el.userVo.userName}}</li>
       </ul>
       <p class="status">
         <span>状态：{{handleType[el.type] || ''}}</span>
@@ -32,12 +32,16 @@ export default {
       loading: false,
       billList: [],
       size: 10,
-      num: 1
+      num: 1,
+      sixiId: ""
     };
   },
   mounted() {
     // 存在请求两次的情况，暂时去除触发
     // this.getWorkSheetList();
+    if (this.$route.query) {
+      this.sixiId = this.$route.query.sixiId || "";
+    }
   },
   computed: {
     ...mapState({
@@ -48,7 +52,7 @@ export default {
   methods: {
     getWorkSheetList() {
       this.loading = true;
-      let id = 1;
+      let id = this.sixiId;
       servicebillApi.getWorkSheetList(id, this.num, this.size).then(e => {
         if (e.status !== 200) return;
         e.data.list.forEach(e => {

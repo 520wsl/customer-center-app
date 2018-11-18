@@ -12,7 +12,8 @@ module.exports = {
   devServer: {
     proxy: {
       "/api": {
-        target: "http://www.dianjiangla.com/api/",
+        // target: "http://172.30.34.78:8201/",
+        target: "http://172.30.34.109:8202/",
         changeOrigin: true,
         pathRewrite: {
           "^/api": ""

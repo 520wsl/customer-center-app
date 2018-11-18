@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="evaluation">请你为{{severType==1?"美工":"运营"}}
+    <div class="evaluation">请你为{{typeName}}
       <span>{{name}}</span>，本次服务做个评价</div>
     <editEvaluation :list='list' :isEdit='true'></editEvaluation>
     <div class="submit-btn">
@@ -20,15 +20,36 @@ export default {
   data() {
     return {
       list: [],
-      title: "美工服务评价",
-      severType: 1,
-      name: "张momo"
+      typeName: "",
+      name: "",
+      type: "",
+      id: "",
+      customerId: "",
+      servicePersonnel: ""
     };
   },
   components: { editEvaluation },
   created() {
-    alert(JSON.stringify(this.$route.query));
-    this.$parent.$parent.setTitle(this.title);
+    // alert(JSON.stringify(this.$route.query));
+    if (this.$route.query) {
+      this.id = this.$route.query.templetId || 3; // 评价模板id
+      this.type = this.$route.query.type || 0; // 人员类型
+      this.customerId = this.$route.query.customerId || ""; // 人员id
+      this.workSheetId = this.$route.query.workSheetId || ""; // 工单id
+      this.name = this.$route.query.servicePersonnel || ""; // 服务人员
+      if (this.id == 1) {
+        this.typeName = "美工";
+      } else if (this.id == 2) {
+        this.typeName = "运营";
+      } else if (this.id == 3) {
+        this.typeName = "旺旺";
+      } else if (this.id == 4) {
+        this.typeName = "工单";
+      } else {
+        this.typeName = "其他";
+      }
+    }
+    this.$parent.$parent.setTitle(this.typeName + "服务评价");
     this.getList();
     // postEvaluateInfo(1, 1).then(res => {
     //   console.log(res);
@@ -36,12 +57,11 @@ export default {
   },
   methods: {
     getList() {
-      let data = postTemplateInfo(1);
-      data.then(res => {
+      // alert(this.id);
+      postTemplateInfo(this.id).then(res => {
         // if (res.data) {
         //   return;
         // }
-        console.log(res.data);
         let list = res.data[0].content;
         list.forEach(item => {
           if (
@@ -68,8 +88,21 @@ export default {
       MessageBox.confirm("确定提交评价?")
         .then(action => {
           console.log(action, this.list);
-          postEvaluateAdd(3, 3, JSON.stringify(this.list)).then(res => {
-            console.log(res);
+          postEvaluateAdd(
+            this.customerId,
+            this.workSheetId,
+            JSON.stringify(this.list)
+          ).then(res => {
+            if (res.status != 200) {
+              return MessageBox("提示", "服务器繁忙，请稍后再试！");
+            }
+            this.$router.push({
+              name: "serviceEvaluationBreview",
+              query: {
+                customerId: this.customerId,
+                workSheetId: this.workSheetId
+              }
+            });
           });
         })
         .catch(res => {

@@ -6,7 +6,7 @@
     </div>
     <div class="message-item">
       <span>联系电话：</span>
-      <input type="text" v-model="content.phone">
+      <input type="number" maxlength="11" v-model="content.phone">
     </div>
     <div class="message-item">
       <span>留言：</span>
