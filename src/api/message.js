@@ -1,5 +1,13 @@
 import api from "@/libs/api.request";
 
+const baseUrl = "/work-order-service";
+function post(url, params) {
+  return api.post(baseUrl + url, params);
+}
+function get(url, params) {
+  return api.get(baseUrl + url, params);
+}
+
 // 提交留言
 export const sentMessageData = (
   unionId,
@@ -8,7 +16,7 @@ export const sentMessageData = (
   type,
   workOrderType = 6
 ) => {
-  return api.post("/workorder/save", {
+  return post("/workorder/save", {
     unionId,
     openId,
     context,
