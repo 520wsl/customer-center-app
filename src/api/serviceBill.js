@@ -7,24 +7,32 @@
  */
 import api from "@/libs/api.request";
 
+const baseUrl = "/work-order-service";
+function post(url, params) {
+  return api.post(baseUrl + url, params);
+}
+function get(url, params) {
+  return api.get(baseUrl + url, params);
+}
+
 export default {
   // 获取工单列表
   getWorkSheetList: (id, pageNum = 1, pageSize = 20) => {
-    return api.post("/worksheet/list", {
+    return post("/worksheet/list", {
       sixiId: id,
       pageNum,
       pageSize
     });
   },
   // 获取工单单条记录详情
-  getDetail: (workSheetId) => {
-    return api.post("/worksheet/detail", {
+  getDetail: workSheetId => {
+    return post("/worksheet/detail", {
       workSheetId: workSheetId
     });
   },
   // 获取对话记录
   getTalknews: (workSheetId, pageNum = 1, pageSize = 20) => {
-    return api.post("/work-order-service/talknews/list", {
+    return post("/talknews/list", {
       workSheetId,
       pageNum,
       pageSize
