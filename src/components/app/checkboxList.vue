@@ -1,9 +1,9 @@
 <template>
-  <div class="checkbox-list">
-    <div v-for="(item,index1) in showList" :key="index1" :class="item.isChoose?'checkbox-item checkbox-active':'checkbox-item checkbox-default'" @click="chooseItem(index1)">
-      {{item.tag}}
+    <div class="checkbox-list">
+        <div v-for="(item,index1) in showList" :key="index1" :class="item.isChoose?'checkbox-item checkbox-active':'checkbox-item checkbox-default'" @click="chooseItem(index1)">
+            {{item.tag}}
+        </div>
     </div>
-  </div>
 </template>
 <script>
 export default {
@@ -61,7 +61,6 @@ export default {
 .checkbox-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
 }
 .checkbox-item {
   width: 200px;
@@ -70,6 +69,9 @@ export default {
   text-align: center;
   font-size: 26px;
   margin-top: 30px;
+}
+.checkbox-list .checkbox-item {
+  margin-right: 25px;
 }
 .checkbox-active {
   background: rgba(105, 126, 255, 0.1);
