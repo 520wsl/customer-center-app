@@ -7,7 +7,7 @@
  */
 import api from "@/libs/api.request";
 
-const baseUrl = "/work-order-service";
+const baseUrl = "/work-order";
 function post(url, params) {
   return api.post(baseUrl + url, params);
 }
@@ -40,7 +40,7 @@ export default {
   },
   // 工单确认/工单完结/已评价
   confirm: (workSheetId, handleType) => {
-    return api.post("/work-order-service/worksheet/confirm", {
+    return post("/worksheet/confirm", {
       workSheetId,
       handleType
     });
