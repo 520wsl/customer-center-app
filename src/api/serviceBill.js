@@ -2,7 +2,7 @@
  * @Author: xzx
  * @Date: 2018-11-13
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-11-20 15:12:44
+ * @Last Modified time: 2018-11-20 19:44:59
  * @explanatory:  api 调用
  */
 import api from "@/libs/api.request";
@@ -62,12 +62,39 @@ export default {
    * @param workSheetId 工单id
    * @param eventType 事件类型 1：电话沟通 2：发起电话采集请求 3：发起账号密码采集请求
    */
-  pickupInformation: (workOrderStatus, userSixiId, workSheetId, eventType) => {
+  pickupInformation: (workOrderStatus, userSixiId, workSheetId, eventType, companySixiId) => {
     return post("/talknews/save", {
       workOrderStatus,
       userSixiId,
       workSheetId,
-      eventType
+      eventType,
+      companySixiId
+    });
+  },
+  // 根据customerSixiId获取客户信息
+  getcustomerbysixiid: (customerSixiId) => {
+    return post("/customer/customer/getcustomerbysixiid", {
+      customerSixiId
+    });
+  },
+  // 根据customerSixiId修改手机号码
+  setmobilebysixiid: (customerSixiId, mobile) => {
+    return post("/customer/customer/setmobilebysixiid", {
+      customerSixiId,
+      mobile
+    });
+  },
+  // 获取验证码
+  getcode: (phone) => {
+    return post("/message-service/sms/sendcode", {
+      phone
+    });
+  },
+  // 验证是否正确
+  validatecode: (phone, verifyCode) => {
+    return post("/message-service/sms/validatecode", {
+      phone,
+      verifyCode
     });
   }
 };

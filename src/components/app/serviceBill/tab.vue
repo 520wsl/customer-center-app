@@ -12,14 +12,10 @@
   </div>
 </template>
 <script>
-// 1、<a href="weixin://contacts/profile/微信号原始ID（如：gh_dd4b2c2ada8b）">Baidufe</a>
-// 这种方法能直接打开该号的微信资料页，直接关注；但获取原始ID比较麻烦。
-
-// 2、<a href="weixin://contacts/profile/微信号（如：www_baidufe_com）">Baidufe</a>
-// 这种方法会打开“加入到通讯录”的界面，然后再是资料页
+// 执行人id = 客服sixi id 才可以更改这个
 import servicebillApi from "@/api/serviceBill";
 export default {
-  props: ["type"],
+  props: ["type", "companySixiId"],
   data() {
     return {
       // 工单状态 0:待处理 1:已超时 2:处理中 3:已完结 4:已评价
@@ -65,13 +61,15 @@ export default {
                   let userSixiId = this.$route.query.sixiId || "";
                   let workSheetId = this.$route.query.id || "";
                   let workOrderStatus = this.type;
+                  let companySixiId = this.companySixiId;
                   let eventType = 2;
                   servicebillApi
                     .pickupInformation(
                       workOrderStatus,
                       userSixiId,
                       workSheetId,
-                      eventType
+                      eventType,
+                      companySixiId
                     )
                     .then(e => {
                       if (e.status !== 200) {
@@ -87,13 +85,15 @@ export default {
                   let userSixiId = this.$route.query.sixiId || "";
                   let workSheetId = this.$route.query.id || "";
                   let workOrderStatus = this.type;
-                  let eventType = 2;
+                  let companySixiId = this.companySixiId;
+                  let eventType = 3;
                   servicebillApi
                     .pickupInformation(
                       workOrderStatus,
                       userSixiId,
                       workSheetId,
-                      eventType
+                      eventType,
+                      companySixiId
                     )
                     .then(e => {
                       if (e.status !== 200) {
