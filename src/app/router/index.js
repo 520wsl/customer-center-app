@@ -19,6 +19,9 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   // console.log("router.beforeEach:from=>", from);
   // console.log("router.beforeEach:to=>", to);
+  if (to.meta.title) {//判断是否有标题
+    document.title = to.meta.title
+  }
   next();
 });
 // 全局解析守卫

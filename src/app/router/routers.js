@@ -171,6 +171,19 @@ export default [{
             () => r(require("@/app/view/message/success")),
             "message"
           )
+      },
+      {
+        path: "shopAdmin",
+        name: "messageShopAdmin",
+        meta: {
+          title: "留言提交成功"
+        },
+        component: r =>
+          require.ensure(
+            [],
+            () => r(require("@/app/view/message/shopAdmin")),
+            "message"
+          )
       }
     ]
   },
