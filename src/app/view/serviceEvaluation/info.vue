@@ -12,8 +12,8 @@
 import editEvaluation from "@/components/app/editEvaluation";
 import {
   postTemplateInfo,
-  postEvaluateAdd
-  // postEvaluateInfo
+  postEvaluateAdd,
+  getCheckEvaluate
 } from "@/api/evaluate";
 import { MessageBox } from "mint-ui";
 export default {
@@ -30,7 +30,6 @@ export default {
   },
   components: { editEvaluation },
   created() {
-    // alert(JSON.stringify(this.$route.query));
     if (this.$route.query) {
       this.id = this.$route.query.templetId || 3; // 评价模板id
       this.type = this.$route.query.type || 0; // 人员类型
@@ -50,10 +49,25 @@ export default {
       }
     }
     this.$parent.$parent.setTitle(this.typeName + "服务评价");
-    this.getList();
-    // postEvaluateInfo(1, 1).then(res => {
-    //   console.log(res);
-    // });
+    // 判断工单评价是否评价
+    getCheckEvaluate(this.workSheetId).then(res => {
+      if (res.status != 200) {
+        return MessageBox("提示", "服务器繁忙，请稍后再试！");
+      }
+      if (res.data) {
+        // 已评价
+        this.$router.push({
+          name: "serviceEvaluationBreview",
+          query: {
+            customerId: this.customerId,
+            workSheetId: this.workSheetId
+          }
+        });
+      } else {
+        // 未评价
+        this.getList();
+      }
+    });
   },
   methods: {
     getList() {
