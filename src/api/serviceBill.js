@@ -2,7 +2,7 @@
  * @Author: xzx
  * @Date: 2018-11-13
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-11-20 19:44:59
+ * @Last Modified time: 2018-11-20 21:14:58
  * @explanatory:  api 调用
  */
 import api from "@/libs/api.request";
@@ -12,6 +12,11 @@ const baseUrl = "/work-order";
 function post(url, params) {
   return api.post(baseUrl + url, params);
 }
+
+function primordialPost(url, params) {
+  return api.post(url, params);
+}
+
 
 function get(url, params) {
   return api.get(baseUrl + url, params);
@@ -73,26 +78,26 @@ export default {
   },
   // 根据customerSixiId获取客户信息
   getcustomerbysixiid: (customerSixiId) => {
-    return post("/customer/customer/getcustomerbysixiid", {
+    return primordialPost("/customer/customer/getcustomerbysixiid", {
       customerSixiId
     });
   },
   // 根据customerSixiId修改手机号码
   setmobilebysixiid: (customerSixiId, mobile) => {
-    return post("/customer/customer/setmobilebysixiid", {
+    return primordialPost("/customer/customer/setmobilebysixiid", {
       customerSixiId,
       mobile
     });
   },
   // 获取验证码
   getcode: (phone) => {
-    return post("/message-service/sms/sendcode", {
+    return primordialPost("/message-service/sms/sendcode", {
       phone
     });
   },
   // 验证是否正确
   validatecode: (phone, verifyCode) => {
-    return post("/message-service/sms/validatecode", {
+    return primordialPost("/message-service/sms/validatecode", {
       phone,
       verifyCode
     });

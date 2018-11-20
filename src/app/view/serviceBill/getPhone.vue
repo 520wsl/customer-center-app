@@ -1,13 +1,13 @@
 <template>
   <div class="bindphone">
     <!--已绑定手机号-->
-    <div class="phoneNum" v-if="data.phone">
+    <div class="phoneNum" v-if="data.mobile">
       <p class="s-title">
         <span>已绑定手机号</span>
       </p>
       <div class="rel">
         <img class="icon" src="https://axhub.im/pro/53a36a5532975b51/images/%E6%94%B6%E6%8D%AE%E9%87%87%E9%9B%86/u1118.png" alt="">
-        <span class="num">{{data.phone}}</span>
+        <span class="num">{{data.mobile}}</span>
         <span class="modify" @click="modify()">修改</span>
       </div>
     </div>
@@ -28,9 +28,10 @@ import servicebillApi from "@/api/serviceBill";
 export default {
   data() {
     return {
-      customerSixiId: this.$route.query.customerSixiId || "",
+      // 客户id 不同于companySiXiId
+      customerSixiId: this.$route.query.userSixiId || "",
       data: {
-        phone: ""
+        mobile: ""
       },
       phone: "",
       verifyCode: "",
@@ -70,6 +71,7 @@ export default {
                 return;
               }
               this.$messagebox("提示", e.msg);
+              this.getcustomerbysixiid();
             });
         })
         .catch(e => {});
@@ -81,10 +83,13 @@ export default {
         return;
       }
       this.getVerifyCode = false;
-      // 设置超时时间
-      setTimeout(e => {
-        this.getVerifyCode = true;
-      }, 3000);
+      let interval = setInterval(e => {
+        this.outTime--;
+        if (this.outTime <= 0) {
+          clearInterval(interval);
+          this.getVerifyCode = true;
+        }
+      }, 1000);
       // 接口调用
       servicebillApi.getcode(this.phone).then(e => {
         if (e.status !== 200) {
