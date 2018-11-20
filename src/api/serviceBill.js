@@ -2,24 +2,34 @@
  * @Author: xzx
  * @Date: 2018-11-13
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-11-17 12:28:11
+ * @Last Modified time: 2018-11-19 14:23:43
  * @explanatory:  api 调用
  */
 import api from "@/libs/api.request";
 
 const baseUrl = "/work-order";
+
 function post(url, params) {
   return api.post(baseUrl + url, params);
 }
+
 function get(url, params) {
   return api.get(baseUrl + url, params);
 }
 
 export default {
-  // 获取工单列表
-  getWorkSheetList: (id, pageNum = 1, pageSize = 20) => {
+  // 获取客服工单列表
+  getWorkSheetList: (sixiId, pageNum = 1, pageSize = 20) => {
     return post("/worksheet/list", {
-      sixiId: id,
+      sixiId: sixiId,
+      pageNum,
+      pageSize
+    });
+  },
+  // 获取客户工单列表
+  getCompanyWorkSheetList: (companySixiId, pageNum = 1, pageSize = 20) => {
+    return post("/worksheet/list", {
+      companySixiId: companySixiId,
       pageNum,
       pageSize
     });
