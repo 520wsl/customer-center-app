@@ -176,7 +176,7 @@ export default [{
         path: "shopAdmin",
         name: "messageShopAdmin",
         meta: {
-          title: "留言提交成功"
+          title: "旺铺管理"
         },
         component: r =>
           require.ensure(
