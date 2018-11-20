@@ -58,7 +58,8 @@ export default {
         .getWorkSheetList(this.sixiId, this.num, this.size)
         .then(e => {
           if (e.status !== 200) {
-            return MessageBox("提示", "服务器繁忙，请稍后再试！");
+            this.$messagebox("提示", "服务器繁忙，请稍后再试！");
+            return;
           }
           e.data.list.forEach(e => {
             this.billList.push(e);
