@@ -29,7 +29,7 @@ export const postEvaluateInfo = (sixiId, orderNumber) => {
 };
 // 是否评价
 export const getCheckEvaluate = ( orderNumber) => {
-    return post("/evaluate/info", {
+    return post("/evaluate/check", {
       orderNumber
     });
   };
