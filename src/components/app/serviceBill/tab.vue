@@ -62,13 +62,45 @@ export default {
               {
                 title: "电话号码",
                 callBackFun: () => {
-                  console.log("跳转至小程序");
+                  let userSixiId = this.$route.query.sixiId || "";
+                  let workSheetId = this.$route.query.id || "";
+                  let workOrderStatus = this.type;
+                  let eventType = 2;
+                  servicebillApi
+                    .pickupInformation(
+                      workOrderStatus,
+                      userSixiId,
+                      workSheetId,
+                      eventType
+                    )
+                    .then(e => {
+                      if (e.status !== 200) {
+                        return MessageBox("提示", "服务器繁忙，请稍后再试！");
+                      }
+                      this.$MessageBox("提示", e.msg);
+                    });
                 }
               },
               {
                 title: "账号密码",
                 callBackFun: () => {
-                  console.log("跳转至小程序");
+                  let userSixiId = this.$route.query.sixiId || "";
+                  let workSheetId = this.$route.query.id || "";
+                  let workOrderStatus = this.type;
+                  let eventType = 2;
+                  servicebillApi
+                    .pickupInformation(
+                      workOrderStatus,
+                      userSixiId,
+                      workSheetId,
+                      eventType
+                    )
+                    .then(e => {
+                      if (e.status !== 200) {
+                        return MessageBox("提示", "服务器繁忙，请稍后再试！");
+                      }
+                      this.$MessageBox("提示", e.msg);
+                    });
                 }
               }
             ]
@@ -117,8 +149,8 @@ export default {
               let sixiId = this.$route.query.sixiId || "",
                 id = this.$route.query.id;
               this.$router.push({
-                name: "serviceEvaluationInfo",
-                query: { id, sixiId }
+                name: "serviceEvaluationBreview",
+                query: { orderNumber: id, sixiId }
               });
             }
           },

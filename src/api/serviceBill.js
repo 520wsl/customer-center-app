@@ -2,7 +2,7 @@
  * @Author: xzx
  * @Date: 2018-11-13
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-11-19 14:23:43
+ * @Last Modified time: 2018-11-20 15:12:44
  * @explanatory:  api 调用
  */
 import api from "@/libs/api.request";
@@ -53,6 +53,21 @@ export default {
     return post("/worksheet/confirm", {
       workSheetId,
       handleType
+    });
+  },
+  // 信息采集
+  /**
+   * @param workOrderStatus 工单状态
+   * @param userSixiId 人员sixiId
+   * @param workSheetId 工单id
+   * @param eventType 事件类型 1：电话沟通 2：发起电话采集请求 3：发起账号密码采集请求
+   */
+  pickupInformation: (workOrderStatus, userSixiId, workSheetId, eventType) => {
+    return post("/talknews/save", {
+      workOrderStatus,
+      userSixiId,
+      workSheetId,
+      eventType
     });
   }
 };
