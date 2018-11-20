@@ -31,7 +31,7 @@ export default {
   components: { editEvaluation },
   created() {
     if (this.$route.query) {
-      this.id = this.$route.query.templetId || 3; // 评价模板id
+      this.id = this.$route.query.templetId || 4; // 评价模板id
       this.type = this.$route.query.type || 0; // 人员类型
       this.customerId = this.$route.query.customerId || ""; // 人员id
       this.workSheetId = this.$route.query.workSheetId || ""; // 工单id
@@ -43,7 +43,7 @@ export default {
       } else if (this.id == 3) {
         this.typeName = "旺旺";
       } else if (this.id == 4) {
-        this.typeName = "工单";
+        this.typeName = "工单服务人员";
       } else {
         this.typeName = "其他";
       }
