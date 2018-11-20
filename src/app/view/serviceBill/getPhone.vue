@@ -41,7 +41,7 @@ export default {
     };
   },
   created() {
-    this.$parent.$parent.setTitle("采集手机号");
+    this.$parent.$parent.setTitle("绑定手机号");
     this.getcustomerbysixiid();
   },
   methods: {
@@ -87,6 +87,7 @@ export default {
         this.outTime--;
         if (this.outTime <= 0) {
           clearInterval(interval);
+          this.outTime = 60;
           this.getVerifyCode = true;
         }
       }, 1000);
@@ -99,6 +100,15 @@ export default {
       });
     },
     save() {
+      let isPass = /^1[34578]\d{9}$/.test(this.phone);
+      if (!isPass) {
+        this.$messagebox("提示", "请输入正确的手机号");
+        return;
+      }
+      if (!this.verifyCode) {
+        this.$messagebox("提示", "请输入验证码");
+        return;
+      }
       // 接口调用
       servicebillApi.validatecode(this.phone, this.verifyCode).then(e => {
         if (e.status !== 200) {
