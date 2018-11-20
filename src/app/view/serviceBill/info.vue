@@ -22,18 +22,17 @@
     <div class="serviceRemark" ref="serviceRemark">
       <mt-loadmore :top-method="loadTop" ref="loadmore" class="msg">
         <!--
-          userType：用户类型,将用户id与当前记录id比对，若匹配则为客户
+          userType：用户类型,将用户id与当前记录id比对，若匹配则为客户 // 是否是客户 sign 0:客户,1:不是客户
           textType：文本类型
           src：视频地址,音频地址,图片地址
         -->
         <msgTpl v-for="(el,index) in talknews" :key="index" :info="el">
-          <msgTextImg v-if="el.type === 1 || el.type === 2" :textType="el.type" :userType="el.userType" :src="el.enclosure">
+          <msgTextImg v-if="el.record !=''" :textType="1" :userType="el.sign" :src="el.enclosure">
             {{el.record}}
           </msgTextImg>
-          <msgAudio v-else-if="el.type === 3" :key="index" :userType="el.userType" :src="el.enclosure">
-          </msgAudio>
-          <msgVedio v-else-if="el.type === 5" :key="index" :userType="el.userType" :src="el.enclosure">
-          </msgVedio>
+          <msgTextImg v-else-if="el.type === 2" :textType="el.type" :userType="el.sign" :src="el.enclosure"></msgTextImg>
+          <msgAudio v-else-if="el.type === 3" :key="index" :userType="el.sign" :src="el.enclosure"></msgAudio>
+          <msgVedio v-else-if="el.type === 5" :key="index" :userType="el.sign" :src="el.enclosure"></msgVedio>
         </msgTpl>
       </mt-loadmore>
       <div v-if="identity === 2" class="hr"></div>
@@ -42,19 +41,22 @@
     <div v-if="identity == 2" class="assess">
       <img :src="$CDN('/work_list_logo.png')" alt="">
       <span class="assessTime">
-        <strong>工作评价</strong>（2018-10-10 10:23)
+        <strong>工作评价</strong>
+        <span v-if="detail.handleType == 3 ">({{getTime(detail.finishTime,'YYYY-MM-DD')}})</span>
+        <span v-if="detail.handleType == 4 ">({{getTime(detail.evaluateTime,'YYYY-MM-DD')}})</span>
       </span>
-      <router-link :to="{ name: 'serviceEvaluationInfo', query: {
+      <router-link v-if="detail.handleType == 3 " :to="{ name: 'serviceEvaluationInfo', query: {
           type: detail.workType,
           customerId: detail.workerOrderDetailVo && detail.workerOrderDetailVo.sixiId,
           workSheetId: id,
           servicePersonnel: detail.leadingUser && detail.leadingUser.userName
           }
-        }" tag="span" class="btn">待评价&emsp;
-      </router-link>&gt;
+        }" tag="span" class="btn">待评价&emsp; &gt;
+      </router-link>
+      <span v-if="detail.handleType == 4 ">已评价</span>
     </div>
-    <!--客服可见-->
-    <tab v-if="identity == 1 && detail.handleType != 1" class="tab" :type="detail.handleType"></tab>
+    <!-- 执行人id == 客服sixi id 才可以更改这个-->
+    <tab v-if="detail.executorId == sixiId && detail.handleType != 1" class="tab" :type="detail.handleType" :companySixiId="detail.userId"></tab>
     <!-- <tab v-if="identity == 1 && detail.handleType != 1" class="tab" :type="2"></tab> -->
   </div>
 </template>
@@ -76,6 +78,7 @@ export default {
       // 身份 1客服，2客户
       identity: this.$route.query.identity,
       id: this.$route.query.id,
+      sixiId: this.$route.query.sixiId,
       detail: {},
       talknews: [],
       num: 1,
@@ -134,11 +137,10 @@ export default {
           this.$messagebox("提示", "服务器繁忙，请稍后再试！");
           return;
         }
-        e.data.list.forEach(e => {
-          // 获取当前消息的身份类别
-          e.userType = e.userSixiId === this.detail.userId ? 1 : 2;
+        e.data.list.forEach(el => {
+          // el.userType = el.sign == 0 ? 1 : 2;
           // 记录用户语音的播放状态
-          this.talknews.unshift(e);
+          this.talknews.unshift(el);
         });
         this.num = ++e.data.num;
         this.count = e.data.count;

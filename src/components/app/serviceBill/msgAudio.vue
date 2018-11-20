@@ -9,7 +9,7 @@
       <source :src="audioSrc" type="audio/mpeg">
     </audio>
     <img v-if="userType === 1" class="horn_l" :src="$CDN('/purple_horn_left.png')" alt="">
-    <img v-if="userType === 2" class="horn_r" :src="$CDN('/purple_horn.png')" alt="">
+    <img v-if="userType === 0" class="horn_r" :src="$CDN('/purple_horn.png')" alt="">
     <div style="background: transparent; position: absolute; left: 0; top: 0; bottom: 0; right: 0" @click="play"></div>
   </div>
 </template>
@@ -18,7 +18,7 @@ import config from "@/config";
 import { getUUID } from "@/libs/tools";
 
 export default {
-  // userType：用户类型
+  // userType：用户类型 0:客户,1:不是客户
   // textType：附件类型 0:未知 1:文本 2:图片 3:音乐 4:图文 5:链接
   // src：音频地址
   // audioPlayFlag(value)：双向绑定，当前音频播放控制（点击播放，停止状态）
