@@ -12,8 +12,8 @@
       </div>
     </div>
     <div v-else class="verifyCode">
-      <mt-field label="请输入手机号" type="tel" v-model="phone"></mt-field>
-      <mt-field label="短信验证码" type="tel" v-model="verifyCode">
+      <mt-field label="请输入手机号:" type="tel" v-model="phone"></mt-field>
+      <mt-field label="短信验证码:" type="tel" v-model="verifyCode">
         <span v-if="getVerifyCode" @click="getCode" class="code">获取短信验证码</span>
         <span v-else class="code">{{outTime}}s</span>
       </mt-field>
@@ -124,6 +124,7 @@ export default {
               return;
             }
             this.$messagebox("提示", e.msg);
+            this.getcustomerbysixiid();
           });
       });
     }
