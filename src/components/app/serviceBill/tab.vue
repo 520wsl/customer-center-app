@@ -43,9 +43,10 @@ export default {
           {
             title: "我的工单",
             callBackFun: () => {
-              let identity = this.$route.query.identity,
+              let sixiId = this.$route.query.sixiId || "",
+                identity = this.$route.query.identity,
                 routeName = identity == 1 ? "customerService" : "serviceBill"; // identity 身份 1客服 2客户
-              this.$router.push({ name: routeName });
+              this.$router.push({ name: routeName, query: { sixiId } });
             }
           }
         ],
@@ -89,9 +90,10 @@ export default {
           {
             title: "我的工单",
             callBackFun: () => {
-              let identity = this.$route.query.identity,
+              let sixiId = this.$route.query.sixiId || "",
+                identity = this.$route.query.identity,
                 routeName = identity == 1 ? "customerService" : "serviceBill"; // identity 身份 1客服 2客户
-              this.$router.push({ name: routeName });
+              this.$router.push({ name: routeName, query: { sixiId } });
             }
           }
         ],
@@ -100,9 +102,10 @@ export default {
           {
             title: "我的工单",
             callBackFun: () => {
-              let identity = this.$route.query.identity,
+              let sixiId = this.$route.query.sixiId || "",
+                identity = this.$route.query.identity,
                 routeName = identity == 1 ? "customerService" : "serviceBill"; // identity 身份 1客服 2客户
-              this.$router.push({ name: routeName });
+              this.$router.push({ name: routeName, query: { sixiId } });
             }
           }
         ],
@@ -111,19 +114,21 @@ export default {
           {
             title: "查看评价",
             callBackFun: () => {
-              let id = this.$route.query.id;
+              let sixiId = this.$route.query.sixiId || "",
+                id = this.$route.query.id;
               this.$router.push({
                 name: "serviceEvaluationInfo",
-                query: { id: id }
+                query: { id, sixiId }
               });
             }
           },
           {
             title: "我的工单",
             callBackFun: () => {
-              let identity = this.$route.query.identity,
+              let sixiId = this.$route.query.sixiId || "",
+                identity = this.$route.query.identity,
                 routeName = identity == 1 ? "customerService" : "serviceBill"; // identity 身份 1客服 2客户
-              this.$router.push({ name: routeName });
+              this.$router.push({ name: routeName, query: { sixiId } });
             }
           }
         ]

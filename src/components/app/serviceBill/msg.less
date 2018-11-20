@@ -30,6 +30,8 @@
       display: inline-block;
       position: relative;
       max-width: 450px;
+      min-height: 34px;
+      min-width: 20px;
       padding: 15px 20px;
       border-radius: 0 10px 10px 10px;
       box-shadow: 5px 5px 20px 2px #d6d6d6;
@@ -39,12 +41,15 @@
       max-width: 450px;
     }
     .moive {
-      img {
-        max-width: 450px;
+      .bg {
+        height: 250px;
+        width: 450px; // filter: blur(1px);
       }
       max-width: 450px;
+      min-width: 450px;
+      height: 250px;
       position: relative;
-      z-index: 2;
+      background: #313030;
     }
     .audio {
       height: 68px;
@@ -111,20 +116,19 @@
   top: 0px;
 }
 
-.vedioBox {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 999;
-  height: 100%;
-  width: 100%;
-  overflow-y: hidden;
-  background: rgba(0, 0, 0, 0.9);
-  .vedio {
-    position: relative;
-    margin: 0 auto;
-    margin-top: -25%;
-    top: 50%;
-    width: 100%;
-  }
+.video {
+  height: 250px;
+  width: 450px;
+  background: #313030;
+}
+
+// moive下
+.play {
+  width: 90px;
+  height: 90px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
 }

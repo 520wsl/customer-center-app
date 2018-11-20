@@ -13,7 +13,7 @@
           <li>工单状态：{{handleType[detail.handleType] || ''}}</li>
           <li>工单类型：{{workType[detail.workType] || ''}}</li>
           <li>工单创建时间：{{getTime(detail.startTime,'YYYY-MM-DD')}}</li>
-          <li>客服人员：{{detail.leadingUser.userName}}</li>
+          <li>客服人员：{{detail.leadingUser && detail.leadingUser.userName}}</li>
         </ul>
       </transition>
       <h3>服务记录</h3>
@@ -27,13 +27,12 @@
           src：视频地址,音频地址,图片地址
         -->
         <msgTpl v-for="(el,index) in talknews" :key="index" :info="el">
-          <msgTextImg v-if="el.type === 1 || el.type === 2" :textType="el.type" :userType="el.userType">
+          <msgTextImg v-if="el.type === 1 || el.type === 2" :textType="el.type" :userType="el.userType" :src="el.enclosure">
             {{el.record}}
           </msgTextImg>
           <msgAudio v-else-if="el.type === 3" :key="index" :userType="el.userType" :src="el.enclosure">
           </msgAudio>
-          <!--视频播放的罩着层在iphone6下无效-->
-          <msgVedio v-else-if="el.type === 4" :key="index" :userType="el.userType" :src="el.enclosure">
+          <msgVedio v-else-if="el.type === 5" :key="index" :userType="el.userType" :src="el.enclosure">
           </msgVedio>
         </msgTpl>
       </mt-loadmore>
@@ -45,15 +44,13 @@
       <span class="assessTime">
         <strong>工作评价</strong>（2018-10-10 10:23)
       </span>
-      <router-link
-        :to="{ name: 'serviceEvaluationInfo', query: {
+      <router-link :to="{ name: 'serviceEvaluationInfo', query: {
           type: detail.workType,
-          customerId: detail.workerOrderDetailVo.sixiId,
+          customerId: detail.workerOrderDetailVo && detail.workerOrderDetailVo.sixiId,
           workSheetId: id,
-          servicePersonnel: detail.leadingUser.userName
+          servicePersonnel: detail.leadingUser && detail.leadingUser.userName
           }
-        }"
-        tag="span" class="btn">待评价&emsp;
+        }" tag="span" class="btn">待评价&emsp;
       </router-link>&gt;
     </div>
     <!--客服可见-->
@@ -83,11 +80,17 @@ export default {
       talknews: [],
       num: 1,
       size: 10,
+      count: Number,
       // 滑动到底部
       bottom: true
     };
   },
   mounted() {
+    // this.$messagebox({
+    //   title: "Notice",
+    //   message: "Are you sure?",
+    //   showCancelButton: true
+    // });
     this.$parent.$parent.setTitle("服务工单");
     this.getDetail();
     this.getTalknews();
@@ -122,6 +125,7 @@ export default {
     },
     // 获取工单记录详情
     getTalknews(size = this.size) {
+      if (this.count / this.size < this.num) return;
       servicebillApi.getTalknews(this.id, this.num, size).then(e => {
         if (e.status !== 200) return;
         e.data.list.forEach(e => {
@@ -131,6 +135,7 @@ export default {
           this.talknews.unshift(e);
         });
         this.num = ++e.data.num;
+        this.count = e.data.count;
       });
     },
     getTime(time, norms) {
@@ -213,6 +218,7 @@ export default {
 }
 .serviceRemark {
   flex: 1;
+  // height: 100%;
   overflow-y: auto;
   color: #6e7790;
   background: #fff;
@@ -224,6 +230,8 @@ export default {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   .msg {
     padding: 10px 28px;
+    // height: 100%;
+    flex: 1;
   }
 }
 .hr {

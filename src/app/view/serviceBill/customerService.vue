@@ -1,8 +1,9 @@
 <template>
   <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="loading" infinite-scroll-distance="10">
+    <span class="noData" v-if="billList.length<=0">暂无数据</span>
     <div class="servicebill" v-for="(el,index) in billList" :key="index">
-      <router-link :to="{ name: 'serviceBillInfo', query: { id: el.id,identity:1 } }" tag="h3">
-        【该字段后端没有返回】的工单
+      <router-link :to="{ name: 'serviceBillInfo', query: { id: el.id,identity:1,sixiId:sixiId } }" tag="h3">
+        {{el.title}}
         <span>{{handleType[el.type] || ''}}</span>
       </router-link>
       <p class="BillId">工单编号：
@@ -12,7 +13,7 @@
         <li>工单类型：{{workType[el.workType]}}</li>
         <li>工单创建时间：{{getTime(el.startTime,'YYYY-MM-DD')}}</li>
         <li>持续时间：{{el.hourSum}}h</li>
-        <li>客服人员：【后端文档没更新】</li>
+        <li>客服人员：{{el.userVo && el.userVo.userName}}</li>
       </ul>
     </div>
   </div>
@@ -32,6 +33,8 @@ export default {
       loading: false,
       size: 10,
       num: 1,
+      count: Number,
+      sixiId: this.$route.query.sixiId || "",
       billList: []
     };
   },
@@ -46,17 +49,23 @@ export default {
   },
   methods: {
     getWorkSheetList() {
+      // 是否可以请求
+      if (this.count / this.size < this.num) return;
       this.loading = true;
-      let id = 1;
-      servicebillApi.getWorkSheetList(id, this.num, this.size).then(e => {
-        if (e.status !== 200) return;
-        e.data.list.forEach(e => {
-          this.billList.push(e);
+      // 客服 SIXIID
+      // let sixiId = this.$route.query.sixiId || "";
+      servicebillApi
+        .getWorkSheetList(this.sixiId, this.num, this.size)
+        .then(e => {
+          if (e.status !== 200) return;
+          e.data.list.forEach(e => {
+            this.billList.push(e);
+          });
+          this.num = ++e.data.num;
+          this.count = e.data.count;
+          this.loading = false;
+          // console.log(this.num);
         });
-        this.num = ++e.data.num;
-        this.loading = false;
-        // console.log(this.num);
-      });
     },
     loadMore() {
       this.getWorkSheetList();
@@ -70,6 +79,11 @@ export default {
 <style lang="less" scoped>
 .top {
   margin-bottom: 10px;
+}
+.noData {
+  font-size: 28px;
+  color: #6e7790;
+  padding: 30px;
 }
 .servicebill {
   padding-top: 20px;

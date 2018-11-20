@@ -1,14 +1,15 @@
 <template>
   <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="loading" infinite-scroll-distance="10">
+    <span class="noData" v-if="billList.length<=0">暂无数据</span>
     <div class="servicebill" v-for="(el,index) in billList" :key="index">
-      <router-link :to="{ name: 'serviceBillInfo', query: { id: el.id,identity:2 } }" tag="h3">{{workType[el.workType]}}</router-link>
+      <router-link :to="{ name: 'serviceBillInfo', query: { id: el.id,identity:2,companySixiId:companySixiId } }" tag="h3">{{workType[el.workType]}}</router-link>
       <p class="BillId">工单编号{{num}}：
         <b>{{el.identifier}}</b>
       </p>
       <ul class="item">
         <li>工单创建时间：{{getTime(el.startTime,'YYYY-MM-DD')}}</li>
         <li>持续时间：{{el.hourSum}}h</li>
-        <li>客服人员：{{el.userVo.userName}}</li>
+        <li>客服人员：{{el.userVo && el.userVo.userName}}</li>
       </ul>
       <p class="status">
         <span>状态：{{handleType[el.type] || ''}}</span>
@@ -32,16 +33,18 @@ export default {
       loading: false,
       billList: [],
       size: 10,
+      count: Number,
       num: 1,
-      sixiId: ""
+      companySixiId: this.$route.query.companySixiId || ""
+      // sixiId: ""
     };
   },
   mounted() {
-    // 存在请求两次的情况，暂时去除触发
+    // （滚动条底部事件）存在请求两次的情况，暂时去除mounted触发
     // this.getWorkSheetList();
-    if (this.$route.query) {
-      this.sixiId = this.$route.query.sixiId || "";
-    }
+    // if (this.$route.query) {
+    //   this.sixiId = this.$route.query.sixiId || "";
+    // }
   },
   computed: {
     ...mapState({
@@ -51,17 +54,24 @@ export default {
   },
   methods: {
     getWorkSheetList() {
+      // 是否可以请求
+      if (this.count / this.size < this.num) return;
       this.loading = true;
-      let id = this.sixiId;
-      servicebillApi.getWorkSheetList(id, this.num, this.size).then(e => {
-        if (e.status !== 200) return;
-        e.data.list.forEach(e => {
-          this.billList.push(e);
+      // 客户 companySixiId
+      // let companySixiId = this.$route.query.companySixiId || "";
+      servicebillApi
+        .getCompanyWorkSheetList(this.companySixiId, this.num, this.size)
+        .then(e => {
+          if (e.status !== 200) return;
+          e.data.list.forEach(e => {
+            // console.log(e);
+            this.billList.push(e);
+          });
+          this.num = ++e.data.num;
+          this.count = e.data.count;
+          this.loading = false;
+          console.log(this.num);
         });
-        this.num = ++e.data.num;
-        this.loading = false;
-        console.log(this.num);
-      });
     },
     getTime(time, norms) {
       return formatTime(time, norms);
@@ -75,6 +85,11 @@ export default {
 <style lang="less" scoped>
 .top {
   margin-bottom: 10px;
+}
+.noData {
+  font-size: 28px;
+  color: #6e7790;
+  padding: 30px;
 }
 .servicebill {
   padding-top: 20px;
