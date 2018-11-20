@@ -1,5 +1,5 @@
 <template>
-  <div :class="info.userType === 1 ?['message']:['message msg-r']">
+  <div :class="info.sign === 1 ?['message']:['message msg-r']">
     <div class="portrait">
       <img :src="$CDN(portraitUrl)" alt="404">
     </div>
@@ -7,7 +7,7 @@
       <div class="time">
         <span>{{getTime(info.creatAt,'YYYY-MM-DD HH:mm')}}</span>&ensp;
         <span>{{billStatus[info.status] || ''}}</span>&ensp;
-        <span class="customer">{{info.userType === 1?'客服':'您'}}</span>
+        <span class="customer">{{info.sign === 1?'客服':'您'}}</span>
       </div>
       <slot></slot>
     </div>
