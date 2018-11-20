@@ -2,7 +2,7 @@
  * @Author: Mad Dragon 395548460@qq.com
  * @Date: 2018-11-07 22:22:23
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-11-17 11:38:06
+ * @Last Modified time: 2018-11-20 15:29:25
  * @explanatory: Routers Config   路由 路径 配置
  */
 /**
@@ -143,10 +143,11 @@ export default [{
   {
     path: "/message",
     name: "_message",
-    redirect: { name: "message" },
+    redirect: {
+      name: "message"
+    },
     component: Main1,
-    children: [
-      {
+    children: [{
         path: "index",
         name: "message",
         meta: {
@@ -315,6 +316,20 @@ export default [{
             [],
             () => r(require("@/app/view/serviceBill/preview")),
             "appServiceBill"
+          )
+      },
+      // getPhone
+      {
+        path: "getPhone",
+        name: "getPhone",
+        meta: {
+          title: "采集手机号"
+        },
+        component: r =>
+          require.ensure(
+            [],
+            () => r(require("@/app/view/serviceBill/getPhone")),
+            "getPhone"
           )
       }
     ]
