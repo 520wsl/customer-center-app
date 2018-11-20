@@ -7,7 +7,7 @@
       <div class="time">
         <span>{{getTime(info.creatAt,'YYYY-MM-DD HH:mm')}}</span>&ensp;
         <span>{{billStatus[info.status] || ''}}</span>&ensp;
-        <span class="customer">{{info.sign === 1?'客服':'您'}}</span>
+        <span class="customer">{{info.sign === 1?'客服':'客户'}}</span>
       </div>
       <slot></slot>
     </div>
