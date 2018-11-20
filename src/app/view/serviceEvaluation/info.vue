@@ -43,7 +43,7 @@ export default {
       } else if (this.id == 3) {
         this.typeName = "旺旺";
       } else if (this.id == 4) {
-        this.typeName = "工单服务人员";
+        this.typeName = "本次工单服务人员";
       } else {
         this.typeName = "其他";
       }
