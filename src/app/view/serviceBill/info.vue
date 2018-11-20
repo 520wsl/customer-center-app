@@ -127,7 +127,9 @@ export default {
     getTalknews(size = this.size) {
       if (this.count / this.size < this.num) return;
       servicebillApi.getTalknews(this.id, this.num, size).then(e => {
-        if (e.status !== 200) return;
+        if (e.status !== 200) {
+          return MessageBox("提示", "服务器繁忙，请稍后再试！");
+        }
         e.data.list.forEach(e => {
           // 获取当前消息的身份类别
           e.userType = e.userSixiId === this.detail.userId ? 1 : 2;
