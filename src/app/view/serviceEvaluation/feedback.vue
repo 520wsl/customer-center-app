@@ -25,7 +25,7 @@ export default {
   },
   components: { editEvaluation },
   created() {
-    this.$parent.$parent.setTitle("美工服务评价");
+    this.$parent.$parent.setTitle("服务评价反馈");
     let sixiId = this.$route.query.customerId;
     let orderNumber = this.$route.query.workSheetId;
     postEvaluateInfo(sixiId, orderNumber).then(res => {

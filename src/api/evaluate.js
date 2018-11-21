@@ -7,7 +7,7 @@ function get(url, params) {
   return api.get(baseUrl + url, params);
 }
 // 评价模板详情
-export const postTemplateInfo = id => {
+export const postTemplateInfo = ({id}) => {
   return post("/template/info", {
     id
   });
