@@ -38,7 +38,7 @@
       <div v-if="identity === 2" class="hr"></div>
     </div>
     <!--客户可见-->
-    <div v-if="identity == 2" class="assess">
+    <div v-if="identity == 2 && (detail.handleType == 3 || detail.handleType == 4)" class="assess">
       <img :src="$CDN('/work_list_logo.png')" alt="">
       <span class="assessTime">
         <strong>工作评价</strong>
