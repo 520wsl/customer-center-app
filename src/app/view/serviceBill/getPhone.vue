@@ -1,19 +1,19 @@
 <template>
   <div class="bindphone">
     <!--已绑定手机号-->
-    <div class="phoneNum" v-if="data.phone">
+    <div class="phoneNum" v-if="data.mobile">
       <p class="s-title">
         <span>已绑定手机号</span>
       </p>
       <div class="rel">
         <img class="icon" src="https://axhub.im/pro/53a36a5532975b51/images/%E6%94%B6%E6%8D%AE%E9%87%87%E9%9B%86/u1118.png" alt="">
-        <span class="num">{{data.phone}}</span>
+        <span class="num">{{data.mobile}}</span>
         <span class="modify" @click="modify()">修改</span>
       </div>
     </div>
     <div v-else class="verifyCode">
-      <mt-field label="请输入手机号" type="tel" v-model="phone"></mt-field>
-      <mt-field label="短信验证码" type="tel" v-model="verifyCode">
+      <mt-field label="请输入手机号:" type="tel" v-model="phone"></mt-field>
+      <mt-field label="短信验证码:" type="tel" v-model="verifyCode">
         <span v-if="getVerifyCode" @click="getCode" class="code">获取短信验证码</span>
         <span v-else class="code">{{outTime}}s</span>
       </mt-field>
@@ -28,9 +28,10 @@ import servicebillApi from "@/api/serviceBill";
 export default {
   data() {
     return {
-      customerSixiId: this.$route.query.customerSixiId || "",
+      // 客户id 不同于companySiXiId
+      customerSixiId: this.$route.query.userSixiId || "",
       data: {
-        phone: ""
+        mobile: ""
       },
       phone: "",
       verifyCode: "",
@@ -40,7 +41,7 @@ export default {
     };
   },
   created() {
-    this.$parent.$parent.setTitle("采集手机号");
+    this.$parent.$parent.setTitle("绑定手机号");
     this.getcustomerbysixiid();
   },
   methods: {
@@ -70,6 +71,7 @@ export default {
                 return;
               }
               this.$messagebox("提示", e.msg);
+              this.getcustomerbysixiid();
             });
         })
         .catch(e => {});
@@ -81,10 +83,14 @@ export default {
         return;
       }
       this.getVerifyCode = false;
-      // 设置超时时间
-      setTimeout(e => {
-        this.getVerifyCode = true;
-      }, 3000);
+      let interval = setInterval(e => {
+        this.outTime--;
+        if (this.outTime <= 0) {
+          clearInterval(interval);
+          this.outTime = 60;
+          this.getVerifyCode = true;
+        }
+      }, 1000);
       // 接口调用
       servicebillApi.getcode(this.phone).then(e => {
         if (e.status !== 200) {
@@ -94,6 +100,15 @@ export default {
       });
     },
     save() {
+      let isPass = /^1[34578]\d{9}$/.test(this.phone);
+      if (!isPass) {
+        this.$messagebox("提示", "请输入正确的手机号");
+        return;
+      }
+      if (!this.verifyCode) {
+        this.$messagebox("提示", "请输入验证码");
+        return;
+      }
       // 接口调用
       servicebillApi.validatecode(this.phone, this.verifyCode).then(e => {
         if (e.status !== 200) {
@@ -109,6 +124,7 @@ export default {
               return;
             }
             this.$messagebox("提示", e.msg);
+            this.getcustomerbysixiid();
           });
       });
     }

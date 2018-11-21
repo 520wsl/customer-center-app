@@ -1,7 +1,7 @@
 <template>
   <div class="moive">
     <div v-if="!status" @click="videoPlay()">
-      <img src="./play.png" class="play">
+      <img :src="$CDN('/play.png')" class="play">
       <!-- <img class="bg" src="http://editerupload.eepw.com.cn/201809/61001537857032.jpg" /> -->
     </div>
     <!--poster="http://editerupload.eepw.com.cn/201809/61001537857032.jpg"-->
