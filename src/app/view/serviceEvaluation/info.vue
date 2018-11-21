@@ -79,9 +79,8 @@ export default {
         let list = res.data[0].content;
         list.forEach(item => {
           if (
-            (item.type == "checkbox" &&
-              item.otherAttribute.showType == "tag") ||
-            (item.type == "radio" && item.otherAttribute.showType == "tag")
+            (item.type == "checkbox" ) ||
+            (item.type == "redio")
           ) {
             item.value = [];
           }
