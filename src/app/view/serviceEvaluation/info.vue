@@ -30,13 +30,13 @@ export default {
   },
   components: { editEvaluation },
   created() {
+    let titleName = "";
     if (this.$route.query) {
       this.id = this.$route.query.templetId || 4; // 评价模板id
       this.type = this.$route.query.type || 0; // 人员类型
       this.customerId = this.$route.query.customerId || ""; // 人员id
       this.workSheetId = this.$route.query.workSheetId || ""; // 工单id
       this.name = this.$route.query.servicePersonnel || ""; // 服务人员
-      let titleName = "";
       if (this.id == 1) {
         this.typeName = "美工";
         titleName = "美工";
