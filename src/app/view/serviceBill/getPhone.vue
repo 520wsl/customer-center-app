@@ -1,7 +1,7 @@
 <template>
   <div class="bindphone">
     <!--已绑定手机号-->
-    <div class="phoneNum" v-if="data.mobile">
+    <div class="phoneNum" v-if="isBind">
       <p class="s-title">
         <span>已绑定手机号</span>
       </p>
@@ -18,6 +18,7 @@
         <span v-else class="code">{{outTime}}s</span>
       </mt-field>
       <p class="sub">
+        <mt-button type="default" v-if="isModify" size="small" @click="back()" class="back">返回</mt-button>
         <mt-button type="primary" size="small" @click="save()">保存</mt-button>
       </p>
     </div>
@@ -30,9 +31,10 @@ export default {
     return {
       // 客户id 不同于companySiXiId
       customerSixiId: this.$route.query.userSixiId || "",
-      data: {
-        mobile: ""
-      },
+      // false 未绑定 true 已绑定
+      isBind: false,
+      isModify: false,
+      data: {},
       phone: "",
       verifyCode: "",
       outTime: 60,
@@ -52,29 +54,40 @@ export default {
           return;
         }
         this.data = e.data;
+        if (e.data.mobile) {
+          this.isBind = true;
+        }
       });
     },
     modify() {
-      this.$messagebox
-        .prompt("请输入手机号")
-        .then(({ value, action }) => {
-          let isPass = /^1[34578]\d{9}$/.test(value);
-          if (!isPass) {
-            this.$messagebox("提示", "请输入正确的手机号");
-            return;
-          }
-          servicebillApi
-            .setmobilebysixiid(this.customerSixiId, value)
-            .then(e => {
-              if (e.status !== 200) {
-                this.$messagebox("提示", "服务器繁忙，请稍后再试！");
-                return;
-              }
-              this.$messagebox("提示", e.msg);
-              this.getcustomerbysixiid();
-            });
-        })
-        .catch(e => {});
+      this.isBind = false;
+      this.isModify = true;
+      // this.$messagebox
+      //   .prompt("请输入手机号")
+      //   .then(({ value, action }) => {
+      //     let isPass = /^1[34578]\d{9}$/.test(value);
+      //     if (!isPass) {
+      //       this.$messagebox("提示", "请输入正确的手机号");
+      //       return;
+      //     }
+      //     servicebillApi
+      //       .setmobilebysixiid(this.customerSixiId, value)
+      //       .then(e => {
+      //         if (e.status !== 200) {
+      //           this.$messagebox("提示", "服务器繁忙，请稍后再试！");
+      //           return;
+      //         }
+      //         this.$messagebox("提示", e.msg);
+      //         this.getcustomerbysixiid();
+      //       });
+      //   })
+      //   .catch(e => {});
+    },
+    back() {
+      this.isModify = false;
+      this.getcustomerbysixiid();
+      this.phone = "";
+      this.verifyCode = "";
     },
     getCode() {
       let isPass = /^1[34578]\d{9}$/.test(this.phone);
@@ -125,6 +138,8 @@ export default {
             }
             this.$messagebox("提示", e.msg);
             this.getcustomerbysixiid();
+            this.phone = "";
+            this.verifyCode = "";
           });
       });
     }
@@ -135,6 +150,7 @@ export default {
 .bindphone {
   font-size: 30px;
   color: #6e7790;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 .phoneNum {
   margin-top: 10px;
@@ -175,6 +191,9 @@ export default {
     display: block;
     height: 45px;
   }
+}
+.back {
+  margin-right: 20px;
 }
 </style>
 
