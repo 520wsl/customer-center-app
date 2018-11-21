@@ -23,16 +23,16 @@
 </template>
 <script>
 export default {
-  data() {
-    return {
-      tel: "10086"
-    };
-  },
-  components: {},
-  methods: {},
-  created() {
-    this.$parent.$parent.setTitle("旺铺管理");
-  }
+    data() {
+        return {
+            tel: "13588727210"
+        };
+    },
+    components: {},
+    methods: {},
+    created() {
+        this.$parent.$parent.setTitle("旺铺管理");
+    }
 };
 </script>
 <style scoped>
@@ -91,5 +91,6 @@ export default {
   line-height: 64px;
   font-size: 28px;
   text-align: center;
+  margin: 0 auto;
 }
 </style>
