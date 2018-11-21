@@ -7,54 +7,60 @@
 </template>
 <script>
 export default {
-  props: ["isEdit", "index", "list", "value"],
-  data() {
-    return {};
-  },
-  components: {},
-  computed: {
-    showList: function() {
-      let arr = [];
-      this.list.forEach(item1 => {
-        let bool = false;
-        this.value.forEach(item2 => {
-          if (item1 == item2) {
-            bool = true;
-          }
-        });
-        if (this.isEdit) {
-          arr.push({
-            tag: item1,
-            isChoose: bool
-          });
-        } else {
-          if (bool) {
-            arr.push({
-              tag: item1,
-              isChoose: bool
+    props: ["isEdit", "index", "list", "value"],
+    data() {
+        return {};
+    },
+    components: {},
+    computed: {
+        showList: function () {
+            let arr = [];
+            this.list.forEach(item1 => {
+                let bool = false;
+                this.value.forEach(item2 => {
+                    if (item1 == item2) {
+                        bool = true;
+                    }
+                });
+                if (this.isEdit) {
+                    arr.push({
+                        tag: item1,
+                        isChoose: bool
+                    });
+                } else {
+                    if (bool) {
+                        arr.push({
+                            tag: item1,
+                            isChoose: bool
+                        });
+                    }
+                }
             });
-          }
+            return arr;
         }
-      });
-      return arr;
-    }
-  },
-  methods: {
-    chooseItem(num) {
-      // 不可编辑跳出函数
-      if (!this.isEdit) {
-        return;
-      }
-      this.showList[num].isChoose = !this.showList[num].isChoose;
-      let value = [];
-      this.showList.forEach(item => {
-        if (item.isChoose) {
-          value.push(item.tag);
+    },
+    methods: {
+        chooseItem(num) {
+            // 不可编辑跳出函数
+            if (!this.isEdit) {
+                return;
+            }
+            this.showList.forEach((item, index) => {
+                if (index == num) {
+                    item.isChoose = true
+                } else {
+                    item.isChoose = false
+                }
+            })
+            let value = [];
+            this.showList.forEach(item => {
+                if (item.isChoose) {
+                    value[0] = item.tag;
+                }
+            });
+            this.$emit("getValue", { value, index: this.index });
         }
-      });
-      this.$emit("getValue", { value, index: this.index });
     }
-  }
 };
 </script>
 <style scoped>
