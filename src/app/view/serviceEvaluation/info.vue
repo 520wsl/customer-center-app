@@ -36,19 +36,25 @@ export default {
       this.customerId = this.$route.query.customerId || ""; // 人员id
       this.workSheetId = this.$route.query.workSheetId || ""; // 工单id
       this.name = this.$route.query.servicePersonnel || ""; // 服务人员
+      let titleName = "";
       if (this.id == 1) {
         this.typeName = "美工";
+        titleName = "美工";
       } else if (this.id == 2) {
         this.typeName = "运营";
+        titleName = "运营";
       } else if (this.id == 3) {
         this.typeName = "旺旺";
+        titleName = "旺旺";
       } else if (this.id == 4) {
         this.typeName = "本次工单服务人员";
+        titleName = "工单";
       } else {
         this.typeName = "其他";
+        titleName = "其他";
       }
     }
-    this.$parent.$parent.setTitle(this.typeName + "服务评价");
+    this.$parent.$parent.setTitle(titleName + "服务评价");
     // 判断工单评价是否评价
     getCheckEvaluate(this.workSheetId).then(res => {
       if (res.status != 200) {
@@ -72,7 +78,7 @@ export default {
   methods: {
     getList() {
       // alert(this.id);
-      postTemplateInfo(this.id).then(res => {
+      postTemplateInfo({ id: this.id }).then(res => {
         // if (res.data) {
         //   return;
         // }
