@@ -19,8 +19,7 @@
   </div>
 </template>
 <script>
-// 这里还剩下一些字段没有更新，需要补充，接口请求的id来源暂时也没有确定
-import servicebillApi from "@/api/serviceBill";
+import { getCompanyWorkSheetList } from "@/api/workOrder/worksheet";
 import { formatTime } from "@/libs/util/time";
 import { mapState } from "vuex";
 export default {
@@ -55,26 +54,27 @@ export default {
   methods: {
     getWorkSheetList() {
       // 是否可以请求
-      if (this.count / this.size < this.num) return;
+      if (this.count / this.size < this.num - 1) return;
       this.loading = true;
-      // 客户 companySixiId
-      // let companySixiId = this.$route.query.companySixiId || "";
-      servicebillApi
-        .getCompanyWorkSheetList(this.companySixiId, this.num, this.size)
-        .then(e => {
-          if (e.status !== 200) {
-            this.$messagebox("提示", "服务器繁忙，请稍后再试！");
-            return;
-          }
-          e.data.list.forEach(e => {
-            // console.log(e);
-            this.billList.push(e);
-          });
-          this.num = ++e.data.num;
-          this.count = e.data.count;
-          this.loading = false;
-          console.log(this.num);
+      let param = {
+        companySixiId: this.companySixiId,
+        pageNum: this.num,
+        pageSize: this.size
+      };
+      getCompanyWorkSheetList(param).then(e => {
+        if (e.status !== 200) {
+          this.$messagebox("提示", "服务器繁忙，请稍后再试！");
+          return;
+        }
+        e.data.list.forEach(e => {
+          // console.log(e);
+          this.billList.push(e);
         });
+        this.num = ++e.data.num;
+        this.count = e.data.count;
+        this.loading = false;
+        console.log(this.num);
+      });
     },
     getTime(time, norms) {
       return formatTime(time, norms);

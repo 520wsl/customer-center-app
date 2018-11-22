@@ -12,8 +12,10 @@
   </div>
 </template>
 <script>
-// 执行人id = 客服sixi id 才可以更改这个
-import servicebillApi from "@/api/serviceBill";
+// 执行人id = 客服sixi id 才可以操作，可见此页面
+
+import { confirm } from "@/api/workOrder/worksheet";
+import { pickupInformation } from "@/api/workOrder/talknews";
 export default {
   props: ["type", "companySixiId"],
   data() {
@@ -27,9 +29,8 @@ export default {
             callBackFun: () => {
               let workSheetId = this.$route.query.id;
               // 确认工单接口
-              servicebillApi.confirm(workSheetId, 2).then(e => {
+              confirm(workSheetId, 2).then(e => {
                 if (e.status !== 200) {
-                  console.log("失败");
                   return;
                 }
                 this.$router.go();
@@ -63,20 +64,18 @@ export default {
                   let workOrderStatus = this.type;
                   let companySixiId = this.companySixiId;
                   let eventType = 2;
-                  servicebillApi
-                    .pickupInformation(
-                      workOrderStatus,
-                      userSixiId,
-                      workSheetId,
-                      eventType,
-                      companySixiId
-                    )
-                    .then(e => {
-                      if (e.status !== 200) {
-                        this.$messagebox("提示", "服务器繁忙，请稍后再试！");
-                      }
-                      this.$messagebox("提示", e.msg);
-                    });
+                  pickupInformation(
+                    workOrderStatus,
+                    userSixiId,
+                    workSheetId,
+                    eventType,
+                    companySixiId
+                  ).then(e => {
+                    if (e.status !== 200) {
+                      this.$messagebox("提示", "服务器繁忙，请稍后再试！");
+                    }
+                    this.$messagebox("提示", e.msg);
+                  });
                 }
               },
               {
@@ -87,20 +86,18 @@ export default {
                   let workOrderStatus = this.type;
                   let companySixiId = this.companySixiId;
                   let eventType = 3;
-                  servicebillApi
-                    .pickupInformation(
-                      workOrderStatus,
-                      userSixiId,
-                      workSheetId,
-                      eventType,
-                      companySixiId
-                    )
-                    .then(e => {
-                      if (e.status !== 200) {
-                        this.$messagebox("提示", "服务器繁忙，请稍后再试！");
-                      }
-                      this.$messagebox("提示", e.msg);
-                    });
+                  pickupInformation(
+                    workOrderStatus,
+                    userSixiId,
+                    workSheetId,
+                    eventType,
+                    companySixiId
+                  ).then(e => {
+                    if (e.status !== 200) {
+                      this.$messagebox("提示", "服务器繁忙，请稍后再试！");
+                    }
+                    this.$messagebox("提示", e.msg);
+                  });
                 }
               }
             ]
@@ -110,9 +107,8 @@ export default {
             callBackFun: () => {
               let workSheetId = this.$route.query.id;
               // 确认工单接口
-              servicebillApi.confirm(workSheetId, 3).then(e => {
+              confirm(workSheetId, 3).then(e => {
                 if (e.status !== 200) {
-                  console.log("失败");
                   return;
                 }
                 this.$router.go();
@@ -196,8 +192,7 @@ export default {
       this.tabList[index].click = !this.tabList[index].click;
     },
     fun(callBackFun) {
-      console.log("执行回调");
-      callBackFun();
+      return callBackFun();
     }
   },
   watch: {
