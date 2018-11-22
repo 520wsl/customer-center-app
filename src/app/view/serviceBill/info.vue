@@ -56,8 +56,7 @@
       <span v-if="detail.handleType == 4 ">已评价</span>
     </div>
     <!-- 执行人id == 客服sixi id 才可以更改这个-->
-    <tab v-if="detail.executorId == sixiId && detail.handleType != 1" class="tab" :type="detail.handleType" :companySixiId="detail.userId"></tab>
-    <!-- <tab v-if="identity == 1 && detail.handleType != 1" class="tab" :type="2"></tab> -->
+    <tab v-if="detail.executorId && detail.executorId == sixiId && detail.handleType != 1" class="tab" :type="detail.handleType" :companySixiId="detail.userId"></tab>
   </div>
 </template>
 <script>
@@ -66,9 +65,11 @@ import msgTpl from "@/components/app/serviceBill/msgTpl";
 import msgTextImg from "@/components/app/serviceBill/msgTextImg";
 import msgAudio from "@/components/app/serviceBill/msgAudio";
 import msgVedio from "@/components/app/serviceBill/msgVedio";
-import servicebillApi from "@/api/serviceBill";
 import { formatTime } from "@/libs/util/time";
 import { mapState } from "vuex";
+
+import { getDetail } from "@/api/workOrder/worksheet";
+import { getTalknews } from "@/api/workOrder/talknews";
 
 export default {
   components: { msgTpl, msgTextImg, msgAudio, msgVedio, tab },
@@ -89,14 +90,9 @@ export default {
     };
   },
   mounted() {
-    // this.$messagebox({
-    //   title: "Notice",
-    //   message: "Are you sure?",
-    //   showCancelButton: true
-    // });
     this.$parent.$parent.setTitle("服务工单");
-    this.getDetail();
-    this.getTalknews();
+    this.getBaseDetail();
+    this.getServiceTalknews();
   },
   updated() {
     this.$nextTick(function() {
@@ -120,8 +116,8 @@ export default {
       this.bottom = false;
     },
     // 获取基本详情
-    getDetail() {
-      servicebillApi.getDetail(this.id).then(e => {
+    getBaseDetail() {
+      getDetail(this.id).then(e => {
         if (e.status !== 200) {
           this.$messagebox("提示", "服务器繁忙，请稍后再试！");
           return;
@@ -130,9 +126,15 @@ export default {
       });
     },
     // 获取工单记录详情
-    getTalknews(size = this.size) {
-      if (this.count / this.size < this.num) return;
-      servicebillApi.getTalknews(this.id, this.num, size).then(e => {
+    getServiceTalknews() {
+      // 是否可以请求
+      if (this.count / this.size < this.num - 1) return;
+      let param = {
+        workSheetId: this.id,
+        pageNum: this.num,
+        pageSize: this.size
+      };
+      getTalknews(param).then(e => {
         if (e.status !== 200) {
           this.$messagebox("提示", "服务器繁忙，请稍后再试！");
           return;
@@ -152,7 +154,7 @@ export default {
     // 下拉加载更多
     loadTop() {
       // 成功后进行的操作
-      this.getTalknews(5);
+      this.getServiceTalknews();
       this.$refs.loadmore.onTopLoaded();
     }
   }

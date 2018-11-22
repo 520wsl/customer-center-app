@@ -14,7 +14,7 @@
     <div v-else class="verifyCode">
       <mt-field label="请输入手机号:" type="tel" v-model="phone"></mt-field>
       <mt-field label="短信验证码:" type="tel" v-model="verifyCode">
-        <span v-if="getVerifyCode" @click="getCode" class="code">获取短信验证码</span>
+        <span v-if="getVerifyCode" @click="sendCode" class="code">获取短信验证码</span>
         <span v-else class="code">{{outTime}}s</span>
       </mt-field>
       <p class="sub">
@@ -25,7 +25,11 @@
   </div>
 </template>
 <script>
-import servicebillApi from "@/api/serviceBill";
+import {
+  getcustomerbysixiid,
+  setmobilebysixiid
+} from "@/api/customer/customer";
+import { getcode, validatecode } from "@/api/messageService/messageService";
 export default {
   data() {
     return {
@@ -44,11 +48,11 @@ export default {
   },
   created() {
     this.$parent.$parent.setTitle("绑定手机号");
-    this.getcustomerbysixiid();
+    this.getCustomerPhone();
   },
   methods: {
-    getcustomerbysixiid() {
-      servicebillApi.getcustomerbysixiid(this.customerSixiId).then(e => {
+    getCustomerPhone() {
+      getcustomerbysixiid(this.customerSixiId).then(e => {
         if (e.status !== 200) {
           this.$messagebox("提示", "服务器繁忙，请稍后再试！");
           return;
@@ -62,34 +66,14 @@ export default {
     modify() {
       this.isBind = false;
       this.isModify = true;
-      // this.$messagebox
-      //   .prompt("请输入手机号")
-      //   .then(({ value, action }) => {
-      //     let isPass = /^1[34578]\d{9}$/.test(value);
-      //     if (!isPass) {
-      //       this.$messagebox("提示", "请输入正确的手机号");
-      //       return;
-      //     }
-      //     servicebillApi
-      //       .setmobilebysixiid(this.customerSixiId, value)
-      //       .then(e => {
-      //         if (e.status !== 200) {
-      //           this.$messagebox("提示", "服务器繁忙，请稍后再试！");
-      //           return;
-      //         }
-      //         this.$messagebox("提示", e.msg);
-      //         this.getcustomerbysixiid();
-      //       });
-      //   })
-      //   .catch(e => {});
     },
     back() {
       this.isModify = false;
-      this.getcustomerbysixiid();
+      this.getCustomerPhone();
       this.phone = "";
       this.verifyCode = "";
     },
-    getCode() {
+    sendCode() {
       let isPass = /^1[34578]\d{9}$/.test(this.phone);
       if (!isPass) {
         this.$messagebox("提示", "请输入正确的手机号");
@@ -105,7 +89,7 @@ export default {
         }
       }, 1000);
       // 接口调用
-      servicebillApi.getcode(this.phone).then(e => {
+      getcode(this.phone).then(e => {
         if (e.status !== 200) {
           this.$messagebox("提示", "服务器繁忙，请稍后再试！");
           return;
@@ -123,24 +107,22 @@ export default {
         return;
       }
       // 接口调用
-      servicebillApi.validatecode(this.phone, this.verifyCode).then(e => {
+      validatecode(this.phone, this.verifyCode).then(e => {
         if (e.status !== 200) {
           this.$messagebox("提示", "服务器繁忙，请稍后再试！");
           return;
         }
         // 若验证正确
-        servicebillApi
-          .setmobilebysixiid(this.customerSixiId, this.phone)
-          .then(e => {
-            if (e.status !== 200) {
-              this.$messagebox("提示", "服务器繁忙，请稍后再试！");
-              return;
-            }
-            this.$messagebox("提示", e.msg);
-            this.getcustomerbysixiid();
-            this.phone = "";
-            this.verifyCode = "";
-          });
+        setmobilebysixiid(this.customerSixiId, this.phone).then(e => {
+          if (e.status !== 200) {
+            this.$messagebox("提示", "服务器繁忙，请稍后再试！");
+            return;
+          }
+          this.$messagebox("提示", e.msg);
+          this.getCustomerPhone();
+          this.phone = "";
+          this.verifyCode = "";
+        });
       });
     }
   }
