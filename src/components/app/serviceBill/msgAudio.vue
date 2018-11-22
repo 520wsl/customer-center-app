@@ -99,4 +99,8 @@ export default {
 </script>
 <style lang="less" scoped>
 @import url("./msg.less");
+.jsMsgAudio {
+  height: 1px;
+  width: 1px;
+}
 </style>
