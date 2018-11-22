@@ -11,7 +11,7 @@
 import editEvaluation from "@/components/app/editEvaluation";
 import {
     postEvaluateInfo
-} from "@/api/evaluate";
+} from "@/api/evaluate/evaluate";
 import { MessageBox } from "mint-ui";
 export default {
     data() {
