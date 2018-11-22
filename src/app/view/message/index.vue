@@ -18,7 +18,7 @@
     </div>
 </template>
 <script>
-import { sentMessageData } from "@/api/message";
+import { sentMessageData } from "@/api/workOrder/message";
 import { MessageBox } from "mint-ui";
 export default {
     data() {
@@ -54,14 +54,7 @@ export default {
                 this.content.phone +
                 "，留言：" +
                 this.content.message;
-
-            sentMessageData(
-                this.params.unionId,
-                this.params.openId,
-                this.params.context,
-                this.params.type,
-                this.params.workOrderType
-            ).then(res => {
+            sentMessageData(this.params).then(res => {
                 if (res.status != 200) {
                     return MessageBox("提示", "请稍后再试！");
                 }
