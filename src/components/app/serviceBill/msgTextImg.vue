@@ -10,7 +10,7 @@
     </div>
     <!--图片类型-->
     <div v-else-if="textType === 2" class="image">
-      <img :src="serviceUrl" />
+      <img :src="$FILE(src)" />
     </div>
   </div>
 </template>
@@ -20,12 +20,7 @@ export default {
   // userType：用户类型 0:客户,1:不是客户
   // textType：附件类型 0:未知 1:文本 2:图片 3:音乐 4:图文 5:链接
   // src：图片地址
-  props: ["textType", "userType", "src"],
-  computed: {
-    serviceUrl() {
-      return config.AUDIOCDN + this.src;
-    }
-  }
+  props: ["textType", "userType", "src"]
 };
 </script>
 <style lang="less" scoped>

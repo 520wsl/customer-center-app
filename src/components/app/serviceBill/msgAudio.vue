@@ -5,8 +5,8 @@
     <img v-show="status" class="gif" :src="$CDN('/audioGif.gif')" alt="404">
     <span>{{audioTime}}&ensp;"</span>
     <audio class="jsMsgAudio" ref="audio" preload="auto" controls="controls" style="visibility: hidden">
-      <source :src="audioSrc" type="audio/MP3">
-      <source :src="audioSrc" type="audio/mpeg">
+      <source :src="$FILE(src)" type="audio/MP3">
+      <source :src="$FILE(src)" type="audio/mpeg">
     </audio>
     <img v-if="userType === 1" class="horn_l" :src="$CDN('/purple_horn_left.png')" alt="">
     <img v-if="userType === 0" class="horn_r" :src="$CDN('/purple_horn.png')" alt="">
@@ -28,9 +28,7 @@ export default {
       uid: getUUID(8, 16),
       isIos: /\(i[^;]+;( U;)? CPU.+Mac OS X/.test(navigator.userAgent),
       status: false,
-      audioTime: 0,
-      // audioSrc: this.src
-      audioSrc: config.AUDIOCDN + this.src
+      audioTime: 0
     };
   },
   created() {},
