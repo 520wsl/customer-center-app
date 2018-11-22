@@ -7,11 +7,11 @@
     <!--poster="http://editerupload.eepw.com.cn/201809/61001537857032.jpg"-->
     <video v-show="status" ref="video" class="video" controls preload="auto" x5-video-player-fullscreen="true" playsinline webkit-playsinline>
       <!-- <source src="http://video.pearvideo.com/mp4/adshort/20181115/cont-1476862-13242020_adpkg-ad_hd.mp4" type="video/mp4" /> -->
-      <source :src="audioSrc" type="video/mp4" />
-      <source :src="audioSrc" type="video/webm" />
-      <source :src="audioSrc" type="video/ogg" />
-      <object :data="audioSrc" style="width: 100%">
-        <embed :src="audioSrc" style="width: 100%" />
+      <source :src="$FILE(src)" type="video/mp4" />
+      <source :src="$FILE(src)" type="video/webm" />
+      <source :src="$FILE(src)" type="video/ogg" />
+      <object :data="$FILE(src)" style="width: 100%">
+        <embed :src="$FILE(src)" style="width: 100%" />
       </object>
     </video>
   </div>
@@ -57,9 +57,6 @@ export default {
     });
   },
   computed: {
-    audioSrc() {
-      return config.AUDIOCDN + this.src;
-    },
     ...mapState({
       videoPlayStatus: state => state.videoPlayStatus
     })
