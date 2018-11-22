@@ -31,7 +31,7 @@
             {{el.record}}
           </msgTextImg>
           <msgTextImg v-else-if="el.type === 2" :textType="el.type" :userType="el.sign" :src="el.enclosure"></msgTextImg>
-          <msgAudio v-else-if="el.type === 8" :key="index" :userType="el.sign" :src="el.enclosure"></msgAudio>
+          <msgAudio v-else-if="el.type === 8 || el.type === 3" :key="index" :userType="el.sign" :src="el.enclosure"></msgAudio>
           <msgVedio v-else-if="el.type === 5" :key="index" :userType="el.sign" :src="el.enclosure"></msgVedio>
         </msgTpl>
       </mt-loadmore>
