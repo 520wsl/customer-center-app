@@ -1,31 +1,34 @@
 <template>
-  <div>
-    <!-- <sixiheader title='我的公司'></sixiheader> -->
-    <div class="complany-list">
-      <div v-for="(item,index) in companyList" :key="index" class="company-item">
-        <span>{{item.companyName}}</span>
-        <span>&gt;</span>
-      </div>
+    <div>
+        <!-- <sixiheader title='我的公司'></sixiheader> -->
+        <div class="complany-list" v-if="companyList.length != 0">
+            <div v-for="(item,index) in companyList" :key="index" class="company-item">
+                <span>{{item.companyName}}</span>
+                <span>&gt;</span>
+            </div>
+        </div>
+        <div v-else>
+
+        </div>
     </div>
-  </div>
 </template>
 <script>
 // import sixiheader from "@/components/app/header";
 export default {
-  data() {
-    return {
-      companyList: [
-        { companyName: "123" },
-        { companyName: "123" },
-        { companyName: "123" }
-      ]
-    };
-  },
-  created() {
-    this.$parent.$parent.setTitle("我的公司");
-  },
-  components: {},
-  methods: {}
+    data() {
+        return {
+            companyList: [
+                { companyName: "123" },
+                { companyName: "123" },
+                { companyName: "123" }
+            ]
+        };
+    },
+    created() {
+        this.$parent.$parent.setTitle("我的公司");
+    },
+    components: {},
+    methods: {}
 };
 </script>
 <style scoped>

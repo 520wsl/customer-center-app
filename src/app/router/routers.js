@@ -272,6 +272,28 @@ export default [{
     ]
   },
   {
+    path: "/wechatService",
+    name: "_wechatService",
+    redirect: {
+      name: "wechatService"
+    },
+    component: Main1,
+    children: [{
+        path: "index",
+        name: "wechatService",
+        meta: {
+          title: "喜小帮微信服务号"
+        },
+        component: r =>
+          require.ensure(
+            [],
+            () => r(require("@/app/view/wechatService/index")),
+            "wechatService"
+          )
+      }
+    ]
+  },
+  {
     path: "/serviceBill",
     name: "_serviceBill",
     redirect: {
