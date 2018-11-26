@@ -1,26 +1,48 @@
 <template>
-  <div class="bindphone">
-    <!--已绑定手机号-->
-    <div class="phoneNum" v-if="isBind">
-      <p class="s-title">
-        <span>已绑定手机号</span>
-      </p>
-      <div class="rel">
-        <img class="icon" src="https://axhub.im/pro/53a36a5532975b51/images/%E6%94%B6%E6%8D%AE%E9%87%87%E9%9B%86/u1118.png" alt="">
-        <span class="num">{{data.mobile}}</span>
-        <span class="modify" @click="modify()">修改</span>
-      </div>
+  <div class="bingPhone">
+    <div v-if="!isBind">
+      <dl>
+        <dt class="title">手机号
+          <img class="icon" :src="$CDN('/phone.png')" alt="404">
+        </dt>
+        <dd>
+          <input v-model="phone" class="input input-block " type="number" placeholder="请输入要绑定的手机号">
+        </dd>
+        <dt class="title">验证码
+          <img class="icon" :src="$CDN('/verifyCode.png')" alt="404">
+        </dt>
+        <dd>
+          <input v-model="verifyCode" class="input code" type="text" placeholder="请输入验证码">
+          <mt-button @click="sendCode()" class="getVerifyCode btn-color" size="small" :disabled="!getVerifyCode" plain>
+            <span v-if="getVerifyCode" @click="sendCode" class="code">获取验证码</span>
+            <span v-else class="code">{{outTime}}s</span>
+          </mt-button>
+        </dd>
+      </dl>
+      <p class="errorMsg">{{errorMsg}}</p>
+      <mt-button @click="save()" :disabled="!phone || !verifyCode" class="bind wid">立即绑定</mt-button>
     </div>
-    <div v-else class="verifyCode">
-      <mt-field label="请输入手机号:" type="tel" v-model="phone"></mt-field>
-      <mt-field label="短信验证码:" type="tel" v-model="verifyCode">
-        <span v-if="getVerifyCode" @click="sendCode" class="code">获取短信验证码</span>
-        <span v-else class="code">{{outTime}}s</span>
-      </mt-field>
-      <p class="sub">
-        <mt-button type="default" v-if="isModify" size="small" @click="back()" class="back">返回</mt-button>
-        <mt-button type="primary" size="small" @click="save()">保存</mt-button>
+    <div v-if="isBind">
+      <p class="mobile title">原手机号：{{data.mobile}}
+        <img class="icon" :src="$CDN('/phone.png')" alt="404">
       </p>
+      <dl>
+        <dd>
+          <input v-model="phone" class="input input-block " type="number" placeholder="现手机号">
+        </dd>
+        <dd>
+          <input v-model="verifyCode" class="input code" type="text" placeholder="验证码">
+          <mt-button @click="sendCode()" class="getVerifyCode btn-color" size="small" :disabled="!getVerifyCode" plain>
+            <span v-if="getVerifyCode" @click="sendCode" class="code">获取验证码</span>
+            <span v-else class="code">{{outTime}}s</span>
+          </mt-button>
+        </dd>
+      </dl>
+      <p class="errorMsg">{{errorMsg}}</p>
+      <div class="grounpBtn">
+        <mt-button class="btn" @click="back()">取消</mt-button>
+        <mt-button class="btn btn-purple" @click="save()" :disabled="!phone || !verifyCode">立即绑定</mt-button>
+      </div>
     </div>
   </div>
 </template>
@@ -34,16 +56,20 @@ export default {
   data() {
     return {
       // 客户id 不同于companySiXiId
-      customerSixiId: this.$route.query.userSixiId || "",
-      // false 未绑定 true 已绑定
-      isBind: false,
-      isModify: false,
+      userSixiId: this.$route.query.userSixiId || "",
+      // 获取的信息集合，含手机号
       data: {},
+      // 是否绑定 false 未绑定 true 已绑定
+      isBind: false,
       phone: "",
+      // 验证码
       verifyCode: "",
+      // 获取验证码等待时间
       outTime: 60,
       getVerifyCode: true,
-      getVerifyCodeSrc: ""
+      // 是否修改状态
+      isModify: false,
+      errorMsg: ""
     };
   },
   created() {
@@ -52,33 +78,47 @@ export default {
   },
   methods: {
     getCustomerPhone() {
-      getcustomerbysixiid(this.customerSixiId).then(e => {
+      getcustomerbysixiid(this.userSixiId).then(e => {
         if (e.status !== 200) {
-          this.$messagebox("提示", "服务器繁忙，请稍后再试！");
+          this.$messagebox("提示", e.msg);
           return;
         }
         this.data = e.data;
         if (e.data.mobile) {
+          let molile = this.data.mobile;
+          this.data.mobile = molile
+            ? molile.slice(0, 3) + "****" + molile.slice(-4)
+            : "";
           this.isBind = true;
         }
       });
     },
-    modify() {
-      this.isBind = false;
-      this.isModify = true;
-    },
-    back() {
-      this.isModify = false;
-      this.getCustomerPhone();
-      this.phone = "";
-      this.verifyCode = "";
+    /**
+     * 验证手机号，短信验证码格式
+     * @param ischeckVerifyCode 验证短信验证码开关
+     */
+    verify(isCheckVerifyCode) {
+      // 手机号格式验证
+      let isPass = /^1[34578]\d{9}$/.test(this.phone);
+      this.errorMsg = isPass ? "" : "手机号格式错误，请重新输入";
+      if (this.errorMsg) return false;
+      if (isCheckVerifyCode) {
+        this.errorMsg = this.verifyCode ? "" : "请输入验证码";
+        if (this.errorMsg) return false;
+      }
+      return true;
+      // 错误提示为空时，则验证正确
+      // if (!isPass) {
+      //   this.errorMsg = "手机号格式错误，请重新输入";
+      //   return false;
+      // } else {
+      //   this.errorMsg = "";
+      //   return true;
+      // }
     },
     sendCode() {
-      let isPass = /^1[34578]\d{9}$/.test(this.phone);
-      if (!isPass) {
-        this.$messagebox("提示", "请输入正确的手机号");
-        return;
-      }
+      if (!this.verify()) return true;
+      // 读秒验证码,读秒时不可点击
       this.getVerifyCode = false;
       let interval = setInterval(e => {
         this.outTime--;
@@ -91,91 +131,135 @@ export default {
       // 接口调用
       getcode(this.phone).then(e => {
         if (e.status !== 200) {
-          this.$messagebox("提示", "服务器繁忙，请稍后再试！");
+          this.$messagebox("提示", e.msg);
           return;
         }
       });
     },
     save() {
-      let isPass = /^1[34578]\d{9}$/.test(this.phone);
-      if (!isPass) {
-        this.$messagebox("提示", "请输入正确的手机号");
-        return;
-      }
-      if (!this.verifyCode) {
-        this.$messagebox("提示", "请输入验证码");
-        return;
-      }
+      if (!this.verify(true)) return true;
       // 接口调用
       validatecode(this.phone, this.verifyCode).then(e => {
         if (e.status !== 200) {
-          this.$messagebox("提示", "服务器繁忙，请稍后再试！");
+          this.$messagebox("提示", e.msg);
           return;
         }
         // 若验证正确
-        setmobilebysixiid(this.customerSixiId, this.phone).then(e => {
+        setmobilebysixiid(this.userSixiId, this.phone).then(e => {
           if (e.status !== 200) {
-            this.$messagebox("提示", "服务器繁忙，请稍后再试！");
+            this.$messagebox("提示", e.msg);
             return;
           }
-          this.$messagebox("提示", e.msg);
+          // this.$messagebox("提示", e.msg);
           this.getCustomerPhone();
           this.phone = "";
           this.verifyCode = "";
+          this.$router.push({
+            name: "bindSuccess",
+            query: { mobile: this.phone, userSixiId: this.userSixiId }
+          });
         });
       });
+    },
+    // 返回上一页
+    back() {
+      this.$router.go(-1);
     }
   }
 };
 </script>
 <style lang="less" scoped>
-.bindphone {
+.mobile {
   font-size: 30px;
-  color: #6e7790;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  color: #444444;
 }
-.phoneNum {
-  margin-top: 10px;
+.bingPhone {
+  height: 100%;
   background: #fff;
-  padding: 20px 30px;
-
-  .s-title {
-    height: 90px;
-    color: #444444;
-    span {
-      padding-left: 16px;
-      font-weight: bold;
-      border-left: 6px solid #697eff;
-    }
+  margin-top: 10px;
+  padding: 60px 84px 120px 84px;
+  dt {
+    font-size: 30px;
+    margin: 0 0 30px 0;
   }
-  .rel {
+  dd {
+    color: #444444;
+    font-size: 34px;
+    margin: 0 0 40px 0;
     display: flex;
     align-items: center;
-    .icon {
-      width: 30px;
+    justify-content: space-between;
+    .code {
+      width: 360px;
     }
-    .num {
-      margin-left: 30px;
-      flex: 1;
+    .btn-color {
+      display: inline-block;
+      font-size: 26px;
+      margin-left: 18px;
+      width: 200px;
+      white-space: nowrap;
+      color: #697eff;
+      border-color: #697eff;
     }
-  }
-  .modify {
-    color: #697eff;
   }
 }
-.verifyCode {
-  margin-top: 10px;
-  .sub {
-    margin-top: 50px;
-    text-align: center;
+.grounpBtn {
+  margin: 70px 0;
+  text-align: center;
+  .btn {
+    margin-left: 20px;
+    font-size: 28px;
+    width: 200px;
+    height: 68px;
   }
-  .code {
-    display: block;
-    height: 45px;
+  .btn-purple {
+    font-size: 28px;
+    color: #fff;
+    background: #697eff;
+    border-color: #697eff;
   }
 }
-.back {
-  margin-right: 20px;
+.bind {
+  display: block;
+  margin: 70px auto;
+  color: #fff;
+  font-weight: 300;
+  background: #697eff;
+  border-color: #697eff;
+}
+.errorMsg {
+  height: 40px;
+  font-size: 28px;
+  color: #fc7946;
+}
+.input {
+  font-size: 34px;
+  margin: 0;
+  padding: 20px 0;
+  border: none;
+  border-bottom: 1px #d9d9d9 solid;
+}
+.input:focus {
+  outline: none;
+  outline-offset: 0;
+}
+.input-block {
+  width: 100%;
+}
+
+.title {
+  position: relative;
+  img {
+    position: absolute;
+    top: 50%;
+    margin-top: -14px;
+    left: -40px;
+    width: 28px;
+    height: 32px;
+  }
+}
+.wid {
+  width: 480px;
 }
 </style>
 
