@@ -2,7 +2,7 @@
  * @Author: Mad Dragon 395548460@qq.com
  * @Date: 2018-11-07 22:22:23
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-11-20 15:29:25
+ * @Last Modified time: 2018-11-26 19:22:48
  * @explanatory: Routers Config   路由 路径 配置
  */
 /**
@@ -365,6 +365,20 @@ export default [{
             [],
             () => r(require("@/app/view/serviceBill/getPhone")),
             "getPhone"
+          )
+      },
+      // 绑定成功
+      {
+        path: "bindSuccess",
+        name: "bindSuccess",
+        meta: {
+          title: "绑定成功"
+        },
+        component: r =>
+          require.ensure(
+            [],
+            () => r(require("@/app/view/serviceBill/bindSuccess")),
+            "bindSuccess"
           )
       }
     ]
