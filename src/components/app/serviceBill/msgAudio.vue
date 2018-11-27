@@ -98,7 +98,47 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import url("./msg.less");
+// @import url("./msg.less");
+
+.audio {
+  height: 68px;
+  line-height: 68px;
+  padding: 0 40px;
+  width: 160px;
+  color: #fff;
+  background: #697eff;
+  border-radius: 0 10px 10px 10px;
+  box-shadow: 5px 5px 20px 2px #d6d6d6;
+  position: relative;
+  .gif {
+    position: absolute;
+    top: 50%;
+    margin-top: -15px;
+    width: 30px;
+    height: 30px;
+  }
+  span {
+    float: right;
+  }
+}
+// 箭头的方向定位
+.horn_r {
+  content: " ";
+  position: absolute;
+  display: block;
+  width: 20px;
+  right: -20px;
+  top: 0px;
+}
+
+.horn_l {
+  content: " ";
+  position: absolute;
+  display: block;
+  width: 20px;
+  left: -20px;
+  top: 0px;
+}
 .jsMsgAudio {
   height: 1px;
   width: 1px;
