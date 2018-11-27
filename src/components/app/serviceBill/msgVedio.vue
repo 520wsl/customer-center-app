@@ -84,5 +84,32 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import url("./msg.less");
+.moive {
+  .bg {
+    height: 250px;
+    width: 450px; // filter: blur(1px);
+  }
+  max-width: 450px;
+  min-width: 450px;
+  height: 250px;
+  position: relative;
+  background: #313030;
+}
+
+.video {
+  height: 250px;
+  width: 450px;
+  background: #313030;
+}
+
+// moive下
+.play {
+  width: 90px;
+  height: 90px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
 </style>

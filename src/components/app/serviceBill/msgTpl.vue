@@ -1,7 +1,8 @@
 <template>
-  <div :class="info.sign === 1 ?['message']:['message msg-r']">
+  <div :class="info.sign == 1 ?['message']:['message msg-r']">
     <div class="portrait">
       <img :src="$CDN(portraitUrl)" alt="404">
+      <!-- 客户微信头像，该功能暂无 -->
     </div>
     <div class="content">
       <div class="time">
@@ -43,5 +44,57 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import url("./msg.less");
+.message {
+  display: flex;
+  padding: 20px 0;
+  // 头像
+  .portrait {
+    margin-right: 20px;
+    img {
+      margin-top: 48px;
+      border-radius: 100%;
+      height: 64px;
+      width: 64px;
+      background: #697eff;
+    }
+  }
+  // 内容
+  .time {
+    font-size: 18px;
+    color: #697eff;
+    margin-bottom: 16px;
+    // 身份标记 客服客户
+    .customer {
+      float: left;
+      margin-right: 18px;
+      padding: 2px 18px;
+      border-radius: 5px;
+      color: #fff;
+      background: #697eff;
+      text-align: center;
+    }
+  }
+}
+.msg-r {
+  flex-direction: row-reverse;
+  .portrait {
+    margin-left: 20px;
+    margin-right: 0;
+  }
+  .content {
+    text-align: right;
+    .customer {
+      float: right !important;
+      background: #fc7946 !important;
+      margin-right: 0 !important;
+    }
+  }
+  .text,
+  .moive,
+  .audio {
+    display: inline-block;
+    text-align: left;
+    border-radius: 10px 0 10px 10px !important;
+  }
+}
 </style>

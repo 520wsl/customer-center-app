@@ -1,0 +1,18 @@
+.btn {
+  border-radius: 5px;
+}
+
+.btn-small {
+  height: 52px;
+  font-size: 26px
+}
+
+.btn-middle {}
+
+.btn-big {}
+
+.btn-purple {
+  color: #697EFF;
+  border: #697EFF solid 2px;
+  box-shadow: 0 0 1px #697EFF;
+}
