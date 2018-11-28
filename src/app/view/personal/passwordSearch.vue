@@ -3,7 +3,10 @@
     <div v-if="passwordlist.length>0">
       <ul>
         <li class="info-item" v-for="(item,index) in passwordlist" :key="index">
-          <b class="company-title">{{item.gongshititle}}</b>
+          <div class="company-title">
+            <img :src="$CDN('/company.png')">
+            <b>{{item.gongshititle}}</b>
+          </div>
           <div class="company-info">
             <p class="company-info-item">
               <span class="item-key">网店地址 ：</span>
@@ -20,7 +23,7 @@
                 <input style="border:0;outline:none;" readonly :type="item.showpassword?'text':'password'" :value="item.password">
               </span>
               <a style="width:10%;" @click="item.showpassword=!item.showpassword">
-                <img class="show-pass-word" :src="item.showpassword?$CDN('/icon_hidden_pwd.png'):$CDN('/icon_show_pwd.png')">
+                <img class="show-pass-word" onselectstart="return false"  :src="item.showpassword?$CDN('/icon_hidden_pwd.png'):$CDN('/icon_show_pwd.png')">
               </a>
             </p>
           </div>
@@ -104,10 +107,16 @@ export default {
   margin-top: 20px;
 }
 .company-title {
-  display: inline-block;
-  margin-bottom: 33px;
-  font-size: 28px;
+  height: 50px;
+  margin-bottom: 30px;
+  line-height: 50px;
+  font-size: 32px;
   color: #444444;
+}
+.company-title img {
+  height: 40px;
+  vertical-align:middle;
+  margin: 0 6px;
 }
 .company-info {
   margin-bottom: 33px;

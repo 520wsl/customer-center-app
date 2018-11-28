@@ -22,3 +22,6 @@ export const setmobilebysixiid = (customerSixiId, mobile) => {
     mobile
   });
 }
+export const selectCompanyAndMobile = () => {
+  return post("/customer/selectcompanyandmobile", {});
+}
