@@ -233,6 +233,19 @@ export default [{
             () => r(require("@/app/view/personal/passwordSearch")),
             "appPersonal"
           )
+      },
+      {
+        path: "passwordstore",
+        name: "passwordStore",
+        meta: {
+          title: "店铺账号密码"
+        },
+        component: r =>
+          require.ensure(
+            [],
+            () => r(require("@/app/view/personal/passwordStore")),
+            "appPersonal"
+          )
       }
     ]
   },
