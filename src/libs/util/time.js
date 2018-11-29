@@ -28,7 +28,7 @@ import moment from "moment";
  * @Description:
  */
 export const formatTime = (time = new Date(), norms = "YYYY-MM-DD") => {
-	return (time && moment(time).format(norms)) || "";
+  return (time && moment(time).format(norms)) || "";
 };
 
 /**
@@ -45,18 +45,18 @@ export const formatTime = (time = new Date(), norms = "YYYY-MM-DD") => {
  * @Description:
  */
 export const formatAddTime = (
-	time = new Date(),
-	norms = "YYYY-MM-DD",
-	addNum = 1,
-	addNorms = "days"
+  time = new Date(),
+  norms = "YYYY-MM-DD",
+  addNum = 1,
+  addNorms = "days"
 ) => {
-	return (
-		(time &&
-			moment(time)
-				.add(addNum, addNorms)
-				.format(norms)) ||
-		""
-	);
+  return (
+    (time &&
+      moment(time)
+      .add(addNum, addNorms)
+      .format(norms)) ||
+    ""
+  );
 };
 
 /**
@@ -73,18 +73,18 @@ export const formatAddTime = (
  * @Description:
  */
 export const formatSubtractTime = (
-	addNum = 1,
-	addNorms = "days",
-	time = new Date(),
-	norms = "YYYY-MM-DD"
+  addNum = 1,
+  addNorms = "days",
+  time = new Date(),
+  norms = "YYYY-MM-DD"
 ) => {
-	return (
-		(time &&
-			moment(time)
-				.subtract(addNum, addNorms)
-				.format(norms)) ||
-		""
-	);
+  return (
+    (time &&
+      moment(time)
+      .subtract(addNum, addNorms)
+      .format(norms)) ||
+    ""
+  );
 };
 
 /**
@@ -100,7 +100,7 @@ export const formatSubtractTime = (
  * @Description:
  */
 export const formatInitTime = (time = new Date(), norms = "YYYY-MM-DD") => {
-	return (time && moment(time).format(norms)) || "";
+  return (time && moment(time).format(norms)) || "";
 };
 
 /**
@@ -109,10 +109,10 @@ export const formatInitTime = (time = new Date(), norms = "YYYY-MM-DD") => {
  * @param {*} norms 格式化规则 默认 YYYY-MM-DD
  */
 export const startTime = (time = new Date(), norms = "YYYY-MM-DD") => {
-	return (
-		(formatInitTime(time) && moment(formatInitTime(time)).format(norms)) ||
-		""
-	);
+  return (
+    (formatInitTime(time) && moment(formatInitTime(time)).format(norms)) ||
+    ""
+  );
 };
 
 /**
@@ -123,16 +123,45 @@ export const startTime = (time = new Date(), norms = "YYYY-MM-DD") => {
  * @param {*} addNorms 加法规则 默认 "days"
  */
 export const endTime = (
-	time = new Date(),
-	norms = "YYYY-MM-DD",
-	addNum = 1,
-	addNorms = "days"
+  time = new Date(),
+  norms = "YYYY-MM-DD",
+  addNum = 1,
+  addNorms = "days"
 ) => {
-	return (
-		(formatInitTime(time) &&
-			moment(formatInitTime(time))
-				.add(addNum, addNorms)
-				.format(norms)) ||
-		""
-	);
+  return (
+    (formatInitTime(time) &&
+      moment(formatInitTime(time))
+      .add(addNum, addNorms)
+      .format(norms)) ||
+    ""
+  );
 };
+
+/**
+ * 时长转换
+ * eg:100s -> 1分钟40秒
+ * @param {msd} 秒 需要格式化时间  默认当前时间
+ * @returns String 转换成天数 
+ */
+export const timeToDate = (msd) => {
+  var time = msd
+  if (null != time && "" != time) {
+    if (time > 60 && time < 60 * 60) {
+      time = parseInt(time / 60.0) + "分钟" + parseInt((parseFloat(time / 60.0) -
+        parseInt(time / 60.0)) * 60) + "秒";
+    } else if (time >= 60 * 60 && time < 60 * 60 * 24) {
+      time = parseInt(time / 3600.0) + "小时" + parseInt((parseFloat(time / 3600.0) -
+        parseInt(time / 3600.0)) * 60) + "分钟" + parseInt((parseFloat((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60) -
+        parseInt((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60)) * 60) + "秒";
+    } else if (time >= 60 * 60 * 24) {
+      time = parseInt(time / 3600.0 / 24) + "天" + parseInt((parseFloat(time / 3600.0 / 24) -
+          parseInt(time / 3600.0 / 24)) * 24) + "小时" + parseInt((parseFloat(time / 3600.0) -
+          parseInt(time / 3600.0)) * 60) + "分钟" +
+        parseInt((parseFloat((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60) -
+          parseInt((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60)) * 60) + "秒";
+    } else {
+      time = parseInt(time) + "秒";
+    }
+  }
+  return time;
+}

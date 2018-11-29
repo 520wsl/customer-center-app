@@ -5,13 +5,13 @@
       <div>
         <span class="problemType">{{detail.title}}</span>
         <!--此处为小时单位，工单响应时长-->
-        <span class="time">{{detail.responseTime}}</span>
+        <span class="time">{{responseTime}}</span>
       </div>
       <div>
         <span class="identifierNum">
           工单编号：{{detail.identifier}}
         </span>
-        <mt-button class="btn btn-small btn-purple">修改工单</mt-button>
+        <mt-button class="btn btn-small btn-purple" @click="editBill()">修改工单</mt-button>
       </div>
     </div>
     <!--可滑动，详情以记录-->
@@ -61,13 +61,14 @@
   </div>
 </template>
 <script>
+import moment from "moment";
 import tab from "@/components/app/serviceBill/tab";
 import msgTpl from "@/components/app/serviceBill/msgTpl";
 import msgText from "@/components/app/serviceBill/msgText";
 import msgImg from "@/components/app/serviceBill/msgImg";
 import msgAudio from "@/components/app/serviceBill/msgAudio";
 import msgVedio from "@/components/app/serviceBill/msgVedio";
-import { formatTime } from "@/libs/util/time";
+import { formatTime, timeToDate } from "@/libs/util/time";
 import { mapState } from "vuex";
 
 import { getDetail } from "@/api/workOrder/worksheet";
@@ -99,7 +100,12 @@ export default {
     ...mapState({
       handleType: state => state.Servicebill.handleType,
       workType: state => state.Servicebill.workType
-    })
+    }),
+    responseTime() {
+      // this.detail.responseTime 为小时，转为秒单位
+      let time = this.detail.responseTime * 60 * 60;
+      return timeToDate(time);
+    }
   },
   methods: {
     // 获取基本详情
@@ -145,6 +151,29 @@ export default {
       // 成功后进行的操作
       this.getServiceTalknews();
       this.$refs.loadmore.onTopLoaded();
+    },
+    // 修改工单
+    editBill() {
+      let id = this.id; // 工单id
+      let companySixiId = this.detail.userId; // 公司id
+      let workOrderType = this.detail.workType; // 工单类型
+      let identifier = this.detail.identifier; // 工单编号
+      let handleType = this.detail.handleType; // 工单状态类型
+      let companyName =
+        (this.detail.customerDetailVo &&
+          this.detail.customerDetailVo.companyName) ||
+        "";
+      this.$router.push({
+        name: "editBill",
+        query: {
+          id,
+          companySixiId,
+          workOrderType,
+          identifier,
+          companyName,
+          handleType
+        }
+      });
     }
   }
 };
@@ -242,4 +271,3 @@ export default {
   }
 }
 </style>
-
