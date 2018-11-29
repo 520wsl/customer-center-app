@@ -54,9 +54,7 @@ export default {
       visible: this.value
     };
   },
-  mounted() {
-    console.log(this.list)
-  },
+  mounted() { },
   methods: {
     handleConfirm() {
       this.visible = false;

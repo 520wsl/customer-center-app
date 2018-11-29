@@ -1,21 +1,27 @@
 <template>
   <div class="add-bill">
-    <div
-      v-if="!isSubmited"
-      class="info"
-    >
+    <div v-if="!isSubmited" class="info">
       <img :src="$CDN('/company.png')">
       <p class="question-title">
         <span class="user-name">王麻子</span>
         <span>您好，请确认您要咨询的问题！</span>
       </p>
       <div style="text-align:center;">
-        <button
-          class="select-btn"
-          @click="popupVisible = true"
-        >
+        <button class="select-btn" @click="companyPopupVisible = true">
+          {{params.companySixiId?findCompanyName(params.companySixiId): '请选择您绑定的公司'}}
+          <span
+            class="want-to-btm mint-button-icon"
+          >
+            <i class="mintui mintui-back"></i>
+          </span>
+        </button>
+      </div>
+      <div style="text-align:center;">
+        <button class="select-btn" @click="popupVisible = true">
           {{params.workOrderType?findWorkOrderTypeName(params.workOrderType): '请确认您要咨询的问题'}}
-          <span class="want-to-btm mint-button-icon">
+          <span
+            class="want-to-btm mint-button-icon"
+          >
             <i class="mintui mintui-back"></i>
           </span>
         </button>
@@ -36,71 +42,63 @@
           v-if="companyAndMobile.status===3"
           class="text"
         >注意：为了更好的为您提供服务，请联系我们的业务员，将您的合作公司跟您的微信做绑定操作</p>
-        <p
-          v-if="companyAndMobile.status===2"
-          class="text"
-        >注意：为了更好的为您提供服务，请绑定您的手机号。<a style="color:#697eff;">绑定手机号</a></p>
+        <p v-if="companyAndMobile.status===2" class="text">
+          注意：为了更好的为您提供服务，请绑定您的手机号。
+          <a style="color:#697eff;">绑定手机号</a>
+        </p>
       </div>
       <div style="text-align:center;">
-        <mt-button
-          plain
-          type="default"
-          size="small"
-          class="cancel"
-        >取消</mt-button>
-        <mt-button
-          size="small"
-          type="default"
-          class="ok"
-        >确定</mt-button>
+        <mt-button plain type="default" size="small" class="cancel">取消</mt-button>
+        <mt-button size="small" @click="save" type="default" class="ok">确定</mt-button>
       </div>
     </div>
-    <div
-      v-else
-      class="form-submited"
-    >
+    <div v-else class="form-submited">
       <img :src="$CDN('/success_icon.png')">
       <p class="form-submited-text">您的问题，已经提交成功！</p>
       <p
         v-if="companyAndMobile.status===1 || companyAndMobile.status===3"
         class="form-submited-text-msg"
       >
-        客服人员张二狗，稍后将与您取得联系，请确保您
-        的手机号138****3333，保持畅通
+        客服人员{{subParams.staffName}}，稍后将与您取得联系，请确保您
+        的手机号{{subParams.mobile}}，保持畅通
       </p>
       <p
         v-if="companyAndMobile.status===1 || companyAndMobile.status===3"
         class="form-submited-text-msg"
       >
-        如果手机号有误，请及时变更手机号<a style="color:#697eff;">变更手机号</a>
+        如果手机号有误，请及时变更手机号
+        <a style="color:#697eff;">变更手机号</a>
       </p>
-      <p
-        v-if="companyAndMobile.status===2"
-        class="form-submited-text-msg"
-      >
-        客服人员XXX，稍后将与您取得联系为了更好的为您提供服务，请绑定您的手机号<a style="color:#697eff;">绑定手机号</a>
+      <p v-if="companyAndMobile.status===2" class="form-submited-text-msg">
+        客服人员{{subParams.staffName}}，稍后将与您取得联系为了更好的为您提供服务，请绑定您的手机号
+        <a style="color:#697eff;">绑定手机号</a>
       </p>
     </div>
-    <mt-popup
+    <my-picker
+      v-if="popupVisible"
+      :list="workSheetTypeList"
+      :get-item="getWorkSheet"
       v-model="popupVisible"
-      position="bottom"
-      class="add-bill-mint-popup"
-    >
-      <mt-picker
-        :slots="slots"
-        @change="onDateChange"
-        :show-toolbar="false"
-        ref="picker"
-        value-key="value"
-      ></mt-picker>
-    </mt-popup>
+    ></my-picker>
+    <my-picker
+      v-if="companyPopupVisible"
+      :list="[...companyAndMobile.companys]"
+      valueName="name"
+      :get-item="getCompany"
+      v-model="companyPopupVisible"
+    ></my-picker>
   </div>
 </template>
 
 <script>
 import { Button, Popup, Picker } from 'mint-ui';
 import { mapState, mapActions } from "vuex";
+import { saveWorkOrder } from "@/api/workOrder/workOrder";
+import myPicker from "@/components/app/public/myPicker"
 export default {
+  components: {
+    myPicker
+  },
   computed: {
     ...mapState({
       workSheetTypeList: state => state.Servicebill.workSheetType,
@@ -116,21 +114,33 @@ export default {
         }
       ];
       return dateSlots
+    },
+    companyslots() {
+      let dateSlots = [
+        {
+          flex: 1,
+          values: this.companyAndMobile.companys,
+          className: 'question-slot',
+          textAlign: 'center'
+        }
+      ];
+      return dateSlots
     }
   },
   data() {
     return {
-      isSubmited: true,
+      isSubmited: false,
+      subParams: {
+        staffName: '',
+        mobile: ''
+      },
       popupVisible: false,
+      companyPopupVisible: false,
       params: {
         workOrderType: null,
-        unionId: null,
-        openId: null,
+        companySixiId: null,
         context: '',
-        appId: '',
-        wechatNickname: '',
-        name: '',
-        mobile: ''
+        companyName: null
       }
     }
   },
@@ -148,9 +158,28 @@ export default {
       })[0] || {};
       return res.value
     },
-    onDateChange(picker, values) {
-      this.params.workOrderType = values[0]['key'];
-      this.popupVisible = false;
+    findCompanyName(sixiId) {
+      const res = [...this.companyAndMobile.companys].filter(item => {
+        return item.sixiId == sixiId
+      })[0] || {};
+      return res.name
+    },
+    getWorkSheet(data) {
+      this.params.workOrderType = data.key;
+    },
+    getCompany(data) {
+      this.params.companySixiId = data.sixiId;
+      this.params.companyName = data.name;
+    },
+    async save() {
+      let res = await saveWorkOrder(this.params);
+      if (res.status === 200) {
+        this.isSubmited = true;
+        this.subParams.mobile = res.data.mobile;
+        this.subParams.staffName = res.data.staffName;
+      } else {
+        this.$messagebox("提示", res.msg);
+      }
     }
   }
 }
@@ -195,6 +224,7 @@ export default {
   color: #ffffff;
   border: 1px solid transparent;
   font-size: 26px;
+  margin-top: 40px;
   padding: 14px 44px;
   outline: none;
 }
@@ -254,6 +284,7 @@ export default {
   border-radius: 2px;
   font-size: 24px;
   color: #444444;
+  margin-top: 40px;
   margin-right: 60px;
 }
 .ok {
@@ -263,6 +294,7 @@ export default {
   font-size: 24px;
   background: #697eff;
   border-radius: 2px;
+  margin-top: 40px;
   color: #fff;
 }
 .form-submited-text {
