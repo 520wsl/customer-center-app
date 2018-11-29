@@ -325,6 +325,19 @@ export default [{
             "customerService"
           )
       },
+      {
+        path: "editbill",
+        name: "editBill",
+        meta: {
+          title: "修改客服工单"
+        },
+        component: r =>
+          require.ensure(
+            [],
+            () => r(require("@/app/view/serviceBill/editBill")),
+            "customerService"
+          )
+      },
       // customerService
       {
         path: "customerService",
