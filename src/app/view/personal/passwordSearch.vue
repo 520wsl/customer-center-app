@@ -1,21 +1,21 @@
 <template>
   <div style="height:100%;background:#fff;">
-    <div v-if="passwordlist.length<0">
+    <div v-if="passwordlist.length>0">
       <ul>
         <li class="info-item" v-for="(item,index) in passwordlist" :key="index">
           <div class="company-title">
             <img :src="$CDN('/company.png')">
-            <b>{{item.gongshititle}}</b>
+            <b>{{item.name}}</b>
           </div>
           <div class="company-info">
             <p class="company-info-item">
               <span class="item-key">网店地址 ：</span>
-              <span class="item-value">{{item.address}}</span>
+              <span class="item-value">{{item.url}}</span>
             </p>
             <p class="company-info-item">
               <!--eslint-disable no-irregular-whitespace -->
               <span class="item-key justify">账 号 ：</span>
-              <span class="item-value">{{item.username}}</span>
+              <span class="item-value">{{item.account}}</span>
             </p>
             <p class="company-info-item">
               <span class="item-key">密 码 ：</span>
@@ -50,27 +50,17 @@
 </template>
 <script>
 import { MessageBox } from "mint-ui";
+import {
+  getCompanyListBoss
+} from "@/api/customer/customer";
 export default {
   data() {
     return {
-      passwordlist: [
-        {
-          gongshititle: "杭州嘉华聚氨酯制品有限公司",
-          address: "https://shop8033338484m60.1688.com",
-          username: 'xindingbaozhuangcailiao',
-          password: '123456',
-          phone: 13757134680,
-          showpassword: false
-        },
-        {
-          gongshititle: "杭州嘉华聚氨酯制品有限公司",
-          address: "https://shop8033338484m60.1688.com",
-          username: 'xindingbaozhuangcailiao',
-          password: '123456',
-          showpassword: true
-        }
-      ]
+      passwordlist: []
     }
+  },
+  mounted() {
+    this.getList();
   },
   methods: {
     sendInfo(company) {
@@ -93,6 +83,16 @@ export default {
           console.log(value, action)
         }).catch(err => {
         });
+      }
+    },
+    async getList() {
+      let res = await getCompanyListBoss();
+      if (res.status == 200) {
+        const list = [...res.data].map(item => {
+          item.showpassword = false
+          return item
+        });
+        this.passwordlist = list;
       }
     }
   },
