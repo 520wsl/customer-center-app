@@ -182,3 +182,8 @@ export default {
   line-height: 76px;
 }
 </style>
+<style>
+#app{
+    height: auto;
+}
+</style>
