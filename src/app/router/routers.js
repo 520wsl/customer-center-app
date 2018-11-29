@@ -233,6 +233,19 @@ export default [{
             () => r(require("@/app/view/personal/passwordSearch")),
             "appPersonal"
           )
+      },
+      {
+        path: "passwordstore",
+        name: "passwordStore",
+        meta: {
+          title: "店铺账号密码"
+        },
+        component: r =>
+          require.ensure(
+            [],
+            () => r(require("@/app/view/personal/passwordStore")),
+            "appPersonal"
+          )
       }
     ]
   },
@@ -279,19 +292,18 @@ export default [{
     },
     component: Main1,
     children: [{
-        path: "index",
-        name: "wechatService",
-        meta: {
-          title: "喜小帮微信服务号"
-        },
-        component: r =>
-          require.ensure(
-            [],
-            () => r(require("@/app/view/wechatService/index")),
-            "wechatService"
-          )
-      }
-    ]
+      path: "index",
+      name: "wechatService",
+      meta: {
+        title: "喜小帮微信服务号"
+      },
+      component: r =>
+        require.ensure(
+          [],
+          () => r(require("@/app/view/wechatService/index")),
+          "wechatService"
+        )
+    }]
   },
   {
     path: "/serviceBill",
@@ -311,6 +323,32 @@ export default [{
             [],
             () => r(require("@/app/view/serviceBill/index")),
             "appServiceBill"
+          )
+      },
+      {
+        path: "addbill",
+        name: "addBill",
+        meta: {
+          title: "创建客服工单"
+        },
+        component: r =>
+          require.ensure(
+            [],
+            () => r(require("@/app/view/serviceBill/addBill")),
+            "customerService"
+          )
+      },
+      {
+        path: "editbill",
+        name: "editBill",
+        meta: {
+          title: "修改客服工单"
+        },
+        component: r =>
+          require.ensure(
+            [],
+            () => r(require("@/app/view/serviceBill/editBill")),
+            "customerService"
           )
       },
       // customerService

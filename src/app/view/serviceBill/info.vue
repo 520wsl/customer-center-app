@@ -1,42 +1,43 @@
 <template>
-  <div class="billInfo">
-    <div class="baseInfo">
-      <p class="BillId">工单编号：
-        <b>{{detail.identifier}}</b>
-      </p>
-      <div class="s-title" @click="isShow=!isShow">
-        <span>工单信息</span>
-        <img :class="[isShow?'fa fa-arrow-down go':'fa fa-arrow-down aa']" :src="$CDN('/iconDirection.png')" class="iconDirection">
+  <div class="serviceBill">
+    <!--标题及编号-->
+    <div class="identifier">
+      <div>
+        <span class="problemType">{{detail.title}}</span>
+        <!--此处为小时单位，工单响应时长-->
+        <span class="time">{{responseTime}}</span>
       </div>
-      <transition name="fade">
-        <ul class="item" v-show="isShow">
-          <li>工单状态：{{handleType[detail.handleType] || ''}}</li>
-          <li>工单类型：{{workType[detail.workType] || ''}}</li>
-          <li>工单创建时间：{{getTime(detail.startTime,'YYYY-MM-DD')}}</li>
-          <li>客服人员：{{detail.leadingUser && detail.leadingUser.userName}}</li>
-        </ul>
-      </transition>
-      <h3>服务记录</h3>
+      <div>
+        <span class="identifierNum">
+          工单编号：{{detail.identifier}}
+        </span>
+        <mt-button class="btn btn-small btn-purple" @click="editBill()">修改工单</mt-button>
+      </div>
     </div>
-    <!--弹性盒兼容问题 x5内核-->
-    <div class="serviceRemark" ref="serviceRemark">
-      <mt-loadmore :top-method="loadTop" ref="loadmore" class="msg">
-        <!--
-          userType：用户类型,将用户id与当前记录id比对，若匹配则为客户 // 是否是客户 sign 0:客户,1:不是客户
-          textType：文本类型
-          src：视频地址,音频地址,图片地址
-        -->
+    <!--可滑动，详情以记录-->
+    <mt-loadmore :top-method="loadTop" ref="loadmore" class="serviceInfo">
+      <ul class="info">
+        <li>我的公司：{{detail.customerDetailVo && detail.customerDetailVo.companyName}}</li>
+        <li>工单状态：{{handleType[detail.handleType] || ''}}</li>
+        <!--提交时间是否是创建时间-->
+        <li>提交时间：{{getTime(detail.startTime,'YYYY-MM-DD')}}</li>
+        <li>客服人员：{{detail.leadingUser && detail.leadingUser.userName}}</li>
+      </ul>
+      <!--未绑定手机 v-if="detail.cellphone"  -->
+      <p class="notice" v-if="detail.cellphone">注意：为了更好的为您提供服务,客服人员能够与您电话沟通, 请绑定 您的手机号。
+        <router-link :to="{name:'getPhone'}" tag="span">绑定手机号&ensp;&gt;</router-link>
+      </p>
+      <p class="notice" v-else-if="detail.customerDetailVo && detail.customerDetailVo.companyName">注意：为了更好的为您提供服务,请联系我们的业务员,将您的合作公司跟您的微信做绑定操作;</p>
+      <div class="serviceRemark">
+        <h3>服务记录</h3>
         <msgTpl v-for="(el,index) in talknews" :key="index" :info="el">
-          <msgTextImg v-if="el.record !=''" :textType="1" :userType="el.sign" :src="el.enclosure">
-            {{el.record}}
-          </msgTextImg>
-          <msgTextImg v-else-if="el.type === 2" :textType="el.type" :userType="el.sign" :src="el.enclosure"></msgTextImg>
-          <msgAudio v-else-if="el.type === 8 || el.type === 3" :key="index" :userType="el.sign" :src="el.enclosure"></msgAudio>
-          <msgVedio v-else-if="el.type === 5" :key="index" :userType="el.sign" :src="el.enclosure"></msgVedio>
+          <msgText v-if="el.record !=''" :info="el"></msgText>
+          <msgImg v-else-if="el.type === 2" :enclosure="el.enclosure"></msgImg>
+          <msgAudio v-else-if="el.type === 8 || el.type === 3" :userType="el.sign" :src="el.enclosure"></msgAudio>
+          <msgVedio v-else-if="el.type === 5" :userType="el.sign" :src="el.enclosure"></msgVedio>
         </msgTpl>
-      </mt-loadmore>
-      <div v-if="identity === 2" class="hr"></div>
-    </div>
+      </div>
+    </mt-loadmore>
     <!--客户可见-->
     <div v-if="identity == 2 && (detail.handleType == 3 || detail.handleType == 4)" class="assess">
       <img :src="$CDN('/work_list_logo.png')" alt="">
@@ -55,24 +56,26 @@
       </router-link>
       <span v-if="detail.handleType == 4 ">已评价</span>
     </div>
-    <!-- 执行人id == 客服sixi id 才可以更改这个-->
+    <!--客服可见-->
     <tab v-if="detail.executorId && detail.executorId == sixiId && detail.handleType != 1" class="tab" :type="detail.handleType" :companySixiId="detail.userId"></tab>
   </div>
 </template>
 <script>
+import moment from "moment";
 import tab from "@/components/app/serviceBill/tab";
 import msgTpl from "@/components/app/serviceBill/msgTpl";
-import msgTextImg from "@/components/app/serviceBill/msgTextImg";
+import msgText from "@/components/app/serviceBill/msgText";
+import msgImg from "@/components/app/serviceBill/msgImg";
 import msgAudio from "@/components/app/serviceBill/msgAudio";
 import msgVedio from "@/components/app/serviceBill/msgVedio";
-import { formatTime } from "@/libs/util/time";
+import { formatTime, timeToDate } from "@/libs/util/time";
 import { mapState } from "vuex";
 
 import { getDetail } from "@/api/workOrder/worksheet";
 import { getTalknews } from "@/api/workOrder/talknews";
 
 export default {
-  components: { msgTpl, msgTextImg, msgAudio, msgVedio, tab },
+  components: { msgTpl, msgAudio, msgVedio, msgText, msgImg, tab },
   data() {
     return {
       isShow: true,
@@ -84,9 +87,8 @@ export default {
       talknews: [],
       num: 1,
       size: 10,
-      count: Number,
+      count: Number
       // 滑动到底部
-      bottom: true
     };
   },
   mounted() {
@@ -94,27 +96,18 @@ export default {
     this.getBaseDetail();
     this.getServiceTalknews();
   },
-  updated() {
-    this.$nextTick(function() {
-      if (this.bottom === true) {
-        this.setScrool();
-      }
-    });
-  },
   computed: {
     ...mapState({
       handleType: state => state.Servicebill.handleType,
       workType: state => state.Servicebill.workType
-    })
+    }),
+    responseTime() {
+      // this.detail.responseTime 为小时，转为秒单位
+      let time = this.detail.responseTime * 60 * 60;
+      return timeToDate(time);
+    }
   },
   methods: {
-    setScrool() {
-      var serviceRemark = document.querySelector(".serviceRemark");
-      var msg = document.querySelector(".msg");
-      var msgheight = msg.offsetHeight; //高度
-      serviceRemark.scrollTop = msgheight;
-      this.bottom = false;
-    },
     // 获取基本详情
     getBaseDetail() {
       getDetail(this.id).then(e => {
@@ -141,8 +134,10 @@ export default {
         }
         e.data.list.forEach(el => {
           // el.userType = el.sign == 0 ? 1 : 2;
+          // el.sign = 1;
           // 记录用户语音的播放状态
-          this.talknews.unshift(el);
+          // this.talknews.unshift(el);
+          this.talknews.push(el);
         });
         this.num = ++e.data.num;
         this.count = e.data.count;
@@ -156,100 +151,101 @@ export default {
       // 成功后进行的操作
       this.getServiceTalknews();
       this.$refs.loadmore.onTopLoaded();
+    },
+    // 修改工单
+    editBill() {
+      let id = this.id; // 工单id
+      let companySixiId = this.detail.userId; // 公司id
+      let workOrderType = this.detail.workType; // 工单类型
+      let identifier = this.detail.identifier; // 工单编号
+      let handleType = this.detail.handleType; // 工单状态类型
+      let companyName =
+        (this.detail.customerDetailVo &&
+          this.detail.customerDetailVo.companyName) ||
+        "";
+      this.$router.push({
+        name: "editBill",
+        query: {
+          id,
+          companySixiId,
+          workOrderType,
+          identifier,
+          companyName,
+          handleType
+        }
+      });
     }
   }
 };
 </script>
 <style lang="less" scoped>
-.billInfo {
+.serviceBill {
   display: flex;
   flex-direction: column;
   height: 100%;
-  /* 顶部标题固定问题解决 */
   margin-top: -90px;
+  font-size: 28px;
 }
-.baseInfo {
-  /* 顶部标题固定问题解决 */
-  padding-top: 90px;
-  color: #6e7790;
-  overflow: hidden;
-  .BillId {
-    color: #6e7790;
-    display: flex;
-    align-items: center;
-    margin: 10px 0 20px 0;
-    padding-left: 28px;
-    background: #fff;
-    height: 110px;
-    font-size: 28px;
-    b {
-      color: #444444;
-    }
-  }
-  .s-title {
-    // padding: 40px 0 30px 0;
+/** 工单编号信息 */
+.identifier {
+  margin: 100px 0 10px 0;
+  padding: 20px 30px 0 30px;
+  font-size: 28px;
+  background: #fff;
+  & > div {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 90px;
-    background: #fff;
-    font-size: 28px;
-    color: #444444;
-    span {
-      padding-left: 16px;
+    margin-bottom: 20px;
+    .problemType {
+      color: #444444;
+      font-family: "PingFangSC-Semibold";
       font-weight: bold;
-      margin-left: 28px;
-      border-left: 6px solid #697eff;
     }
-    .iconDirection {
-      float: right;
-      margin-right: 50px;
-      width: 30px;
+    .time {
+      color: #929eaa;
+    }
+    .identifierNum {
+      color: #6e7790;
     }
   }
-  .item {
-    padding-left: 28px;
-    background: #fff;
-    font-size: 28px;
+}
+/** 工单编号详细信息 */
+.serviceInfo {
+  flex: 1;
+  overflow-y: auto;
+  background: #fff;
+  padding-left: 30px;
+  & .info {
+    padding-right: 30px;
+    font-size: 26px;
+    color: #6e7790;
     li {
-      padding-bottom: 30px;
+      margin-top: 20px;
     }
   }
+  .notice {
+    padding-right: 30px;
+    margin-top: 18px;
+    line-height: 40px;
+    font-size: 22px;
+    color: #929eaa;
+    span {
+      color: #697eff;
+    }
+  }
+}
+/** 工单服务记录 */
+.serviceRemark {
+  border-top: 2px solid #f4f4f4;
+  margin-top: 20px;
+  margin-right: 30px;
   h3 {
-    height: 100px;
-    line-height: 100px;
     font-size: 30px;
     color: #444444;
-    background: #fff;
-    margin: 0;
-    padding: 0 0 0 28px;
-    border-top: 2px solid #f4f4f4;
   }
 }
-.serviceRemark {
-  flex: 1;
-  // height: 100%;
-  overflow-y: auto;
-  color: #6e7790;
-  background: #fff;
-  font-size: 28px;
-  // display: flex;
-  // flex-direction: column-reverse;
-  /** flex-direction: column-reverse; // 该样式在某Q国产X5内核浏览器下不支持 */
-  /* 去掉部分机型点击产生的罩着层，*/
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  .msg {
-    padding: 10px 28px;
-    // height: 100%;
-    flex: 1;
-  }
-}
-.hr {
-  border-bottom: 20px solid #f4f4f4;
-}
-.tab {
-  display: flex;
-}
+
 .assess {
   display: flex;
   position: relative;
@@ -273,21 +269,5 @@ export default {
     font-size: 24px;
     width: 120px;
   }
-}
-// .fade-enter-active,
-// .fade-leave-active {
-//   transition: opacity 0.5s;
-// }
-// .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-//   opacity: 0;
-// }
-
-.aa {
-  transition: all 0.25s;
-  transform: rotate(-90deg);
-}
-.go {
-  transform: rotate(0deg);
-  transition: all 0.25s;
 }
 </style>
