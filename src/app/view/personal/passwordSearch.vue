@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div v-if="passwordlist.length>0">
+  <div style="height:100%;background:#fff;">
+    <div v-if="passwordlist.length<0">
       <ul>
         <li class="info-item" v-for="(item,index) in passwordlist" :key="index">
           <div class="company-title">
@@ -14,16 +14,25 @@
             </p>
             <p class="company-info-item">
               <!--eslint-disable no-irregular-whitespace -->
-              <span class="item-key justify">账　　号 ：</span>
+              <span class="item-key justify">账 号 ：</span>
               <span class="item-value">{{item.username}}</span>
             </p>
             <p class="company-info-item">
-              <span class="item-key">密　　码 ：</span>
+              <span class="item-key">密 码 ：</span>
               <span style="width:60%;" class="item-value">
-                <input style="border:0;outline:none;" readonly :type="item.showpassword?'text':'password'" :value="item.password">
+                <input
+                  style="border:0;outline:none;"
+                  readonly
+                  :type="item.showpassword?'text':'password'"
+                  :value="item.password"
+                >
               </span>
               <a style="width:10%;" @click="item.showpassword=!item.showpassword">
-                <img class="show-pass-word" onselectstart="return false"  :src="item.showpassword?$CDN('/icon_hidden_pwd.png'):$CDN('/icon_show_pwd.png')">
+                <img
+                  class="show-pass-word"
+                  onselectstart="return false"
+                  :src="item.showpassword?$CDN('/icon_hidden_pwd.png'):$CDN('/icon_show_pwd.png')"
+                >
               </a>
             </p>
           </div>
@@ -33,8 +42,9 @@
         </li>
       </ul>
     </div>
-    <div v-else>
-      <p style="text-align:center;font-size: 13rem;color: #929EAA;">抱歉，您还没有登记店铺账号密码</p>
+    <div class="null-info" v-else>
+      <img class="null-info-img" :src="$CDN('/null-icon.png')">
+      <p>抱歉，您还没有登记店铺账号密码</p>
     </div>
   </div>
 </template>
@@ -115,7 +125,7 @@ export default {
 }
 .company-title img {
   height: 40px;
-  vertical-align:middle;
+  vertical-align: middle;
   margin: 0 6px;
 }
 .company-info {
@@ -146,5 +156,18 @@ export default {
 }
 .company-info-item span.item-value {
   width: 72%;
+}
+.null-info {
+  margin-top: 20px;
+  text-align: center;
+}
+.null-info-img {
+  width: 210px;
+  margin: 54px auto;
+}
+.null-info p {
+  text-align: center;
+  font-size: 28px;
+  color: #929eaa;
 }
 </style>
