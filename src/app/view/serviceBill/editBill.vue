@@ -1,11 +1,14 @@
 <template>
   <div class="add-bill">
-    <div v-if="!isSubmited" class="info">
-      <img :src="$CDN('/company.png')">
-      <p class="question-title">
-        <span class="user-name">王麻子</span>
-        <span>您好，请确认您要咨询的问题！</span>
-      </p>
+    <div class="marg-top">
+      <div>
+        <mt-cell :title="'工单编号：'+identifier">
+          <span style="color: #697eff">{{handleName}}</span>
+        </mt-cell>
+      </div>
+    </div>
+    <div class="info">
+      <div class="info-msg-company" v-if="!params.companySixiId">我的公司：暂无绑定公司</div>
       <div style="text-align:center;">
         <button class="select-btn" @click="companyPopupVisible = true">
           {{params.companySixiId?findCompanyName(params.companySixiId): '请选择您绑定的公司'}}
@@ -37,42 +40,10 @@
           ></textarea>
         </span>
       </div>
-      <div class="message-info">
-        <p
-          v-if="companyAndMobile.status===3"
-          class="text"
-        >注意：为了更好的为您提供服务，请联系我们的业务员，将您的合作公司跟您的微信做绑定操作</p>
-        <p v-if="companyAndMobile.status===2" class="text">
-          注意：为了更好的为您提供服务，请绑定您的手机号。
-          <a style="color:#697eff;">绑定手机号</a>
-        </p>
-      </div>
       <div style="text-align:center;">
         <mt-button plain type="default" size="small" class="cancel">取消</mt-button>
         <mt-button size="small" @click="save" type="default" class="ok">确定</mt-button>
       </div>
-    </div>
-    <div v-else class="form-submited">
-      <img :src="$CDN('/success_icon.png')">
-      <p class="form-submited-text">您的问题，已经提交成功！</p>
-      <p
-        v-if="companyAndMobile.status===1 || companyAndMobile.status===3"
-        class="form-submited-text-msg"
-      >
-        客服人员{{subParams.staffName}}，稍后将与您取得联系，请确保您
-        的手机号{{subParams.mobile}}，保持畅通
-      </p>
-      <p
-        v-if="companyAndMobile.status===1 || companyAndMobile.status===3"
-        class="form-submited-text-msg"
-      >
-        如果手机号有误，请及时变更手机号
-        <a style="color:#697eff;">变更手机号</a>
-      </p>
-      <p v-if="companyAndMobile.status===2" class="form-submited-text-msg">
-        客服人员{{subParams.staffName}}，稍后将与您取得联系为了更好的为您提供服务，请绑定您的手机号
-        <a style="color:#697eff;">绑定手机号</a>
-      </p>
     </div>
     <my-picker
       v-if="popupVisible"
@@ -93,50 +64,27 @@
 <script>
 import { Button, Popup, Picker } from 'mint-ui';
 import { mapState, mapActions } from "vuex";
-import { saveWorkOrder } from "@/api/workOrder/workOrder";
+import { updataWorkOrder } from "@/api/workOrder/workOrder";
 import myPicker from "@/components/app/public/myPicker"
 export default {
-  components: {
-    myPicker
-  },
   computed: {
     ...mapState({
       workSheetTypeList: state => state.Servicebill.workSheetType,
       companyAndMobile: state => state.Servicebill.companyAndMobile,
-    }),
-    slots() {
-      let dateSlots = [
-        {
-          flex: 1,
-          values: this.workSheetTypeList,
-          className: 'question-slot',
-          textAlign: 'center'
-        }
-      ];
-      return dateSlots
-    },
-    companyslots() {
-      let dateSlots = [
-        {
-          flex: 1,
-          values: this.companyAndMobile.companys,
-          className: 'question-slot',
-          textAlign: 'center'
-        }
-      ];
-      return dateSlots
-    }
+    })
+  },
+  components: {
+    myPicker
   },
   data() {
     return {
-      isSubmited: false,
-      subParams: {
-        staffName: '',
-        mobile: ''
-      },
+      modal: true,
       popupVisible: false,
       companyPopupVisible: false,
+      identifier: '',
+      handleName: '',
       params: {
+        id: null,
         workOrderType: null,
         companySixiId: null,
         context: '',
@@ -145,11 +93,25 @@ export default {
     }
   },
   created() {
-    this.$parent.$parent.setTitle("创建客服工单");
-    this.getUserInfo();
+    this.getCompanyAndMobileInfo();
+    const { identifier, workOrderType, companySixiId, companyName, handleType, id } = this.$route.query;
+    this.identifier = identifier;
+    this.handleName = this.$store.state.Servicebill.handleType[handleType] || '';
+    this.params.workOrderType = workOrderType;
+    this.params.companySixiId = companySixiId;
+    this.params.companyName = companyName;
+    this.params.id = id;
+    this.$parent.$parent.setTitle("修改客服工单");
   },
   methods: {
-    getUserInfo() {
+    getWorkSheet(data) {
+      this.params.workOrderType = data.key;
+    },
+    getCompany(data) {
+      this.params.companySixiId = data.sixiId;
+      this.params.companyName = data.name;
+    },
+    getCompanyAndMobileInfo() {
       this.$store.dispatch("Servicebill/selectCompanyAndMobile");
     },
     findWorkOrderTypeName(id) {
@@ -159,24 +121,22 @@ export default {
       return res.value
     },
     findCompanyName(sixiId) {
+      if (!this.companyAndMobile.companys) {
+        return '请选择您绑定的公司'
+      }
       const res = [...this.companyAndMobile.companys].filter(item => {
         return item.sixiId == sixiId
       })[0] || {};
       return res.name
     },
-    getWorkSheet(data) {
-      this.params.workOrderType = data.key;
-    },
-    getCompany(data) {
-      this.params.companySixiId = data.sixiId;
-      this.params.companyName = data.name;
-    },
     async save() {
-      let res = await saveWorkOrder(this.params);
+      let res = await updataWorkOrder({
+        ...this.params,
+        id: 42323
+      });
       if (res.status === 200) {
-        this.isSubmited = true;
-        this.subParams.mobile = res.data.mobile;
-        this.subParams.staffName = res.data.staffName;
+
+        this.$messagebox("提示", res.msg);
       } else {
         this.$messagebox("提示", res.msg);
       }
@@ -188,6 +148,18 @@ export default {
 .add-bill {
   height: 100%;
   background: #fff;
+  font-size: 32px;
+}
+.info-msg-company {
+  width: 560px;
+  margin: 0 auto;
+}
+.marg-top {
+  border: 1px solid transparent;
+  background: #f4f4f4;
+}
+.marg-top > div {
+  margin: 10px auto;
 }
 .info,
 .form-submited {
@@ -278,24 +250,25 @@ export default {
 }
 .cancel {
   width: 240px;
-  height: 60px;
-  line-height: 60px;
   border: 2px solid #d9d9d9;
-  border-radius: 2px;
-  font-size: 24px;
   color: #444444;
+  border-radius: 2px;
+  font-size: 26px;
+  padding: 14px 44px;
+  outline: none;
+  margin-right: 40px;
   margin-top: 40px;
-  margin-right: 60px;
 }
 .ok {
   width: 240px;
-  height: 60px;
-  line-height: 60px;
-  font-size: 24px;
   background: #697eff;
   border-radius: 2px;
+  color: #ffffff;
+  border: 1px solid transparent;
+  font-size: 26px;
   margin-top: 40px;
-  color: #fff;
+  padding: 14px 44px;
+  outline: none;
 }
 .form-submited-text {
   font-size: 32px;

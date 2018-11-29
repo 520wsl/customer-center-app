@@ -45,7 +45,6 @@ export default {
       state.videoPlayStatus = isTrue
     },
     selectCAM(state, value) {
-      console.log(11111111111111);
       state.companyAndMobile = value;
     }
   },
