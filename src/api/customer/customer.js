@@ -25,3 +25,8 @@ export const setmobilebysixiid = (customerSixiId, mobile) => {
 export const selectCompanyAndMobile = () => {
   return post("/customer/selectcompanyandmobile", {});
 }
+export const getCompanyListBoss = () => {
+  return post("/company/mycompanylisttoboss", {
+    customerSixiId: "1182862037307360255"
+  });
+}
