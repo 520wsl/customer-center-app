@@ -199,7 +199,7 @@ export default [{
         path: "index",
         name: "personal",
         meta: {
-          title: "我的"
+          title: "我的服务"
         },
         component: r =>
           require.ensure(

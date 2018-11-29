@@ -17,21 +17,21 @@
         <div class="personal-other">
             <a class="item border" href="#">
                 <div>
-                    <img :src="$CDN('/contract_logo.png')">
+                    <img :src="$CDN('/personal-company.png')">
                     <span>我的公司</span>
                 </div>
                 <span>&gt;</span>
             </a>
             <a class="item border" href="#">
                 <div>
-                    <img :src="$CDN('/service_valuation_logo.png')">
+                    <img :src="$CDN('/store-account-password.png')">
                     <span>查询店铺账号密码</span>
                 </div>
                 <span>&gt;</span>
             </a>
             <a class="item border" href="#">
                 <div>
-                    <img :src="$CDN('/work_list_logo.png')">
+                    <img :src="$CDN('/service-sheet.png')">
                     <span>服务工单</span>
                 </div>
                 <span>&gt;</span>

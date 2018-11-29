@@ -17,7 +17,7 @@ export const postEvaluateAdd = ({sixiId, orderNumber, evaluateContent}) => {
 };
 // 评价信息
 export const postEvaluateInfo = ({sixiId, orderNumber}) => {
-  return post("/evaluate/info", {
+  return post("/evaluate/evaluategetone", {
     sixiId,
     orderNumber
   });
