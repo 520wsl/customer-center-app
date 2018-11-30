@@ -4,16 +4,17 @@
     <div class="servicebill" v-for="(el,index) in billList" :key="index">
       <router-link :to="{ name: 'serviceBillInfo', query: { id: el.id,identity:2,companySixiId:companySixiId } }" tag="h3">{{workType[el.workType]}}</router-link>
       <p class="BillId">工单编号{{num}}：
-        <b>{{el.identifier}}</b>
+        <span>{{el.identifier}}</span>
       </p>
       <ul class="item">
-        <li>工单创建时间：{{getTime(el.startTime,'YYYY-MM-DD')}}</li>
+        <li>我的公司：{{el.companyName}}</li>
+        <li>提交时间：{{getTime(el.startTime,'YYYY-MM-DD')}}</li>
         <li>持续时间：{{el.hourSum}}h</li>
         <li>客服人员：{{el.userVo && el.userVo.userName}}</li>
       </ul>
       <p class="status">
         <span>状态：{{handleType[el.type] || ''}}</span>
-        <router-link :to="{ name: 'serviceEvaluationInfo', query: { id: el.id } }" tag="mt-button" class="btn">评价</router-link>
+        <router-link v-if="el.type == 3" :to="{ name: 'serviceEvaluationInfo', query: { id: el.id } }" tag="mt-button" class="btn">评价</router-link>
       </p>
     </div>
   </div>
@@ -103,16 +104,19 @@ export default {
   h3 {
     font-size: 30px;
     margin: 10px 0;
+    color: #6e7790;
   }
   .BillId {
     font-size: 28px;
-    padding-bottom: 52px;
-    b {
-      color: #170000;
+    padding-bottom: 20px;
+    span {
+      color: #6e7790;
     }
   }
   .item {
+    border-top: 2px solid #f4f4f4;
     font-size: 28px;
+    padding-top: 20px;
     margin-bottom: 20px;
     overflow: hidden;
     li {
