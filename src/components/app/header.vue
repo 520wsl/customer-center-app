@@ -53,6 +53,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-around;
+  z-index: 9999;
 }
 .right {
   display: flex;

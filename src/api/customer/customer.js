@@ -11,9 +11,21 @@ function get(url, params) {
 
 // 根据customerSixiId获取客户信息
 export const getcustomerbysixiid = (customerSixiId) => {
-  return post("/customer/getcustomerbysixiid", {
-    customerSixiId
-  });
+    return post("/customer/getcustomerbysixiid", {
+      customerSixiId
+    });
+  }
+// 根据customerSixiId获取我的公司列表
+export const getCompanyList = ({customerSixiId}) => {
+    return post("/company/mycompanylist", {
+        customerSixiId
+    });
+}
+// 切换我的公司
+export const changeMyCompany = ({companySixiId}) => {
+    return post("/customer/switchcompany", {
+        companySixiId
+    });
 }
 // 根据customerSixiId修改手机号码
 export const setmobilebysixiid = (customerSixiId, mobile) => {
@@ -26,7 +38,33 @@ export const selectCompanyAndMobile = () => {
   return post("/customer/selectcompanyandmobile", {});
 }
 export const getCompanyListBoss = () => {
-  return post("/company/mycompanylisttoboss", {
-    customerSixiId: "1182862037307360255"
+  return post("/company/mycompanylisttoboss", {});
+}
+export const addUser = ({
+  account,
+  password
+}) => {
+  return post("/secretstore/add", {
+    account,
+    password,
+    type: "wangwang"
+  });
+}
+export const updateUser = ({
+  account,
+  password
+}) => {
+  return post("/secretstore/update", {
+    account,
+    password,
+    type: "wangwang"
+  });
+}
+export const getUserDetail = ({
+  account
+}) => {
+  return post("/secretstore/detail", {
+    account,
+    type: "wangwang"
   });
 }

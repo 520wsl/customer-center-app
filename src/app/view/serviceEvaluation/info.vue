@@ -28,7 +28,8 @@ export default {
             type: "",
             id: "",
             customerId: "",
-            servicePersonnel: ""
+            servicePersonnel: "",
+            sendtime: ""
         };
     },
     components: { editEvaluation },
@@ -40,6 +41,7 @@ export default {
             this.customerId = this.$route.query.customerId || ""; // 人员id
             this.workSheetId = this.$route.query.workSheetId || ""; // 工单id
             this.name = this.$route.query.servicePersonnel || ""; // 服务人员
+            this.sendtime = this.$route.query.sendtime || ""; // 用于校验是否已经评价参数之一
             if (this.id == 1) {
                 this.typeName = "美工";
                 titleName = "美工";
@@ -59,7 +61,7 @@ export default {
         }
         this.$parent.$parent.setTitle(titleName + "服务评价");
         // 判断工单评价是否评价
-        getCheckEvaluate({ orderNumber: this.workSheetId }).then(res => {
+        getCheckEvaluate({ orderNumber: this.workSheetId, sendtime: this.sendtime }).then(res => {
             if (res.status != 200) {
                 return MessageBox("提示", "服务器繁忙，请稍后再试！");
             }
@@ -113,10 +115,11 @@ export default {
                     postEvaluateAdd({
                         sixiId: this.customerId,
                         orderNumber: this.workSheetId,
-                        evaluateContent: JSON.stringify(this.list)
+                        evaluateContent: JSON.stringify(this.list),
+                        sendtime: this.sendtime
                     }).then(res => {
                         if (res.status != 200) {
-                            return MessageBox("提示", "服务器繁忙，请稍后再试！");
+                            return MessageBox("提示", res.msg);
                         }
                         this.$router.push({
                             name: "serviceEvaluationBreview",
