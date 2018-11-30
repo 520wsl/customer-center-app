@@ -2,12 +2,12 @@
   <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="loading" infinite-scroll-distance="10">
     <span class="noData" v-if="billList.length<=0">暂无数据</span>
     <div class="servicebill" v-for="(el,index) in billList" :key="index">
-      <router-link :to="{ name: 'serviceBillInfo', query: { id: el.id,identity:1,sixiId:sixiId } }" tag="h3">
+      <router-link :to="{ name: 'serviceBillInfo', query: { id: el.id,identity:1,companySixiId:el.companyId } }" tag="h3">
         {{el.title}}
         <span>{{handleType[el.type] || ''}}</span>
       </router-link>
       <p class="BillId">工单编号：
-        <b>{{el.identifier}}</b>
+        <span>{{el.identifier}}</span>
       </p>
       <ul class="item">
         <li>工单类型：{{workType[el.workType]}}</li>
@@ -33,7 +33,7 @@ export default {
       size: 10,
       num: 1,
       count: Number,
-      sixiId: this.$route.query.sixiId || "",
+      // sixiId: this.$route.query.sixiId || "",
       billList: []
     };
   },
@@ -112,8 +112,8 @@ export default {
     padding-bottom: 32px;
     margin-bottom: 20px;
     border-bottom: 2px solid #f4f4f4;
-    b {
-      color: #170000;
+    span {
+      color: #6e7790;
     }
   }
   .item {

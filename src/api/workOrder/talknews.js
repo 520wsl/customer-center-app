@@ -23,9 +23,10 @@ export const getTalknews = ({
 /**
  * 发起信息采集
  * @param workOrderStatus 工单状态
- * @param userSixiId 人员sixiId
+ * @param userSixiId 人员sixiId 用于电话采集
  * @param workSheetId 工单id
  * @param eventType 事件类型 1：电话沟通 2：发起电话采集请求 3：发起账号密码采集请求
+ * @param companySixiId 公司SIXIID 用于密码采集
  */
 export const pickupInformation = (workOrderStatus, userSixiId, workSheetId, eventType, companySixiId) => {
   return post("/talknews/save", {

@@ -72,7 +72,7 @@ export default {
                     companySixiId
                   ).then(e => {
                     if (e.status !== 200) {
-                      this.$messagebox("提示", "服务器繁忙，请稍后再试！");
+                      this.$messagebox("提示", e.msg);
                     }
                     this.$messagebox("提示", e.msg);
                   });
@@ -94,7 +94,7 @@ export default {
                     companySixiId
                   ).then(e => {
                     if (e.status !== 200) {
-                      this.$messagebox("提示", "服务器繁忙，请稍后再试！");
+                      this.$messagebox("提示", e.msg);
                     }
                     this.$messagebox("提示", e.msg);
                   });
