@@ -11,7 +11,8 @@
         <span class="identifierNum">
           工单编号：{{detail.identifier}}
         </span>
-        <mt-button class="btn btn-small btn-purple" @click="editBill()">修改工单</mt-button>
+        <!--客服可见-->
+        <mt-button v-if="identity == 1" class="btn btn-small btn-purple" @click="editBill()">修改工单</mt-button>
       </div>
     </div>
     <!--可滑动，详情以记录-->
@@ -56,8 +57,8 @@
       </router-link>
       <span v-if="detail.handleType == 4 ">已评价</span>
     </div>
-    <!--客服可见-->
-    <tab v-if="detail.executorId && detail.executorId == sixiId && detail.handleType != 1" class="tab" :type="detail.handleType" :companySixiId="detail.userId"></tab>
+    <!-- 客服(执行人)可见 detail.executorId 执行人id  detail.executorId && detail.executorId-->
+    <tab v-if="identity == 1 && detail.handleType != 1" class="tab" :type="detail.handleType" :companySixiId="companySixiId"></tab>
   </div>
 </template>
 <script>
@@ -82,7 +83,7 @@ export default {
       // 身份 1客服，2客户
       identity: this.$route.query.identity,
       id: this.$route.query.id,
-      sixiId: this.$route.query.sixiId,
+      companySixiId: this.$route.query.companySixiId || "",
       detail: {},
       talknews: [],
       num: 1,
@@ -155,7 +156,7 @@ export default {
     // 修改工单
     editBill() {
       let id = this.id; // 工单id
-      let companySixiId = this.detail.userId; // 公司id
+      let companySixiId = this.companySixiId; // 公司id
       let workOrderType = this.detail.workType; // 工单类型
       let identifier = this.detail.identifier; // 工单编号
       let handleType = this.detail.handleType; // 工单状态类型
