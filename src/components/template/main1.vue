@@ -2,7 +2,7 @@
  * @Author: Mad Dragon 395548460@qq.com 
  * @Date: 2018-11-07 23:36:01 
  * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-11-29 21:47:05
+ * @Last Modified time: 2018-11-30 14:26:29
  * @explanatory:  模板页 不带底部按钮
  */
 <template>
@@ -34,7 +34,10 @@ export default {
             stateData,
             route: this.$route
         });
-        console.log("code登录", res);
+        if (res) {
+            console.log("code登录", res);
+            return;
+        }
     }
 };
 </script>

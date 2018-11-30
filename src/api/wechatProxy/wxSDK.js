@@ -12,7 +12,17 @@ export const getWxJSSDKConfig = ({ url }) => {
 	return get("/wx/wxJSSDKConfig", { url });
 };
 
-// 微信 获取 微信用户信息
+// 微信 code 登录
 export const getWxSnsapiUserInfoData = ({ code }) => {
 	return get("/wx/snsapi/userinfo", { code });
+};
+
+// 微信 code 退出
+export const logout = ({ code }) => {
+	return get("/wx/snsapi/userinfo", { code });
+};
+
+// 微信 获取 微信用户信息
+export const getUserInfoData = () => {
+	return post("/weixin/user/userinfo");
 };
