@@ -31,7 +31,7 @@ export default {
             if (res.status != 200) {
                 return MessageBox("提示", "服务器繁忙，请稍后再试！");
             }
-            this.list = res.data[0].evaluateContent;
+            this.list = res.data.evaluateContent || [];
         });
     },
     methods: {}
