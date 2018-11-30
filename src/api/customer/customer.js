@@ -68,3 +68,8 @@ export const getUserDetail = ({
     type: "wangwang"
   });
 }
+
+// 微信 获取 微信用户信息
+export const getUserInfoData = () => {
+	return post("customer/getcustomerinfo");
+};
