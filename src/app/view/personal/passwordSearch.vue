@@ -78,7 +78,7 @@ export default {
       } else {
         const msg = `密码将以短信的形式发送到以下手机上
       <br>手机号：${company.phone}<br>注意：手机号有误，点击
-      <route-link href="//baidu.com" style="color:#3385ff;">变更手机号</route-link>`
+      <a href="//baidu.com" style="color:#3385ff;">变更手机号</a>`
         MessageBox.confirm(msg).then(action => {
           console.log(value, action)
         }).catch(err => {

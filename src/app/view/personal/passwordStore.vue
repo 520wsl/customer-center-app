@@ -8,9 +8,7 @@
       <div class="store-info">
         <p class="store-info-item">
           <span class="item-key">店铺账号：</span>
-          <span style="width:60%;" class="item-value">
-            <input style="border:0;outline:none;" type="text" v-model="params.zhanghao">
-          </span>
+          <span style="width:60%;" class="item-value">{{findCompanyAccount}}</span>
         </p>
         <p class="store-info-item">
           <span class="item-key">登陆密码：</span>
@@ -35,24 +33,77 @@
       </div>
       <div style="text-align:center;">
         <mt-button plain type="default" size="small" class="cancel">取消</mt-button>
-        <mt-button size="small" type="default" class="ok">确定</mt-button>
+        <mt-button size="small" @click="addUser" type="default" class="ok">确定</mt-button>
       </div>
     </div>
   </div>
 </template>
 <script>
+import {
+  addUser,
+  updateUser,
+  getUserDetail
+} from "@/api/customer/customer";
+import { mapState, mapActions } from "vuex";
 export default {
+  computed: {
+    ...mapState({
+      companyAndMobile: state => state.Servicebill.companyAndMobile,
+    }),
+    findCompanyAccount() {
+      const sixiId = this.companySixiId;
+      if (!this.companyAndMobile.companys) {
+        return ''
+      }
+      const res = [...this.companyAndMobile.companys].filter(item => {
+        return item.sixiId == sixiId
+      })[0] || {};
+      return res.account
+    }
+  },
   data() {
     return {
       showpassword: false,
+      companySixiId: '',
       params: {
-        zhanghao: '',
+        account: '',
         password: ''
       }
     }
   },
   created() {
+    this.$store.dispatch("Servicebill/selectCompanyAndMobile");
     this.$parent.$parent.setTitle("店铺账号密码");
+    this.companySixiId = this.$route.query.companySixiId || '';
+  },
+  mounted() {
+    this.getUserDetail();
+  },
+  methods: {
+    async addUser() {
+      let res = await addUser({
+        ...this.params,
+        account: this.findCompanyAccount
+      });
+      if (res.status === 200) {
+        console.log(res)
+      }
+    },
+    async updateUser() {
+      let res = await updateUser({
+        ...this.params,
+        account: this.findCompanyAccount
+      });
+      if (res.status === 200) {
+        console.log(res)
+      }
+    },
+    async getUserDetail() {
+      let res = await getUserDetail({ account: this.findCompanyAccount });
+      if (res.status === 200) {
+        console.log(res)
+      }
+    }
   }
 }
 </script>
