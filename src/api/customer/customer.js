@@ -26,7 +26,33 @@ export const selectCompanyAndMobile = () => {
   return post("/customer/selectcompanyandmobile", {});
 }
 export const getCompanyListBoss = () => {
-  return post("/company/mycompanylisttoboss", {
-    customerSixiId: "1182862037307360255"
+  return post("/company/mycompanylisttoboss", {});
+}
+export const addUser = ({
+  account,
+  password
+}) => {
+  return post("/secretstore/add", {
+    account,
+    password,
+    type: "wangwang"
+  });
+}
+export const updateUser = ({
+  account,
+  password
+}) => {
+  return post("/secretstore/update", {
+    account,
+    password,
+    type: "wangwang"
+  });
+}
+export const getUserDetail = ({
+  account
+}) => {
+  return post("/secretstore/detail", {
+    account,
+    type: "wangwang"
   });
 }
