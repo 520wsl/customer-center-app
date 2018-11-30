@@ -1,8 +1,7 @@
 <template>
     <div>
-        <!-- <sixiheader title='我的公司'></sixiheader> -->
         <div class="complany-list" v-if="companyList.length != 0">
-            <div v-for="(item,index) in companyList" :key="index" class="company-item">
+            <div v-for="(item,index) in companyList" :key="index" class="company-item" @click="changeCompany(index)">
                 <div class="item-title">
                     <div>
                         <img :src="$CDN('/company.png')" alt="">
@@ -18,7 +17,7 @@
                     <div class="item">
                         <!-- eslint-disable-next-line -->
                         <span>地　　区:</span>
-                        <b>{{item.province + " "+item.city}}</b>
+                        <b>{{item.provinceName + " "+item.cityName}}</b>
                     </div>
                     <div class="item">
                         <!-- eslint-disable-next-line -->
@@ -27,7 +26,8 @@
                     </div>
                     <div class="item">
                         <span>主营行业:</span>
-                        <b>{{item.major}}</b>
+                        <!-- 目前暂无 -->
+                        <b></b>
                     </div>
                 </div>
             </div>
@@ -42,27 +42,42 @@
     </div>
 </template>
 <script>
-// import sixiheader from "@/components/app/header";
+import { getCompanyList, changeMyCompany } from "@/api/customer/customer";
 export default {
     data() {
         return {
-            companyList: [
-                {
-                    name: '杭州末公司',
-                    url: "https://shop803312312312312313123338484m60.1688.com",
-                    province: '江苏',
-                    city: '常州市',
-                    account: "xindingbaozhuangcailiao",
-                    major: "包装"
-                }
-            ]
+            companyList: []
         };
     },
     created() {
         this.$parent.$parent.setTitle("我的公司");
+        let customerSixiId = this.$route.query.customerSixiId
+        if (customerSixiId) {
+            this.getCompanyList(customerSixiId);
+        }
     },
     components: {},
-    methods: {}
+    methods: {
+        async changeCompany(index) {
+            let param = {
+                companySixiId: this.companyList[index].sixiId
+            }
+            let res = await changeMyCompany(param);
+            if (res.status != 200) {
+                return MessageBox("提示", res.msg);
+            }
+            this.$router.push({
+                name: 'personalServie'
+            })
+        },
+        async getCompanyList(customerSixiId) {
+            let res = await getCompanyList({ customerSixiId });
+            if (res.status != 200) {
+                return MessageBox("提示", res.msg);
+            }
+            this.companyList = res.data || [];
+        }
+    }
 };
 </script>
 <style scoped>

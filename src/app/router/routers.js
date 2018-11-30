@@ -197,7 +197,7 @@ export default [{
     component: Main1,
     children: [{
         path: "index",
-        name: "personal",
+        name: "personalServie",
         meta: {
           title: "我的服务"
         },

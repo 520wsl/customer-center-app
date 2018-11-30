@@ -5,18 +5,18 @@
             <div class="message-item">
                 <span>
                     <b>*</b>您的称呼：</span>
-                <input type="text" maxlength="12" v-model="content.name">
+                <input type="text" maxlength="12" v-model="params.name">
             </div>
             <div class="line"></div>
             <div class="message-item">
                 <span>
                     <b>*</b>联系电话：</span>
-                <input type="number" maxlength="11" v-model="content.phone">
+                <input type="number" maxlength="11" v-model="params.phone">
             </div>
             <div class="line"></div>
             <div class="message-item">
                 <span>留言：</span>
-                <textarea maxlength="120" v-model="content.message"></textarea>
+                <textarea maxlength="120" v-model="params.context"></textarea>
             </div>
             <div class="message-header">
                 <img :src="$CDN('/incustomlist_cooperation_icon.png')" alt="">
@@ -36,11 +36,6 @@ import { MessageBox } from "mint-ui";
 export default {
     data() {
         return {
-            content: {
-                name: "",
-                phone: "",
-                message: ""
-            },
             params: {
                 name: "",
                 context: "",
@@ -53,14 +48,11 @@ export default {
     methods: {
         sentMessage() {
             if (
-                this.content.name == "" ||
-                this.content.phone == ""
+                this.params.name == "" ||
+                this.params.phone == ""
             ) {
                 return MessageBox("提示", "请填写留言必填信息！");
             }
-            this.params.context = this.content.message || '';
-            this.params.name = this.content.name || '';
-            this.params.phone = this.content.phone + "" || '';
             sentMessageData(this.params).then(res => {
                 if (res.status != 200) {
                     return MessageBox("提示", "请稍后再试！");
@@ -183,7 +175,7 @@ export default {
 }
 </style>
 <style>
-#app{
-    height: auto;
+#app {
+  height: auto;
 }
 </style>

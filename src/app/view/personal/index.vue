@@ -15,34 +15,34 @@
             </div>
         </div>
         <div class="personal-other">
-            <a class="item border" href="#">
+            <router-link class="item border" :to="{name: 'personalCompany',query:{customerSixiId:'123'}}">
                 <div>
                     <img :src="$CDN('/personal-company.png')">
                     <span>我的公司</span>
                 </div>
                 <span>&gt;</span>
-            </a>
-            <a class="item border" href="#">
+            </router-link>
+            <router-link class="item border" :to='{name:"passwordsearch"}'>
                 <div>
                     <img :src="$CDN('/store-account-password.png')">
                     <span>查询店铺账号密码</span>
                 </div>
                 <span>&gt;</span>
-            </a>
-            <a class="item border" href="#">
+            </router-link>
+            <router-link class="item border" :to='{name:"serviceBill",query:{companySixiId:"123"}}'>
                 <div>
                     <img :src="$CDN('/service-sheet.png')">
                     <span>服务工单</span>
                 </div>
                 <span>&gt;</span>
-            </a>
-            <a class="item border" href="#">
+            </router-link>
+            <!-- <a class="item border" href="#">
                 <div>
                     <img :src="$CDN('/qustion_logo.png')">
                     <span>常见问题</span>
                 </div>
                 <span>&gt;</span>
-            </a>
+            </a> -->
         </div>
     </div>
 </template>
