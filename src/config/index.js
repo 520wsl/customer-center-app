@@ -2,7 +2,7 @@
  * @Author: Mad Dragon 395548460@qq.com
  * @Date: 2018-11-07 22:13:25
  * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-11-12 09:38:57
+ * @Last Modified time: 2018-11-30 11:02:56
  * @explanatory:  config
  */
 export default {
@@ -11,5 +11,6 @@ export default {
     pro: "/api"
   },
   CDN: "http://custom-center.oss-cn-hangzhou.aliyuncs.com/customerCenter/image",
-  AUDIOCDN:"http://wechat-base-images.oss-cn-hangzhou.aliyuncs.com/"
+  AUDIOCDN:"http://wechat-base-images.oss-cn-hangzhou.aliyuncs.com/",
+  storeagewxUserInfoKey: "wxUserInfo"
 };
