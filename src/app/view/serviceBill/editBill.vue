@@ -74,7 +74,9 @@ export default {
     })
   },
   components: {
+     /* eslint-disable */
     myPicker
+     /* eslint-disable */
   },
   data() {
     return {

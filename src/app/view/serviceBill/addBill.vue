@@ -97,7 +97,9 @@ import { saveWorkOrder } from "@/api/workOrder/workOrder";
 import myPicker from "@/components/app/public/myPicker"
 export default {
   components: {
-    myPicker
+     /* eslint-disable */
+        myPicker
+        /* eslint-disable */
   },
   computed: {
     ...mapState({

@@ -2,19 +2,40 @@
  * @Author: Mad Dragon 395548460@qq.com 
  * @Date: 2018-11-07 23:36:01 
  * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-11-10 17:56:50
+ * @Last Modified time: 2018-11-29 21:47:05
  * @explanatory:  模板页 不带底部按钮
  */
 <template>
-  <div id="app">
-    <router-view></router-view>
-  </div>
+    <div id="app">
+        <router-view></router-view>
+    </div>
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapActions } = createNamespacedHelpers("User");
 export default {
-  name: "app",
-  components: {}
+    name: "app",
+    components: {},
+    methods: {
+        ...mapActions(["loginScheduler"])
+    },
+    created() {},
+    async mounted() {
+        let route = this.$route;
+        let query = route.query;
+        let codeData = query.code || "";
+        let stateData = query.state || "enterpriseWeChat";
+        if (!codeData && !stateData) {
+            return;
+        }
+        let res = await this.loginScheduler({
+            codeData,
+            stateData,
+            route: this.$route
+        });
+        console.log("code登录", res);
+    }
 };
 </script>
 
