@@ -2,7 +2,7 @@
  * @Author: Mad Dragon 395548460@qq.com
  * @Date: 2018-11-08 10:50:44
  * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-11-30 13:36:45
+ * @Last Modified time: 2018-11-30 14:23:47
  * @explanatory:  store demo
  */
 import {
@@ -95,7 +95,6 @@ export default {
 								"[debug]:getWxSnsapiUserInfoData",
 								res
 							);
-							alert("code登录", res.msg);
 							return false;
 						}
 
