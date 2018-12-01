@@ -137,13 +137,25 @@ export default {
         this.$messagebox("提示", '请输入11位手机号');
         return false;
       }
-      let res = await saveWorkOrder(this.params);
+      let res = await saveWorkOrder({
+        ...this.params,
+        companyName: this.findCompanyName(this.params.companySixiId)
+      });
       if (res.status === 200) {
         this.state === 1;
         this.staffName = res.data.staffName;
       } else {
         this.$messagebox("提示", res.msg);
       }
+    },
+    findCompanyName(sixiId) {
+      if (this.companyList.length <= 0) {
+        return ''
+      }
+      const res = [...this.companyList].filter(item => {
+        return item.sixiId == sixiId
+      })[0] || {};
+      return res.name
     },
     // 获取公司列表
     async getCompanyList() {

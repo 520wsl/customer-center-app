@@ -30,6 +30,19 @@
             >
           </a>
         </p>
+        <p class="store-info-item">
+          <span style="vertical-align: top;" class="item-key">验证码：</span>
+          <span style="width:40%;vertical-align: top;" class="item-value">
+            <input style="border:0;outline:none;" type="text" v-model="params.captcha">
+          </span>
+          <a
+            class="code-a"
+            style="display:inline-block;;width:30%;text-align:center;"
+            @click="getCode"
+          >
+            <img class="code" width="100%" :src="captcha">
+          </a>
+        </p>
       </div>
       <div v-if="isAdd" style="text-align:center;">
         <mt-button plain type="default" size="small" class="cancel">取消</mt-button>
@@ -54,11 +67,13 @@ export default {
     return {
       isAdd: true,
       showpassword: false,
+      captcha: '/api/wechat-proxy-service/verifyCode/get',
       companySixiId: '',
       companyAndMobile: {},
       params: {
         account: '',
-        password: ''
+        password: '',
+        captcha: ''
       }
     }
   },
@@ -86,6 +101,9 @@ export default {
   mounted() {
   },
   methods: {
+    getCode() {
+      this.captcha = '/api/wechat-proxy-service/verifyCode/get?' + Math.random()
+    },
     findCompanyAccount(sixiId) {
       if (!this.companyAndMobile.companys) {
         return ''
@@ -195,5 +213,9 @@ export default {
   margin-top: 40px;
   padding: 14px 44px;
   outline: none;
+}
+.code-a,
+.code {
+  height: 60px;
 }
 </style>

@@ -12,13 +12,13 @@ function get(url, params) {
 // 创建工单
 export const saveWorkOrder = ({
   workOrderType,
-  context,
+  mobile,
   companySixiId,
   companyName
 }) => {
   return post("/workorder/save", {
     workOrderType,
-    context,
+    mobile,
     companySixiId,
     companyName
   });
