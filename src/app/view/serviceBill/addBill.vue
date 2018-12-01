@@ -61,7 +61,7 @@
         客服人员{{staffName}}，稍后将与您取得联系，请确保您
         的手机号{{params.mobile}}，保持畅通
       </p>
-      <p v-if="hasTelephone" class="msg-go">
+      <p v-if="!hasTelephone" class="msg-go">
         <span>为了更好的为您提供服务，</span>
         <router-link
           style="color:#fc7c1f;"
