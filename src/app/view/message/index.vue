@@ -11,7 +11,7 @@
             <div class="message-item">
                 <span>
                     <b>*</b>联系电话：</span>
-                <input type="number" maxlength="11" v-model="params.phone">
+                <input type="number" maxlength="11" v-model="params.mobile">
             </div>
             <div class="line"></div>
             <div class="message-item">
@@ -39,8 +39,7 @@ export default {
             params: {
                 name: "",
                 context: "",
-                mobile: "text",
-                workOrderType: 6
+                mobile: ""
             }
         };
     },
@@ -63,8 +62,6 @@ export default {
     },
     created() {
         this.$parent.$parent.setTitle("业务合作");
-        this.params.openId = this.$route.query.openId || "";
-        this.params.unionId = this.$route.query.unionId || "";
     }
 };
 </script>
