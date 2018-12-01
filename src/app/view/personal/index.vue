@@ -7,10 +7,10 @@
                 <div v-else class="default-img"></div>
             </div>
             <div class="company-info">
-                <div>{{companyName}}</div>
-                <div v-if="phone">{{phone}}</div>
+                <div>{{info.companyName}}</div>
+                <div v-if="info.mobile">{{info.mobile}}</div>
                 <div v-else>
-                    <mt-button class="btn" type='default'>点击绑定手机号</mt-button>
+                    <mt-button class="btn" type='default' @click="bindPhone">点击绑定手机号</mt-button>
                 </div>
             </div>
         </div>
@@ -22,7 +22,7 @@
                 </div>
                 <span>&gt;</span>
             </router-link>
-            <router-link class="item border" :to='{name:"passwordsearch"}'>
+            <router-link v-if="info.roll == 1" class="item border" :to='{name:"passwordsearch"}'>
                 <div>
                     <img :src="$CDN('/store-account-password.png')">
                     <span>查询店铺账号密码</span>
@@ -47,25 +47,44 @@
     </div>
 </template>
 <script>
+import config from "@/config";
+import { getItem } from "@/libs/util/session";
 export default {
     data() {
         return {
             companyUrl: "",
-            companyName: "公司公司公司公司公司公司公司公司公司公司公司公司公司公司",
-            phone: "",
-            sales: {
-                onlineSales: "0.00",
-                onlineNum: "0",
-                offlineSales: "1.00",
-                offlineNum: "1"
+            info: {
+                callName: "",
+                companyName: "",
+                mobile: "",
+                role: null,
+                sex: null,
+                wechatAvatar: "",
+                wechatNickname: ""
             }
         };
     },
-    created() {
+    mounted() {
         this.$parent.$parent.setTitle("我的服务");
+        let res = getItem(config.storeagewxUserInfoKey)
+        if (res) {
+            this.info = res;
+        }
+        console.log(this.$store.state.User[config.storeagewxUserInfoKey], this.$store.state.User.avatorImgPath)
+        this.companyUrl = this.info.wechatAvatar ? this.info.wechatAvatar : this.$store.state.User.avatorImgPath
+        console.log(this.$store.state.User.avatorImgPath)
     },
     components: {},
-    methods: {}
+    methods: {
+        bindPhone() {
+            this.$router.push({
+                name: "getPhone",
+                query: {
+                    userSixiId: '123'
+                }
+            })
+        }
+    }
 };
 </script>
 <style scoped>
@@ -91,7 +110,7 @@ export default {
 }
 .company-image .img {
   display: block;
-  width: 12px;
+  width: 120px;
   height: 120px;
   margin: 6px;
   border-radius: 50%;
