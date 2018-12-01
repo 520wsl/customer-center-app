@@ -1,4 +1,5 @@
 import config from "@/config";
+import { MessageBox } from "mint-ui";
 export const randomPath = (name, size = "") => {
   const n = Math.floor(Math.random() * 5) + 1;
   return `http://${n}.img.dianjiangla.com/assets/${name}${size}`;
@@ -78,4 +79,23 @@ export const getUUID = function (len, radix) {
     }
   }
   return uuid.join('');
+};
+// 登录信息过期，跳转到登录页 仅限手机端
+export const judgeLogin = function () {
+    if(isMobile()){
+        MessageBox.confirm("登录失败,是否重新登录?").then(action => {
+            if(action === "confirm"){
+                window.location.href = config.toLoginUrl;
+            }
+        }).catch(action=>{
+            console.log(action);
+        });
+    }
+};
+// 判断当前使用页面的是手机 还是PC
+export const isMobile = function () {
+    let flag = navigator.userAgent.match(
+        /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+    );
+    return flag;
 };
