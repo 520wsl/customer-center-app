@@ -8,9 +8,7 @@
       <div class="store-info">
         <p class="store-info-item">
           <span class="item-key">店铺账号：</span>
-          <span style="width:60%;" class="item-value">
-            <input style="border:0;outline:none;" type="text" v-model="params.zhanghao">
-          </span>
+          <span style="width:60%;" class="item-value">{{params.account}}</span>
         </p>
         <p class="store-info-item">
           <span class="item-key">登陆密码：</span>
@@ -33,31 +31,104 @@
           </a>
         </p>
       </div>
-      <div style="text-align:center;">
+      <div v-if="isAdd" style="text-align:center;">
         <mt-button plain type="default" size="small" class="cancel">取消</mt-button>
-        <mt-button size="small" type="default" class="ok">确定</mt-button>
+        <mt-button size="small" @click="addUser" type="default" class="ok">确定</mt-button>
+      </div>
+      <div v-if="!isAdd" style="text-align:center;">
+        <mt-button size="small" @click="updateUser" type="default" class="ok">修改</mt-button>
       </div>
     </div>
   </div>
 </template>
 <script>
+import {
+  addUser,
+  updateUser,
+  getUserDetail,
+  selectCompanyAndMobile
+} from "@/api/customer/customer";
 export default {
+  computed: {},
   data() {
     return {
+      isAdd: true,
       showpassword: false,
+      companySixiId: '',
+      companyAndMobile: {},
       params: {
-        zhanghao: '',
+        account: '',
         password: ''
       }
     }
   },
-  created() {
+  beforeCreate() {
+
+  },
+  async created() {
     this.$parent.$parent.setTitle("店铺账号密码");
+    this.companySixiId = this.$route.query.companySixiId || '';
+    const res = await selectCompanyAndMobile();
+    if (res.status == 200) {
+      this.companyAndMobile = res.data || {}
+      this.params.account = this.findCompanyAccount(this.companySixiId)
+      const results = await getUserDetail({ account: this.params.account });
+      if (results.status == 200) {
+        if (!results.data.password) {
+          this.isAdd = true;
+        } else {
+          this.params.password = results.data.password
+          this.isAdd = false;
+        }
+      }
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    findCompanyAccount(sixiId) {
+      if (!this.companyAndMobile.companys) {
+        return ''
+      }
+      const res = [...this.companyAndMobile.companys].filter(item => {
+        return item.sixiId == sixiId
+      })[0] || {};
+      return res.account
+    },
+    async addUser() {
+      if (!this.params.account) {
+        this.$messagebox("提示", '账号不能为空');
+        return false
+      }
+      if (!this.params.password) {
+        this.$messagebox("提示", '密码不能为空');
+        return false
+      }
+      let res = await addUser(this.params);
+      if (res.status === 200) {
+        console.log(res)
+      }
+    },
+    async updateUser() {
+      if (!this.params.account) {
+        this.$messagebox("提示", '账号不能为空');
+        return false
+      }
+      if (!this.params.password) {
+        this.$messagebox("提示", '密码不能为空');
+        return false
+      }
+      let res = await updateUser(this.params);
+      if (res.status === 200) {
+        console.log(res)
+      }
+    }
   }
 }
 </script>
 <style scoped>
 .password-store {
+  margin-top: 20px;
   border-top: 1px solid transparent;
   height: 100%;
   background: #fff;
@@ -65,7 +136,6 @@ export default {
 .msg-store-item {
   background: #fff;
   padding: 30px;
-  margin-top: 20px;
 }
 .msg-store {
   margin: 10px auto;
