@@ -45,7 +45,7 @@
         </p>
       </div>
       <div v-if="isAdd" style="text-align:center;">
-        <mt-button plain type="default" size="small" class="cancel">取消</mt-button>
+        <mt-button plain type="default" @click="reset" size="small" class="cancel">重置</mt-button>
         <mt-button size="small" @click="addUser" type="default" class="ok">确定</mt-button>
       </div>
       <div v-if="!isAdd" style="text-align:center;">
@@ -101,6 +101,10 @@ export default {
   mounted() {
   },
   methods: {
+    reset() {
+      this.params.password = "";
+      this.params.captcha = "";
+    },
     getCode() {
       this.captcha = '/api/wechat-proxy-service/verifyCode/get?' + Math.random()
     },
@@ -124,7 +128,7 @@ export default {
       }
       let res = await addUser(this.params);
       if (res.status === 200) {
-        console.log(res)
+        this.$messagebox("提示", res.msg);
       }
     },
     async updateUser() {
@@ -138,7 +142,7 @@ export default {
       }
       let res = await updateUser(this.params);
       if (res.status === 200) {
-        console.log(res)
+        this.$messagebox("提示", res.msg);
       }
     }
   }
