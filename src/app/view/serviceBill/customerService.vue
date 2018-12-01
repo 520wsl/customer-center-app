@@ -33,7 +33,7 @@ export default {
       size: 10,
       num: 1,
       count: Number,
-      // sixiId: this.$route.query.sixiId || "",
+      sixiId: this.$route.query.sixiId || "",
       billList: []
     };
   },
