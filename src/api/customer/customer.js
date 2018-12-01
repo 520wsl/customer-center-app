@@ -16,10 +16,8 @@ export const getcustomerbysixiid = (customerSixiId) => {
     });
   }
 // 根据customerSixiId获取我的公司列表
-export const getCompanyList = ({customerSixiId}) => {
-    return post("/company/mycompanylist", {
-        customerSixiId
-    });
+export const getCompanyList = () => {
+    return post("/company/mycompanylist", {});
 }
 // 切换我的公司
 export const changeMyCompany = ({companySixiId}) => {

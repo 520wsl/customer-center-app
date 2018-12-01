@@ -15,21 +15,21 @@
             </div>
         </div>
         <div class="personal-other">
-            <router-link class="item border" :to="{name: 'personalCompany',query:{customerSixiId:'123'}}">
+            <router-link class="item border" :to="{name: 'personalCompany'}">
                 <div>
                     <img :src="$CDN('/personal-company.png')">
                     <span>我的公司</span>
                 </div>
                 <span>&gt;</span>
             </router-link>
-            <router-link v-if="info.roll == 1" class="item border" :to='{name:"passwordsearch"}'>
+            <router-link v-if="info.role == 1" class="item border" :to='{name:"passwordsearch"}'>
                 <div>
                     <img :src="$CDN('/store-account-password.png')">
                     <span>查询店铺账号密码</span>
                 </div>
                 <span>&gt;</span>
             </router-link>
-            <router-link class="item border" :to='{name:"serviceBill",query:{companySixiId:"123"}}'>
+            <router-link class="item border" :to='{name:"serviceBill"}'>
                 <div>
                     <img :src="$CDN('/service-sheet.png')">
                     <span>服务工单</span>
@@ -49,42 +49,45 @@
 <script>
 import config from "@/config";
 import { getItem } from "@/libs/util/session";
+import { getUserInfoData } from "@/api/customer/customer";
+
 export default {
     data() {
         return {
-            companyUrl: "",
-            info: {
-                callName: "",
-                companyName: "",
-                mobile: "",
-                role: null,
-                sex: null,
-                wechatAvatar: "",
-                wechatNickname: ""
-            }
         };
     },
-    created() {
+    computed: {
+        info: function () {
+            return this.$store.state.User[config.storeagewxUserInfoKey]
+        },
+        companyUrl: function () {
+            return this.$store.state.User.avatorImgPath;
+        }
+    },
+    mounted() {
         // 方便调试 勿删
-        console.log('微信',"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3c0c1aef00b3d175&redirect_uri=http://workapp.sixi.com/personal/index&response_type=code&scope=snsapi_userinfo&state=weChat&connect_redirect=1#wechat_redirect")
+        // console.log('微信', "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3c0c1aef00b3d175&redirect_uri=http://workapp.sixi.com/personal/index&response_type=code&scope=snsapi_userinfo&state=weChat&connect_redirect=1#wechat_redirect")
         this.$parent.$parent.setTitle("我的服务");
-        // let res = getItem(config.storeagewxUserInfoKey)
-        // if (res) {
-        //     this.info = res;
-        // }
-        // console.log(this.$store.state.User[config.storeagewxUserInfoKey], this.$store.state.User.avatorImgPath)
-        // this.companyUrl = this.info.wechatAvatar ? this.info.wechatAvatar : this.$store.state.User.avatorImgPath
+        let res = getItem(config.storeagewxUserInfoKey)
+        console.log(res);
+        this.getInfo();
+        // console.log(this.$store.state.User[config.storeagewxUserInfoKey], res)
         // console.log(this.$store.state.User.avatorImgPath)
     },
     components: {},
     methods: {
         bindPhone() {
             this.$router.push({
-                name: "getPhone",
-                query: {
-                    userSixiId: '123'
-                }
+                name: "getPhone"
             })
+        },
+        async getInfo() {
+            let res = await getUserInfoData();
+            if (res.status == 200) {
+                return MessageBox("提示", res.msg);
+            }
+            this.$store.commit("setUserInfo", res.data);
+            this.$store.commit("setAvator", res.data.wechatAvatar);
         }
     }
 };
