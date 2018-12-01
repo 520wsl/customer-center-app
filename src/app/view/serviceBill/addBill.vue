@@ -1,213 +1,206 @@
 <template>
   <div class="add-bill">
-    <div v-if="!isSubmited" class="info">
-      <img :src="$CDN('/company.png')">
-      <p class="question-title">
-        <span class="user-name">王麻子</span>
-        <span>您好，请确认您要咨询的问题！</span>
-      </p>
-      <div style="text-align:center;">
-        <button class="select-btn" @click="companyPopupVisible = true">
-          {{params.companySixiId?findCompanyName(params.companySixiId): '请选择您绑定的公司'}}
-          <span
-            class="want-to-btm mint-button-icon"
-          >
-            <i class="mintui mintui-back"></i>
-          </span>
-        </button>
+    <div v-if="companyList.length>0 && state ===0">
+      <div class="avator-img">
+        <img class="avator-img-path" :src="avatorImgPath">
       </div>
-      <div style="text-align:center;">
-        <button class="select-btn" @click="popupVisible = true">
-          {{params.workOrderType?findWorkOrderTypeName(params.workOrderType): '请确认您要咨询的问题'}}
-          <span
-            class="want-to-btm mint-button-icon"
-          >
-            <i class="mintui mintui-back"></i>
-          </span>
-        </button>
-      </div>
-      <div class="textarea-div">
-        <span>
-          <textarea
-            v-model="params.context"
-            placeholder="问题的描述可以写在这里哦"
-            cols="30"
-            rows="10"
-            maxlength="120"
-          ></textarea>
-        </span>
-      </div>
-      <div class="message-info">
-        <p
-          v-if="companyAndMobile.status===3"
-          class="text"
-        >注意：为了更好的为您提供服务，请联系我们的业务员，将您的合作公司跟您的微信做绑定操作</p>
-        <p v-if="companyAndMobile.status===2" class="text">
-          注意：为了更好的为您提供服务，请绑定您的手机号。
-          <a style="color:#697eff;">绑定手机号</a>
+      <div>
+        <p class="question-title">
+          <span class="user-name">{{name}}</span>
+          <span>您好，请确认客服工单！</span>
         </p>
       </div>
+      <div>
+        <mt-radio
+          class="my-company"
+          title="我的公司："
+          v-model="params.companySixiId"
+          :options="companyList"
+        ></mt-radio>
+      </div>
+      <div>
+        <div class="mint-radiolist-title">我要呼叫：</div>
+        <div class="mint-radiolist-title">
+          <ul>
+            <li class="work-order-item" v-for="(item,index) in workOrderTypeList" :key="index">
+              <div
+                :class="params.workOrderType==item.value?'work-order-item-checked':null"
+                @click="params.workOrderType=item.value"
+              >
+                {{item.label}}
+                <img
+                  class="item-img"
+                  v-if="params.workOrderType==item.value"
+                  :src="$CDN('/success_icon.png')"
+                >
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="mint-radiolist-title">我的手机号：</div>
+        <div class="mobile-border" style="padding:8px">
+          <input class="my-moblie" v-model="params.mobile" type="text" placeholder="请输入您的手机号">
+        </div>
+      </div>
       <div style="text-align:center;">
-        <mt-button plain type="default" size="small" class="cancel">取消</mt-button>
-        <mt-button size="small" @click="save" type="default" class="ok">确定</mt-button>
+        <button size="small" @click="cancel" type="default" class="cancel">取消</button>
+        <button size="small" @click="save" type="default" class="ok">确定</button>
       </div>
     </div>
-    <div v-else class="form-submited">
+    <div class="null-info" v-if="companyList.length<=0">
+      <img class="null-info-img" :src="$CDN('/null-icon.png')">
+      <p>非常抱歉，您的微信号还未关联公司！</p>
+      <div class="msg-store">注：请联系我们的业务员，将您的合作公司跟您的微信做关联操作</div>
+    </div>
+    <div class="form-submited" v-if="companyList.length>0 && state ===1">
       <img :src="$CDN('/success_icon.png')">
       <p class="form-submited-text">您的问题，已经提交成功！</p>
-      <p
-        v-if="companyAndMobile.status===1 || companyAndMobile.status===3"
-        class="form-submited-text-msg"
-      >
-        客服人员{{subParams.staffName}}，稍后将与您取得联系，请确保您
-        的手机号{{subParams.mobile}}，保持畅通
+      <p class="form-submited-text-msg">
+        客服人员{{staffName}}，稍后将与您取得联系，请确保您
+        的手机号{{params.mobile}}，保持畅通
       </p>
-      <p
-        v-if="companyAndMobile.status===1 || companyAndMobile.status===3"
-        class="form-submited-text-msg"
-      >
-        如果手机号有误，请及时变更手机号
-        <a style="color:#697eff;">变更手机号</a>
-      </p>
-      <p v-if="companyAndMobile.status===2" class="form-submited-text-msg">
-        客服人员{{subParams.staffName}}，稍后将与您取得联系为了更好的为您提供服务，请绑定您的手机号
-        <a style="color:#697eff;">绑定手机号</a>
+      <p v-if="!hasTelephone" class="msg-go">
+        <span>为了更好的为您提供服务，</span>
+        <router-link
+          style="color:#fc7c1f;"
+          :to="{name:'getPhone',query:{userSixiId:params.companySixiId}}"
+        >请绑定您的手机号</router-link>
       </p>
     </div>
-    <my-picker
-      v-if="popupVisible"
-      :list="workSheetTypeList"
-      :get-item="getWorkSheet"
-      v-model="popupVisible"
-    ></my-picker>
-    <my-picker
-      v-if="companyPopupVisible"
-      :list="[...companyAndMobile.companys]"
-      valueName="name"
-      :get-item="getCompany"
-      v-model="companyPopupVisible"
-    ></my-picker>
   </div>
 </template>
 
 <script>
-import { Button, Popup, Picker } from 'mint-ui';
-import { mapState, mapActions } from "vuex";
+import { Radio } from 'mint-ui';
 import { saveWorkOrder } from "@/api/workOrder/workOrder";
-import myPicker from "@/components/app/public/myPicker"
+import { mapState, mapActions } from "vuex";
+import { selectCompanyAndMobile } from "@/api/customer/customer";
 export default {
-  components: {
-     /* eslint-disable */
-        myPicker
-        /* eslint-disable */
-  },
+  components: {},
   computed: {
     ...mapState({
-      workSheetTypeList: state => state.Servicebill.workSheetType,
-      companyAndMobile: state => state.Servicebill.companyAndMobile,
-    }),
-    slots() {
-      let dateSlots = [
-        {
-          flex: 1,
-          values: this.workSheetTypeList,
-          className: 'question-slot',
-          textAlign: 'center'
-        }
-      ];
-      return dateSlots
-    },
-    companyslots() {
-      let dateSlots = [
-        {
-          flex: 1,
-          values: this.companyAndMobile.companys,
-          className: 'question-slot',
-          textAlign: 'center'
-        }
-      ];
-      return dateSlots
-    }
+      avatorImgPath: state => {
+        return state.User.wxUserInfo.wechatAvatar || state.User.avatorImgPath
+      },
+      name: state => {
+        return state.User.wxUserInfo.callName || state.User.wxUserInfo.wechatNickname || '客户'
+      }
+    })
   },
   data() {
     return {
-      isSubmited: false,
-      subParams: {
-        staffName: '',
-        mobile: ''
-      },
-      popupVisible: false,
-      companyPopupVisible: false,
+      state: 1,
+      staffName: '',
+      hasTelephone: false,
+      // 公司列表
+      companyList: [],
+      // 工单列表
+      workOrderTypeList: [
+        {
+          label: '客户主管',
+          value: 2
+        },
+        {
+          label: '运营专员',
+          value: 5
+        }
+      ],
+      // 提交信息
       params: {
-        workOrderType: null,
+        workOrderType: 2,
         companySixiId: null,
-        context: '',
+        mobile: '',
         companyName: null
       }
     }
   },
   created() {
     this.$parent.$parent.setTitle("创建客服工单");
-    this.getUserInfo();
+    this.getCompanyList();
   },
   methods: {
-    getUserInfo() {
-      this.$store.dispatch("Servicebill/selectCompanyAndMobile");
+    cancel() {
+      this.$router.push({ name: 'personalServie' })
     },
-    findWorkOrderTypeName(id) {
-      const res = [...this.workSheetTypeList].filter(item => {
-        return item.key == id
-      })[0] || {};
-      return res.value
+    async save() {
+      if (!this.params.workOrderType) {
+        this.$messagebox("提示", '请选择呼叫人');
+        return false;
+      }
+      if (!this.params.workOrderType) {
+        this.$messagebox("提示", '请选择公司');
+        return false;
+      }
+      if (!(/^\d{11}$/.test(this.params.mobile))) {
+        this.$messagebox("提示", '请输入11位手机号');
+        return false;
+      }
+      let res = await saveWorkOrder({
+        ...this.params,
+        companyName: this.findCompanyName(this.params.companySixiId)
+      });
+      if (res.status === 200) {
+        this.state === 1;
+        this.staffName = res.data.staffName;
+      } else {
+        this.$messagebox("提示", res.msg);
+      }
     },
     findCompanyName(sixiId) {
-      const res = [...this.companyAndMobile.companys].filter(item => {
+      if (this.companyList.length <= 0) {
+        return ''
+      }
+      const res = [...this.companyList].filter(item => {
         return item.sixiId == sixiId
       })[0] || {};
       return res.name
     },
-    getWorkSheet(data) {
-      this.params.workOrderType = data.key;
-    },
-    getCompany(data) {
-      this.params.companySixiId = data.sixiId;
-      this.params.companyName = data.name;
-    },
-    async save() {
-      let res = await saveWorkOrder(this.params);
+    // 获取公司列表
+    async getCompanyList() {
+      let res = await selectCompanyAndMobile();
       if (res.status === 200) {
-        this.isSubmited = true;
-        this.subParams.mobile = res.data.mobile;
-        this.subParams.staffName = res.data.staffName;
+        this.hasTelephone = res.data.mobile ? true : false;
+        const list = res.data.companys || [];
+        this.companyList = [...list].map(item => {
+          return {
+            label: item.name,
+            value: item.sixiId
+          }
+        })
+        if (list[0]) {
+          this.params.companySixiId = list[0].sixiId;
+        }
       } else {
         this.$messagebox("提示", res.msg);
       }
-    }
+    },
   }
 }
 </script>
 <style scoped>
 .add-bill {
   height: 100%;
-  background: #fff;
-}
-.info,
-.form-submited {
-  margin-top: 10px;
   border: 1px solid transparent;
   background: #fff;
+  font-size: 32px;
 }
-.info > img,
-.form-submited > img {
-  display: block;
+.add-bill > div > div {
+  width: 560px;
+  margin: 0 auto;
+}
+.add-bill > div > div.avator-img {
   margin: 42px auto;
+  text-align: center;
+}
+.avator-img-path {
   width: 110px;
   height: 110px;
 }
 .question-title {
   height: 40px;
   line-height: 40px;
-  font-size: 28px;
   color: #000000;
   text-align: center;
   margin-bottom: 54px;
@@ -215,89 +208,91 @@ export default {
 .user-name {
   color: #697eff;
 }
-.add-bill-mint-popup {
-  width: 100%;
-}
-.select-btn {
-  position: relative;
-  width: 560px;
-  background: #697eff;
-  border-radius: 2px;
-  color: #ffffff;
-  border: 1px solid transparent;
-  font-size: 26px;
-  margin-top: 40px;
-  padding: 14px 44px;
-  outline: none;
-}
-.select-btn .want-to-btm {
-  position: absolute;
-  right: 28px;
-  transform: rotate(-90deg);
-}
-.textarea-div {
-  margin: 40px auto 0 auto;
-  text-align: center;
-}
-.textarea-div > span {
-  position: relative;
+.work-order-item {
   box-sizing: border-box;
   display: inline-block;
-  width: 558px;
-  height: 280px;
+  width: 50%;
+}
+.work-order-item > div {
+  margin: 20px;
+  padding: 20px;
+  font-size: 32px;
+  border: 1px solid #ccc;
+  color: #ccc;
+  text-align: center;
+}
+.work-order-item > div.work-order-item-checked {
+  position: relative;
   border: 1px solid #697eff;
-  padding: 2px 2px 60px 2px;
-  overflow: hidden;
+  color: #697eff;
 }
-.textarea-div textarea {
-  box-sizing: border-box;
-  padding: 5px;
-  width: 100%;
-  height: 100%;
-  color: #444444;
-  border: 0;
-  outline: none;
-  font-size: 26px;
-  resize: none;
-}
-.textarea-div > span::after {
+.item-img {
   position: absolute;
-  right: 10px;
-  bottom: 10px;
-  width: 100%;
-  height: 50px;
-  line-height: 50px;
-  font-size: 26px;
-  text-align: right;
-  color: #bbb;
-  content: "非必填，120字以内";
+  right: -8px;
+  bottom: -8px;
+  height: 30px;
 }
-.message-info .text {
-  width: 560px;
-  margin: 12px auto 24px auto;
-  font-size: 24px;
-  color: #000;
+.my-moblie {
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 20px;
 }
 .cancel {
   width: 240px;
-  height: 60px;
-  line-height: 60px;
-  border: 2px solid #d9d9d9;
+  border: 2px solid #ccc;
+  font-size: 32px;
+  background: #fff;
   border-radius: 2px;
-  font-size: 24px;
-  color: #444444;
   margin-top: 40px;
   margin-right: 60px;
+  padding: 16px;
+  color: #ccc;
+  outline: none;
 }
 .ok {
   width: 240px;
-  height: 60px;
-  line-height: 60px;
-  font-size: 24px;
+  border: 2px solid transparent;
+  font-size: 32px;
   background: #697eff;
   border-radius: 2px;
   margin-top: 40px;
+  padding: 16px;
   color: #fff;
+  outline: none;
+}
+.null-info {
+  margin-top: 20px;
+  text-align: center;
+}
+.null-info-img {
+  width: 210px;
+  margin: 54px auto;
+}
+.null-info p {
+  text-align: center;
+  font-size: 28px;
+  color: #929eaa;
+}
+.msg-store {
+  margin: 10px auto;
+  padding: 40px;
+  background: #fff;
+  font-size: 24px;
+  color: #fc7c1f;
+  letter-spacing: 5px;
+  text-align: left;
+}
+.form-submited {
+  margin-top: 10px;
+  border: 1px solid transparent;
+  background: #fff;
+}
+.form-submited > img {
+  display: block;
+  margin: 42px auto;
+  width: 110px;
+  height: 110px;
 }
 .form-submited-text {
   font-size: 32px;
@@ -311,5 +306,23 @@ export default {
   margin: 0 auto;
   font-size: 28px;
   color: #929eaa;
+}
+.msg-go {
+  position: fixed;
+  width: 100%;
+  line-height: 1.2;
+  bottom: 0;
+  padding: 16px;
+  border: 1px solid #fc7c1f;
+  color: #929eaa;
+  border-left: 0;
+  border-right: 0;
+  text-align: center;
+}
+</style>
+<style>
+.my-company .mint-radio-input:checked + .mint-radio-core {
+  background-color: #697eff;
+  border-color: #697eff;
 }
 </style>

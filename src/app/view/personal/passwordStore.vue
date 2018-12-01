@@ -30,9 +30,22 @@
             >
           </a>
         </p>
+        <p class="store-info-item">
+          <span style="vertical-align: top;" class="item-key">验证码：</span>
+          <span style="width:40%;vertical-align: top;" class="item-value">
+            <input style="border:0;outline:none;" type="text" v-model="params.captcha">
+          </span>
+          <a
+            class="code-a"
+            style="display:inline-block;;width:30%;text-align:center;"
+            @click="getCode"
+          >
+            <img class="code" width="100%" :src="captcha">
+          </a>
+        </p>
       </div>
       <div v-if="isAdd" style="text-align:center;">
-        <mt-button plain type="default" size="small" class="cancel">取消</mt-button>
+        <mt-button plain type="default" @click="reset" size="small" class="cancel">重置</mt-button>
         <mt-button size="small" @click="addUser" type="default" class="ok">确定</mt-button>
       </div>
       <div v-if="!isAdd" style="text-align:center;">
@@ -54,11 +67,13 @@ export default {
     return {
       isAdd: true,
       showpassword: false,
+      captcha: '/api/wechat-proxy-service/verifyCode/get',
       companySixiId: '',
       companyAndMobile: {},
       params: {
         account: '',
-        password: ''
+        password: '',
+        captcha: ''
       }
     }
   },
@@ -86,6 +101,13 @@ export default {
   mounted() {
   },
   methods: {
+    reset() {
+      this.params.password = "";
+      this.params.captcha = "";
+    },
+    getCode() {
+      this.captcha = '/api/wechat-proxy-service/verifyCode/get?' + Math.random()
+    },
     findCompanyAccount(sixiId) {
       if (!this.companyAndMobile.companys) {
         return ''
@@ -106,7 +128,7 @@ export default {
       }
       let res = await addUser(this.params);
       if (res.status === 200) {
-        console.log(res)
+        this.$messagebox("提示", res.msg);
       }
     },
     async updateUser() {
@@ -120,7 +142,7 @@ export default {
       }
       let res = await updateUser(this.params);
       if (res.status === 200) {
-        console.log(res)
+        this.$messagebox("提示", res.msg);
       }
     }
   }
@@ -195,5 +217,9 @@ export default {
   margin-top: 40px;
   padding: 14px 44px;
   outline: none;
+}
+.code-a,
+.code {
+  height: 60px;
 }
 </style>

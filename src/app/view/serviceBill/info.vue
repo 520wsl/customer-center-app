@@ -12,7 +12,8 @@
           工单编号：{{detail.identifier}}
         </span>
         <!--客服可见-->
-        <mt-button v-if="identity == 1" class="btn btn-small btn-purple" @click="editBill()">修改工单</mt-button>
+        <!--修改工单注释-->
+        <!-- <mt-button v-if="identity == 1" class="btn btn-small btn-purple" @click="editBill()">修改工单</mt-button> -->
       </div>
     </div>
     <!--可滑动，详情以记录-->
@@ -28,7 +29,7 @@
       <p class="notice" v-if="detail.cellphone">注意：为了更好的为您提供服务,客服人员能够与您电话沟通, 请绑定 您的手机号。
         <router-link :to="{name:'getPhone'}" tag="span">绑定手机号&ensp;&gt;</router-link>
       </p>
-      <p class="notice" v-else-if="detail.customerDetailVo && detail.customerDetailVo.companyName">注意：为了更好的为您提供服务,请联系我们的业务员,将您的合作公司跟您的微信做绑定操作;</p>
+      <p class="notice" v-else-if="detail.customerDetailVo && !detail.customerDetailVo.companyName">注意：为了更好的为您提供服务,请联系我们的业务员,将您的合作公司跟您的微信做绑定操作;</p>
       <div class="serviceRemark">
         <h3>服务记录</h3>
         <msgTpl v-for="(el,index) in talknews" :key="index" :info="el">
@@ -103,6 +104,7 @@ export default {
       workType: state => state.Servicebill.workType
     }),
     responseTime() {
+      if (!this.detail.responseTime) return "";
       // this.detail.responseTime 为小时，转为秒单位
       let time = this.detail.responseTime * 60 * 60;
       return timeToDate(time);
