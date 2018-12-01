@@ -10,19 +10,13 @@ function get(url, params) {
 
 // 提交留言
 export const sentMessageData = ({
-  companySixiId = null,
-  companyName = null,
   mobile,
   context,
-  name,
-  workOrderType = 6
+  name
 }) => {
-  return post("/workorder/save", {
-    companySixiId,
-    companyName,
+  return post("/workorder/leavemessage", {
     mobile,
     context,
-    name,
-    workOrderType
+    name
   });
 };
