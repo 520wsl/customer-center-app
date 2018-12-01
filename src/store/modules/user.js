@@ -2,14 +2,16 @@
  * @Author: Mad Dragon 395548460@qq.com
  * @Date: 2018-11-08 10:50:44
  * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-11-30 14:23:47
+ * @Last Modified time: 2018-11-30 18:35:03
  * @explanatory:  store demo
  */
 import {
 	getWxSnsapiUserInfoData,
-	getUserInfoData,
 	logout
 } from "@/api/wechatProxy/wxSDK";
+import {
+	getUserInfoData
+} from "@/api/customer/customer";
 import { setItem, getItem } from "@/libs/util/session";
 import config from "@/config";
 const { storeagewxUserInfoKey } = config;
