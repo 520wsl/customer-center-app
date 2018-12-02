@@ -84,7 +84,6 @@ import { saveWorkOrder } from "@/api/workOrder/workOrder";
 import { mapState, mapActions } from "vuex";
 import { selectCompanyAndMobile } from "@/api/customer/customer";
 export default {
-  components: {},
   computed: {
     ...mapState({
       avatorImgPath: state => {
