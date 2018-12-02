@@ -49,7 +49,7 @@
 <script>
 import config from "@/config";
 import { getItem } from "@/libs/util/session";
-import { getUserInfoData } from "@/api/customer/customer";
+// import { getUserInfoData } from "@/api/customer/customer";
 
 export default {
     data() {
@@ -66,11 +66,11 @@ export default {
     },
     mounted() {
         // 方便调试 勿删
-        // console.log('微信', "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3c0c1aef00b3d175&redirect_uri=http://workapp.sixi.com/personal/index&response_type=code&scope=snsapi_userinfo&state=weChat&connect_redirect=1#wechat_redirect")
+        console.log('微信', "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3c0c1aef00b3d175&redirect_uri=http://workapp.sixi.com/personal/index&response_type=code&scope=snsapi_userinfo&state=weChat&connect_redirect=1#wechat_redirect")
         this.$parent.$parent.setTitle("我的服务");
         let res = getItem(config.storeagewxUserInfoKey)
         console.log(res);
-        this.getInfo();
+        // this.getInfo();
         // console.log(this.$store.state.User[config.storeagewxUserInfoKey], res)
         // console.log(this.$store.state.User.avatorImgPath)
     },
@@ -81,14 +81,14 @@ export default {
                 name: "getPhone"
             })
         },
-        async getInfo() {
-            let res = await getUserInfoData();
-            if (res.status == 200) {
-                return MessageBox("提示", res.msg);
-            }
-            this.$store.commit("setUserInfo", res.data);
-            this.$store.commit("setAvator", res.data.wechatAvatar);
-        }
+        // async getInfo() {
+        //     let res = await getUserInfoData();
+        //     if (res.status == 200) {
+        //         return MessageBox("提示", res.msg);
+        //     }
+        //     this.$store.commit("setUserInfo", res.data);
+        //     this.$store.commit("setAvator", res.data.wechatAvatar);
+        // }
     }
 };
 </script>
