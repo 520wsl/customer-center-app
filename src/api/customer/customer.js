@@ -42,11 +42,13 @@ export const getCompanyListBoss = () => {
 }
 export const addUser = ({
   account,
-  password
+  password,
+  captcha
 }) => {
   return post("/secretstore/add", {
     account,
     password,
+    captcha,
     type: "wangwang"
   });
 }
