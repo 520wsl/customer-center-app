@@ -49,7 +49,7 @@
 <script>
 import config from "@/config";
 import { getItem } from "@/libs/util/session";
-import { getUserInfoData } from "@/api/customer/customer";
+// import { getUserInfoData } from "@/api/customer/customer";
 
 export default {
     data() {
@@ -70,7 +70,7 @@ export default {
         this.$parent.$parent.setTitle("我的服务");
         let res = getItem(config.storeagewxUserInfoKey)
         console.log(res);
-        this.getInfo();
+        // this.getInfo();
         // console.log(this.$store.state.User[config.storeagewxUserInfoKey], res)
         // console.log(this.$store.state.User.avatorImgPath)
     },
@@ -81,14 +81,14 @@ export default {
                 name: "getPhone"
             })
         },
-        async getInfo() {
-            let res = await getUserInfoData();
-            if (res.status == 200) {
-                return MessageBox("提示", res.msg);
-            }
-            this.$store.commit("setUserInfo", res.data);
-            this.$store.commit("setAvator", res.data.wechatAvatar);
-        }
+        // async getInfo() {
+        //     let res = await getUserInfoData();
+        //     if (res.status == 200) {
+        //         return MessageBox("提示", res.msg);
+        //     }
+        //     this.$store.commit("setUserInfo", res.data);
+        //     this.$store.commit("setAvator", res.data.wechatAvatar);
+        // }
     }
 };
 </script>
