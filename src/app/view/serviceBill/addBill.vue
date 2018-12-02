@@ -40,8 +40,8 @@
       </div>
       <div>
         <div class="mint-radiolist-title">我的手机号：</div>
-        <div class="mobile-border" style="padding:8px">
-          <input class="my-moblie" v-model="params.mobile" type="text" placeholder="请输入您的手机号">
+        <div class="mobile-border">
+          <input class="my-moblie" v-model="params.mobile" type="number" placeholder="请输入您的手机号">
         </div>
       </div>
       <div style="text-align:center;">
@@ -153,9 +153,9 @@ export default {
         return ''
       }
       const res = [...this.companyList].filter(item => {
-        return item.sixiId == sixiId
+        return item.value == sixiId
       })[0] || {};
-      return res.name
+      return res.label
     },
     // 获取公司列表
     async getCompanyList() {
@@ -187,7 +187,7 @@ export default {
   font-size: 32px;
 }
 .add-bill > div > div {
-  width: 560px;
+  width: 650px;
   margin: 0 auto;
 }
 .add-bill > div > div.avator-img {
@@ -197,6 +197,7 @@ export default {
 .avator-img-path {
   width: 110px;
   height: 110px;
+  border-radius: 50%;
 }
 .question-title {
   height: 40px;
@@ -237,6 +238,9 @@ export default {
   box-sizing: border-box;
   width: 100%;
   padding: 20px;
+}
+.mobile-border {
+  padding: 0 32px;
 }
 .cancel {
   width: 240px;
