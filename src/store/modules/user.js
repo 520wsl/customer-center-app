@@ -2,16 +2,11 @@
  * @Author: Mad Dragon 395548460@qq.com
  * @Date: 2018-11-08 10:50:44
  * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-12-02 11:26:19
+ * @Last Modified time: 2018-12-02 18:11:25
  * @explanatory:  store demo
  */
-import {
-	getWxSnsapiUserInfoData,
-	logout
-} from "@/api/wechatProxy/wxSDK";
-import {
-	getUserInfoData
-} from "@/api/customer/customer";
+import { getWxSnsapiUserInfoData, logout } from "@/api/wechatProxy/wxSDK";
+import { getUserInfoData } from "@/api/customer/customer";
 import { setItem, getItem } from "@/libs/util/session";
 import config from "@/config";
 const { storeagewxUserInfoKey } = config;
@@ -57,6 +52,16 @@ export default {
 				// commit("setAccess", []);
 				// resolve();
 			});
+		},
+		async getUserInfoAction({ dispatch, state, commit }) {
+			let userInfo = getItem(state.storeagewxUserInfoKey);
+			console.log("getUserInfoAction", userInfo);
+			if (userInfo) {
+				commit("setAvator", userInfo.wechatAvatar);
+				commit("setUserInfo", userInfo);
+				return;
+			}
+			await dispatch("getUserInfo");
 		},
 		// 获取用户相关信息
 		async getUserInfo({ state, commit }) {

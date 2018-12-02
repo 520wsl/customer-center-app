@@ -2,7 +2,7 @@
  * @Author: Mad Dragon 395548460@qq.com 
  * @Date: 2018-11-07 23:36:01 
  * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-11-30 14:26:29
+ * @Last Modified time: 2018-12-02 18:10:09
  * @explanatory:  模板页 不带底部按钮
  */
 <template>
@@ -18,7 +18,7 @@ export default {
     name: "app",
     components: {},
     methods: {
-        ...mapActions(["loginScheduler"])
+        ...mapActions(["loginScheduler", "getUserInfoAction"])
     },
     created() {},
     async mounted() {
@@ -38,6 +38,7 @@ export default {
             console.log("code登录", res);
             return;
         }
+        this.getUserInfoAction();
     }
 };
 </script>
