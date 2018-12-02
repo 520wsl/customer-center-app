@@ -91,7 +91,7 @@ export default {
   },
   data() {
     return {
-      state: 1,
+      state: 0,
       staffName: '',
       hasTelephone: false,
       // 公司列表
