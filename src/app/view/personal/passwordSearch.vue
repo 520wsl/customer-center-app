@@ -62,7 +62,10 @@ export default {
       passwordlist: []
     }
   },
-  async created() {
+  created() {
+
+  },
+  async mounted() {
     this.$parent.$parent.setTitle("店铺账号密码查询");
     let res = await selectCompanyAndMobile();
     if (res.status == 200) {
@@ -70,8 +73,6 @@ export default {
     } else {
       this.$messagebox("提示", res.msg);
     }
-  },
-  mounted() {
     this.getList();
   },
   methods: {

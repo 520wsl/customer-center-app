@@ -122,8 +122,9 @@ export default {
       }
     }
   },
-  created() {
+  mounted() {
     this.getCompanyList();
+    this.params.workOrderType = this.$route.query.workOrderType || 2;
     this.$parent.$parent.setTitle("创建客服工单");
   },
   methods: {
@@ -171,6 +172,7 @@ export default {
       let res = await selectCompanyAndMobile();
       if (res.status === 200) {
         this.hasTelephone = res.data.mobile ? true : false;
+        this.params.mobile = res.data.mobile || ''
         const list = res.data.companys || [];
         this.companyList = [...list].map(item => {
           return {
