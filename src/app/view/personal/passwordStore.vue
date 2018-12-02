@@ -14,6 +14,7 @@
           <span class="item-key">登陆密码：</span>
           <span style="width:60%;" class="item-value">
             <input
+              @blur="toTOP"
               style="border:0;outline:none;"
               :type="showpassword?'text':'password'"
               v-model="params.password"
@@ -81,6 +82,7 @@ export default {
 
   },
   async created() {
+    alert(JSON.stringify(this.$store.state))
     this.$parent.$parent.setTitle("店铺账号密码");
     this.companySixiId = this.$route.query.companySixiId || '';
     const res = await selectCompanyAndMobile();
@@ -101,9 +103,13 @@ export default {
   mounted() {
   },
   methods: {
+    toTOP() {
+      window.scrollTo(0, 0);
+    },
     reset() {
       this.params.password = "";
       this.params.captcha = "";
+      this.getCode()
     },
     getCode() {
       this.captcha = '/api/wechat-proxy-service/verifyCode/get?' + Math.random()
