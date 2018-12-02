@@ -183,6 +183,7 @@ export default {
         if (list[0]) {
           this.params.companySixiId = list[0].sixiId;
         }
+        alert("获取公司列表")
       } else {
         this.$messagebox("提示", res.msg);
       }
