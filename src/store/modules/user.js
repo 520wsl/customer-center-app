@@ -2,7 +2,7 @@
  * @Author: Mad Dragon 395548460@qq.com
  * @Date: 2018-11-08 10:50:44
  * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-12-02 18:11:25
+ * @Last Modified time: 2018-12-02 21:45:02
  * @explanatory:  store demo
  */
 import { getWxSnsapiUserInfoData, logout } from "@/api/wechatProxy/wxSDK";
@@ -104,7 +104,11 @@ export default {
 							);
 							return false;
 						}
-
+						// 测试 使用 勿删 Mad Dragon 395548460@qq.com
+						// setTimeout(() => {
+						// 	dispatch('getUserInfo');
+						// 	console.log("await dispatch('getUserInfo')");
+						//   }, 12000);
 						return await dispatch("getUserInfo");
 				}
 			}
