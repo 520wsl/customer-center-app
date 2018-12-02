@@ -82,7 +82,7 @@ export default {
 
   },
   async created() {
-    alert(JSON.stringify(this.$store.User))
+    alert(JSON.stringify(this.$store.state))
     this.$parent.$parent.setTitle("店铺账号密码");
     this.companySixiId = this.$route.query.companySixiId || '';
     const res = await selectCompanyAndMobile();
