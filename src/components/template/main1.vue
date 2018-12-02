@@ -38,6 +38,7 @@ export default {
             console.log("code登录", res);
             return;
         }
+        alert("code")
         this.getUserInfoAction();
     }
 };
