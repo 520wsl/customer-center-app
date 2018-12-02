@@ -2,7 +2,7 @@
  * @Author: Mad Dragon 395548460@qq.com
  * @Date: 2018-11-08 10:50:44
  * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-12-02 21:45:02
+ * @Last Modified time: 2018-12-02 22:47:13
  * @explanatory:  store demo
  */
 import { getWxSnsapiUserInfoData, logout } from "@/api/wechatProxy/wxSDK";
@@ -61,7 +61,8 @@ export default {
 				commit("setUserInfo", userInfo);
 				return;
 			}
-			await dispatch("getUserInfo");
+			alert("未登录或登陆超时,请推出重新登陆!");
+			// await dispatch("getUserInfo");
 		},
 		// 获取用户相关信息
 		async getUserInfo({ state, commit }) {
@@ -69,7 +70,7 @@ export default {
 			if (!res.status) {
 				console.error("[debug]:getUserInfoData", res);
 				return false;
-      }
+			}
 			const data = res.data;
 			console.log("getUserInfoData", res.data);
 
