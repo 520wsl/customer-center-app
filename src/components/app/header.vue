@@ -1,5 +1,5 @@
 <template>
-  <div class="title">
+  <!-- <div class="title">
     <mt-header fixed title="" :style="background?'background:'+background:'background:#fff;'" class="header">
       <div slot="left">
         <slot name="headleft">
@@ -12,14 +12,15 @@
           </a>
         </slot>
       </div>
-      <!-- <div slot="right">
+      <div slot="right">
         <slot name="headright" class="right">
           <img v-if="background" :src="$CDN('/header_white_logo.png')" class="img">
           <img v-else :src="$CDN('/header_black_logo.png')" class="img">
         </slot>
-      </div> -->
+      </div>
     </mt-header>
-  </div>
+  </div> -->
+  <div></div>
 </template>
 
 <script>

@@ -1,8 +1,8 @@
 /*
  * @Author: Mad Dragon 395548460@qq.com
  * @Date: 2018-11-07 22:22:23
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-11-26 19:22:48
+ * @Last Modified by: Mad Dragon
+ * @Last Modified time: 2018-12-02 16:17:53
  * @explanatory: Routers Config   路由 路径 配置
  */
 /**
@@ -28,36 +28,36 @@ export default [{
     component: r =>
       require.ensure([], () => r(require("@/app/view/demo/test01")), "appDemo") //demo
   },
-  {
-    path: "/login",
-    name: "login",
-    meta: {
-      title: "Login-登录"
-    },
-    component: r =>
-      require.ensure([], () => r(require("@/app/view/login/login")), "appLogin") //登录页面
-  },
-  {
-    path: "/",
-    name: "_home",
-    redirect: {
-      name: "home"
-    },
-    component: Main1,
-    children: [{
-      path: "home",
-      name: "home",
-      meta: {
-        title: "首页"
-      },
-      component: r =>
-        require.ensure(
-          [],
-          () => r(require("@/app/view/home/home")),
-          "appLogin"
-        ) //首页
-    }]
-  },
+  // {
+  //   path: "/login",
+  //   name: "login",
+  //   meta: {
+  //     title: "Login-登录"
+  //   },
+  //   component: r =>
+  //     require.ensure([], () => r(require("@/app/view/login/login")), "appLogin") //登录页面
+  // },
+  // {
+  //   path: "/",
+  //   name: "_home",
+  //   redirect: {
+  //     name: "home"
+  //   },
+  //   component: Main1,
+  //   children: [{
+  //     path: "home",
+  //     name: "home",
+  //     meta: {
+  //       title: "首页"
+  //     },
+  //     component: r =>
+  //       require.ensure(
+  //         [],
+  //         () => r(require("@/app/view/home/home")),
+  //         "appLogin"
+  //       ) //首页
+  //   }]
+  // },
   {
     path: "/contract",
     name: "_contract",
@@ -119,27 +119,27 @@ export default [{
       }
     ]
   },
-  {
-    path: "/log",
-    name: "_log",
-    redirect: {
-      name: "saleRecord"
-    },
-    component: Main1,
-    children: [{
-      path: "saleRecord",
-      name: "saleRecord",
-      meta: {
-        title: "记录"
-      },
-      component: r =>
-        require.ensure(
-          [],
-          () => r(require("@/app/view/log/saleRecord")),
-          "appLog"
-        )
-    }]
-  },
+  // {
+  //   path: "/log",
+  //   name: "_log",
+  //   redirect: {
+  //     name: "saleRecord"
+  //   },
+  //   component: Main1,
+  //   children: [{
+  //     path: "saleRecord",
+  //     name: "saleRecord",
+  //     meta: {
+  //       title: "记录"
+  //     },
+  //     component: r =>
+  //       require.ensure(
+  //         [],
+  //         () => r(require("@/app/view/log/saleRecord")),
+  //         "appLog"
+  //       )
+  //   }]
+  // },
   {
     path: "/message",
     name: "_message",
@@ -189,10 +189,10 @@ export default [{
     ]
   },
   {
-    path: "/personal",
+    path: "/",
     name: "_personal",
     redirect: {
-      name: "personal"
+      name: "personalServie"
     },
     component: Main1,
     children: [{
