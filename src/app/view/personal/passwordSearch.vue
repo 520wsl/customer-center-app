@@ -37,7 +37,7 @@
             </p>
           </div>
           <div style="text-align:center;">
-            <button @click="sendInfo(item)" class="search-button">将密码发送到手机</button>
+            <button @click="sendMobileInfo(item)" class="search-button">将密码发送到手机</button>
           </div>
         </li>
       </ul>
@@ -51,38 +51,57 @@
 <script>
 import { MessageBox } from "mint-ui";
 import {
+  sendInfo,
+  selectCompanyAndMobile,
   getCompanyListBoss
 } from "@/api/customer/customer";
 export default {
   data() {
     return {
+      mobile: '',
       passwordlist: []
+    }
+  },
+  async created() {
+    this.$parent.$parent.setTitle("店铺账号密码查询");
+    let res = await selectCompanyAndMobile();
+    if (res.status == 200) {
+      this.mobile = res.data.mobile;
+    } else {
+      this.$messagebox("提示", res.msg);
     }
   },
   mounted() {
     this.getList();
   },
   methods: {
-    sendInfo(company) {
-      if (!company.phone) {
+    async sendMobileInfo(item) {
+      if (!mobile) {
         MessageBox({
           message: '抱歉您还未绑定手机号!',
           showCancelButton: true,
           confirmButtonText: '前往绑定手机号'
         }).then(action => {
           if (action == 'confirm') {
-            this.$router.push({ name: 'home' })
+            this.$router.push({ name: 'getPhone', query: { userSixiId: item.sixiId } })
           }
         }).catch(err => {
         });
       } else {
-        const msg = `密码将以短信的形式发送到以下手机上
-      <br>手机号：${company.phone}<br>注意：手机号有误，点击
-      <a href="//baidu.com" style="color:#3385ff;">变更手机号</a>`
-        MessageBox.confirm(msg).then(action => {
-          console.log(value, action)
-        }).catch(err => {
-        });
+        const msg = `密码将以短信的形式发送到以下手机上<br>手机号：${mobile}<br>注意：手机号有误，点击<a href="/serviceBill/getPhone?userSixiId=${item.sixiId}" style="color:#3385ff;">变更手机号</a>`
+        MessageBox.confirm(msg).then(async action => {
+          if (action == 'confirm') {
+            const result = await sendInfo({
+              account: item.account,
+              password: item.password
+            });
+            if (res.status == 200) {
+              this.$messagebox("提示", res.msg);
+            } else {
+              this.$messagebox("提示", res.msg);
+            }
+          }
+        }).catch(err => { });
       }
     },
     async getList() {
@@ -95,9 +114,6 @@ export default {
         this.passwordlist = list;
       }
     }
-  },
-  created() {
-    this.$parent.$parent.setTitle("店铺账号密码查询");
   }
 }
 </script>
