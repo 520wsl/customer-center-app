@@ -70,7 +70,6 @@ export default {
 				console.error("[debug]:getUserInfoData", res);
 				return false;
       }
-      alert("getUserInfoAction")
 			const data = res.data;
 			console.log("getUserInfoData", res.data);
 
