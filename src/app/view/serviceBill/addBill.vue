@@ -40,11 +40,17 @@
       </div>
       <div>
         <div class="mint-radiolist-title">我的手机号：</div>
-        <div class="mobile-border" style="padding:8px">
-          <input class="my-moblie" v-model="params.mobile" type="text" placeholder="请输入您的手机号">
+        <div class="mobile-border">
+          <input
+            class="my-moblie"
+            @blur="toTOP"
+            v-model="params.mobile"
+            type="number"
+            placeholder="请输入您的手机号"
+          >
         </div>
       </div>
-      <div style="text-align:center;">
+      <div class="btn-ok-cancel" style="text-align:center;">
         <button size="small" @click="cancel" type="default" class="cancel">取消</button>
         <button size="small" @click="save" type="default" class="ok">确定</button>
       </div>
@@ -52,7 +58,7 @@
     <div class="null-info" v-if="companyList.length<=0">
       <img class="null-info-img" :src="$CDN('/null-icon.png')">
       <p>非常抱歉，您的微信号还未关联公司！</p>
-      <div class="msg-store">注：请联系我们的业务员，将您的合作公司跟您的微信做关联操作</div>
+      <div class="msg-store">注：请联系我们的业务员，将您的合作公司跟您的微信做关联操作。</div>
     </div>
     <div class="form-submited" v-if="companyList.length>0 && state ===1">
       <img :src="$CDN('/success_icon.png')">
@@ -85,7 +91,7 @@ export default {
         return state.User.wxUserInfo.wechatAvatar || state.User.avatorImgPath
       },
       name: state => {
-        return state.User.wxUserInfo.callName || state.User.wxUserInfo.wechatNickname || '客户'
+        return state.User.wxUserInfo.callName || state.User.wxUserInfo.wechatNickname || ''
       }
     })
   },
@@ -117,12 +123,15 @@ export default {
     }
   },
   created() {
-    this.$parent.$parent.setTitle("创建客服工单");
     this.getCompanyList();
+    this.$parent.$parent.setTitle("创建客服工单");
   },
   methods: {
     cancel() {
       this.$router.push({ name: 'personalServie' })
+    },
+    toTOP() {
+      window.scrollTo(0, 0);
     },
     async save() {
       if (!this.params.workOrderType) {
@@ -142,7 +151,7 @@ export default {
         companyName: this.findCompanyName(this.params.companySixiId)
       });
       if (res.status === 200) {
-        this.state === 1;
+        this.state = 1;
         this.staffName = res.data.staffName;
       } else {
         this.$messagebox("提示", res.msg);
@@ -153,9 +162,9 @@ export default {
         return ''
       }
       const res = [...this.companyList].filter(item => {
-        return item.sixiId == sixiId
+        return item.value == sixiId
       })[0] || {};
-      return res.name
+      return res.label
     },
     // 获取公司列表
     async getCompanyList() {
@@ -187,8 +196,8 @@ export default {
   font-size: 32px;
 }
 .add-bill > div > div {
-  width: 560px;
-  margin: 0 auto;
+  width: 650px;
+  margin: 40px auto;
 }
 .add-bill > div > div.avator-img {
   margin: 42px auto;
@@ -197,6 +206,7 @@ export default {
 .avator-img-path {
   width: 110px;
   height: 110px;
+  border-radius: 50%;
 }
 .question-title {
   height: 40px;
@@ -217,13 +227,13 @@ export default {
   margin: 20px;
   padding: 20px;
   font-size: 32px;
-  border: 1px solid #ccc;
+  border: 2px solid #ccc;
   color: #ccc;
   text-align: center;
 }
 .work-order-item > div.work-order-item-checked {
   position: relative;
-  border: 1px solid #697eff;
+  border: 2px solid #697eff;
   color: #697eff;
 }
 .item-img {
@@ -233,10 +243,19 @@ export default {
   height: 30px;
 }
 .my-moblie {
-  border: 1px solid #ccc;
-  box-sizing: border-box;
   width: 100%;
-  padding: 20px;
+  font-size: 34px;
+  margin: 0;
+  padding: 20px 0;
+  border: none;
+  border-bottom: 1px #d9d9d9 solid;
+}
+.my-moblie:focus {
+  outline: none;
+  outline-offset: 0;
+}
+.mobile-border {
+  padding: 0 32px;
 }
 .cancel {
   width: 240px;
@@ -319,10 +338,17 @@ export default {
   border-right: 0;
   text-align: center;
 }
+.add-bill > div > div.btn-ok-cancel {
+  margin-bottom: 0;
+}
 </style>
 <style>
 .my-company .mint-radio-input:checked + .mint-radio-core {
   background-color: #697eff;
   border-color: #697eff;
+}
+.my-company .mint-cell,
+.my-company .mint-cell-wrapper {
+  border: 1px solid #fff;
 }
 </style>
