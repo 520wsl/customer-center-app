@@ -41,7 +41,13 @@
       <div>
         <div class="mint-radiolist-title">我的手机号：</div>
         <div class="mobile-border">
-          <input class="my-moblie" v-model="params.mobile" type="number" placeholder="请输入您的手机号">
+          <input
+            class="my-moblie"
+            @blur="toTOP"
+            v-model="params.mobile"
+            type="number"
+            placeholder="请输入您的手机号"
+          >
         </div>
       </div>
       <div class="btn-ok-cancel" style="text-align:center;">
@@ -117,12 +123,15 @@ export default {
     }
   },
   created() {
-    this.$parent.$parent.setTitle("创建客服工单");
     this.getCompanyList();
+    this.$parent.$parent.setTitle("创建客服工单");
   },
   methods: {
     cancel() {
       this.$router.push({ name: 'personalServie' })
+    },
+    toTOP() {
+      window.scrollTo(0, 0);
     },
     async save() {
       if (!this.params.workOrderType) {
@@ -337,5 +346,9 @@ export default {
 .my-company .mint-radio-input:checked + .mint-radio-core {
   background-color: #697eff;
   border-color: #697eff;
+}
+.my-company .mint-cell,
+.my-company .mint-cell-wrapper {
+  border: 1px solid #fff;
 }
 </style>
