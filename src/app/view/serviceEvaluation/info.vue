@@ -5,6 +5,7 @@
         <editEvaluation :list='list' :isEdit='true'></editEvaluation>
         <div class="submit-btn">
             <mt-button class="btn" @click="addEvaluate">提交</mt-button>
+            <router-link class="btn2" :to="{name: 'serviceBillInfo',query:{ id: workSheetId, identity: 2, companySixiId: companyId }}">点击 查看工单&gt;&gt;</router-link>
         </div>
     </div>
 </template>
@@ -29,7 +30,8 @@ export default {
             id: "",
             customerId: "",
             servicePersonnel: "",
-            sendtime: ""
+            sendtime: "",
+            workSheetId: ""
         };
     },
     components: { editEvaluation },
@@ -42,6 +44,7 @@ export default {
             this.workSheetId = this.$route.query.workSheetId || ""; // 工单id
             this.name = this.$route.query.servicePersonnel || ""; // 服务人员
             this.sendtime = this.$route.query.sendtime || ""; // 用于校验是否已经评价参数之一
+            this.companyId = this.$route.query.companyId || "";
             if (this.id == 1) {
                 this.typeName = "美工";
                 titleName = "美工";
@@ -153,6 +156,14 @@ export default {
 .submit-btn {
   background: #fff;
   padding: 150px 100px;
+  position: relative;
+}
+.submit-btn .btn2 {
+  position: absolute;
+  font-size: 32px;
+  color: #697eff;
+  right: 100px;
+  bottom: 30px;
 }
 .submit-btn .btn {
   width: 100%;
@@ -165,8 +176,9 @@ export default {
 </style>
 <style>
 body,
-html {
-  height: 100%;
+html,
+#app {
   background: #f4f4f4;
+  height: auto;
 }
 </style>

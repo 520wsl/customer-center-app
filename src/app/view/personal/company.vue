@@ -51,10 +51,7 @@ export default {
     },
     created() {
         this.$parent.$parent.setTitle("我的公司");
-        let customerSixiId = this.$route.query.customerSixiId
-        if (customerSixiId) {
-            this.getCompanyList(customerSixiId);
-        }
+        this.getCompanyList();
     },
     components: {},
     methods: {
@@ -70,8 +67,8 @@ export default {
                 name: 'personalServie'
             })
         },
-        async getCompanyList(customerSixiId) {
-            let res = await getCompanyList({ customerSixiId });
+        async getCompanyList() {
+            let res = await getCompanyList();
             if (res.status != 200) {
                 return MessageBox("提示", res.msg);
             }
