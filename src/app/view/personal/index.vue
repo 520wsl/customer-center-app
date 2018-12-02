@@ -66,7 +66,7 @@ export default {
     },
     mounted() {
         // 方便调试 勿删
-        // console.log('微信', "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3c0c1aef00b3d175&redirect_uri=http://workapp.sixi.com/personal/index&response_type=code&scope=snsapi_userinfo&state=weChat&connect_redirect=1#wechat_redirect")
+        console.log('微信', "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3c0c1aef00b3d175&redirect_uri=http://workapp.sixi.com/personal/index&response_type=code&scope=snsapi_userinfo&state=weChat&connect_redirect=1#wechat_redirect")
         this.$parent.$parent.setTitle("我的服务");
         let res = getItem(config.storeagewxUserInfoKey)
         console.log(res);

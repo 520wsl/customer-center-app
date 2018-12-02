@@ -2,7 +2,7 @@
  * @Author: Mad Dragon 395548460@qq.com
  * @Date: 2018-11-08 10:50:44
  * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-11-30 18:35:03
+ * @Last Modified time: 2018-12-02 11:26:19
  * @explanatory:  store demo
  */
 import {
@@ -20,9 +20,9 @@ export default {
 	state: {
 		userName: "Mad Dragon",
 		wxUserInfo: {
-			companyName: "广东兆亨物流设备有限公司",
-			mobile: "12345678912",
-			wechatAvatar: "wechatAvatar",
+			companyName: "",
+			mobile: "",
+			wechatAvatar: "",
 			role: 1
 		},
 		storeagewxUserInfoKey: storeagewxUserInfoKey,
