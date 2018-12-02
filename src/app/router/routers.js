@@ -2,7 +2,7 @@
  * @Author: Mad Dragon 395548460@qq.com
  * @Date: 2018-11-07 22:22:23
  * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-12-02 16:17:53
+ * @Last Modified time: 2018-12-02 17:22:42
  * @explanatory: Routers Config   路由 路径 配置
  */
 /**
@@ -28,15 +28,21 @@ export default [{
     component: r =>
       require.ensure([], () => r(require("@/app/view/demo/test01")), "appDemo") //demo
   },
-  // {
-  //   path: "/login",
-  //   name: "login",
-  //   meta: {
-  //     title: "Login-登录"
-  //   },
-  //   component: r =>
-  //     require.ensure([], () => r(require("@/app/view/login/login")), "appLogin") //登录页面
-  // },
+  {
+    path: "/login",
+    name: "login",
+    meta: {
+      title: "Login-登录"
+    },
+    component: r =>
+      require.ensure([], () => r(require("@/app/view/login/login")), "appLogin") //登录页面
+  },
+  {
+      path: "/",
+      redirect: {
+        name: "personalServie"
+      },
+  },
   // {
   //   path: "/",
   //   name: "_home",
@@ -189,10 +195,10 @@ export default [{
     ]
   },
   {
-    path: "/",
+    path: "/personal",
     name: "_personal",
     redirect: {
-      name: "personalServie"
+      name: "personal"
     },
     component: Main1,
     children: [{
