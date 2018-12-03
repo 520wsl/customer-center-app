@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     async sendMobileInfo(item) {
-      if (!mobile) {
+      if (!this.mobile) {
         MessageBox({
           message: '抱歉您还未绑定手机号!',
           showCancelButton: true,
@@ -89,17 +89,17 @@ export default {
         }).catch(err => {
         });
       } else {
-        const msg = `密码将以短信的形式发送到以下手机上<br>手机号：${mobile}<br>注意：手机号有误，点击<a href="/serviceBill/getPhone?userSixiId=${item.sixiId}" style="color:#3385ff;">变更手机号</a>`
+        const msg = `密码将以短信的形式发送到以下手机上<br>手机号：${this.mobile}<br>注意：手机号有误，点击<a href="/serviceBill/getPhone?userSixiId=${item.sixiId}" style="color:#3385ff;">变更手机号</a>`
         MessageBox.confirm(msg).then(async action => {
           if (action == 'confirm') {
             const result = await sendInfo({
               account: item.account,
               password: item.password
             });
-            if (res.status == 200) {
-              this.$messagebox("提示", res.msg);
+            if (result.status == 200) {
+              this.$messagebox("提示", result.msg);
             } else {
-              this.$messagebox("提示", res.msg);
+              this.$messagebox("提示", result.msg);
             }
           }
         }).catch(err => { });
