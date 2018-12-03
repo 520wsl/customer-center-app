@@ -5,7 +5,7 @@
     <p class="bindPhone">绑定手机号：{{hidePhone}} &emsp;
       <router-link :to="{name:'getPhone',query:{userSixiId:userSixiId}}" tag="span">变更手机号</router-link>
     </p>
-    <router-link :to="{name:'personal',query:{userSixiId:userSixiId}}" class="bind" tag="mt-button">查看我的服务</router-link>
+    <router-link :to="{name:'personalServie',query:{userSixiId:userSixiId}}" class="bind" tag="mt-button">查看我的服务</router-link>
   </div>
 </template>
 
