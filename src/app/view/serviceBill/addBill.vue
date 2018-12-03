@@ -128,7 +128,10 @@ export default {
   },
   methods: {
     cancel() {
-      this.$router.push({ name: 'personalServie' })
+      // this.$router.push({ name: 'personalServie' })
+      // 微信端关闭页面
+      WeixinJSBridge.call('closeWindow');
+
     },
     toTOP() {
       window.scrollTo(0, 0);
