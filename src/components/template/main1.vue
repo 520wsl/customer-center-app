@@ -2,7 +2,7 @@
  * @Author: Mad Dragon 395548460@qq.com 
  * @Date: 2018-11-07 23:36:01 
  * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-12-02 23:09:42
+ * @Last Modified time: 2018-12-03 12:13:37
  * @explanatory:  模板页 不带底部按钮
  */
 <template>
@@ -18,7 +18,18 @@ export default {
     name: "app",
     components: {},
     methods: {
-        ...mapActions(["loginScheduler", "getUserInfoAction"])
+        ...mapActions(["loginScheduler", "getUserInfoAction"]),
+        method1(url) {
+            // 使用正则来 两边的参数不可能是 &=? 所以去反集[^&=?]
+            console.log("method1", url);
+            let regex = /([^&=?]+)=([^&=?]+)/g,
+                obj = {};
+            url.replace(regex, (...arg) => {
+                obj[arg[1]] = arg[2];
+            });
+            console.log(obj);
+            return obj;
+        }
     },
     created() {},
     async mounted() {
@@ -26,7 +37,7 @@ export default {
         let queryData = route.query;
         let codeData = queryData.code || "";
         let stateData = queryData.state || "enterpriseWeChat";
-        let pageName = queryData.pageName || "personalServie";
+
         if (!codeData && !stateData) {
             this.getUserInfoAction();
             return;
@@ -38,9 +49,16 @@ export default {
         });
         if (res) {
             console.log("code登录", res);
-            let query = queryData;
-            query.code = "";
-            query.state = "";
+            let par = queryData.par || "";
+            let query = {};
+
+            if (par) {
+                query = this.method1(window.atob(par));
+                console.log("par", par);
+                console.log("query", query);
+            }
+
+            let pageName = query.pageName || "personalServie";
             if (pageName && pageName !== "personalServie") {
                 this.$router.push({
                     name: pageName,
