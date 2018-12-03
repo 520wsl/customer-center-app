@@ -8,7 +8,7 @@
             </div>
             <div class="company-info">
                 <div>{{info.companyName}}</div>
-                <div v-if="info.mobile">{{info.mobile}}</div>
+                <div v-if="info.mobile">{{encryptionPhone(info.mobile)}}</div>
                 <div v-else>
                     <mt-button class="btn" type='default' @click="bindPhone">点击绑定手机号</mt-button>
                 </div>
@@ -49,6 +49,7 @@
 <script>
 import config from "@/config";
 import { getItem } from "@/libs/util/session";
+import {encryptionPhone } from '@/libs/tools'
 // import { getUserInfoData } from "@/api/customer/customer";
 
 export default {
@@ -81,6 +82,9 @@ export default {
                 name: "getPhone"
             })
         },
+        encryptionPhone(phone){
+            return encryptionPhone(phone)
+        }
         // async getInfo() {
         //     let res = await getUserInfoData();
         //     if (res.status == 200) {
