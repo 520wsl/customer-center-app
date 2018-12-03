@@ -2,7 +2,7 @@
  * @Author: Mad Dragon 395548460@qq.com 
  * @Date: 2018-11-07 23:36:01 
  * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-12-03 18:08:44
+ * @Last Modified time: 2018-12-03 18:28:55
  * @explanatory:  模板页 不带底部按钮
  */
 <template>
@@ -53,11 +53,11 @@ export default {
             let query = {};
 
             if (par) {
-                query = this.method1(decodeURI(window.atob(par)));
+                query = this.method1(decodeURIComponent(window.atob(par)));
                 console.log("par", par);
                 console.log(
-                    "decodeURI(window.atob(par))",
-                    decodeURI(window.atob(par))
+                    "decodeURIComponent(window.atob(par))",
+                    decodeURIComponent(window.atob(par))
                 );
                 console.log("query", query);
             }
