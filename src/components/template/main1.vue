@@ -2,7 +2,7 @@
  * @Author: Mad Dragon 395548460@qq.com 
  * @Date: 2018-11-07 23:36:01 
  * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-12-02 18:10:09
+ * @Last Modified time: 2018-12-02 23:09:42
  * @explanatory:  模板页 不带底部按钮
  */
 <template>
@@ -23,10 +23,12 @@ export default {
     created() {},
     async mounted() {
         let route = this.$route;
-        let query = route.query;
-        let codeData = query.code || "";
-        let stateData = query.state || "enterpriseWeChat";
+        let queryData = route.query;
+        let codeData = queryData.code || "";
+        let stateData = queryData.state || "enterpriseWeChat";
+        let pageName = queryData.pageName || "personalServie";
         if (!codeData && !stateData) {
+            this.getUserInfoAction();
             return;
         }
         let res = await this.loginScheduler({
@@ -36,9 +38,18 @@ export default {
         });
         if (res) {
             console.log("code登录", res);
+            let query = queryData;
+            query.code = "";
+            query.state = "";
+            if (pageName && pageName !== "personalServie") {
+                this.$router.push({
+                    name: pageName,
+                    query: query
+                });
+            }
+
             return;
         }
-        this.getUserInfoAction();
     }
 };
 </script>
