@@ -402,7 +402,7 @@ export default [{
         path: "getPhone",
         name: "getPhone",
         meta: {
-          title: "采集手机号"
+          title: "绑定手机号"
         },
         component: r =>
           require.ensure(
