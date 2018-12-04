@@ -60,7 +60,10 @@ export default {
         this.$parent.$parent.setTitle(titleName + "服务评价");
         // 判断工单评价是否评价
         getCheckEvaluate({ orderNumber: this.workSheetId, time: this.count }).then(res => {
-            if (res) {
+            if (res.status != 200) {
+                return MessageBox("提示", res.msg);
+            }
+            if (res.data) {
                 // 已评价
                 this.$router.push({
                     name: "serviceEvaluationBreview",
@@ -100,7 +103,7 @@ export default {
             this.list.forEach(item => {
                 if (item.isRequired == 1 && (item.value == "" || item.value == [])) {
                     bool = true;
-                    str += " " + item.evaluateName;
+                    str += " "+ item.evaluateName;
                 }
             });
             if (bool) {
