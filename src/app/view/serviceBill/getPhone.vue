@@ -146,7 +146,7 @@ export default {
       if (!this.verify(true)) return true;
       // 接口调用
       // 当有原手机号时 修改手机号不能相同
-      if(this.data.mobile && (this.data.mobile == this.phone)){
+      if(this.isBind && (this.data.mobile == this.phone)){
           this.$messagebox("提示", "原手机号和现手机号不能相同！");
           return;
       }
