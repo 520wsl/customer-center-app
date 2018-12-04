@@ -43,6 +43,8 @@
 </template>
 <script>
 import { getCompanyList, changeMyCompany } from "@/api/customer/customer";
+import { createNamespacedHelpers } from 'vuex'
+const { mapState, mapActions } = createNamespacedHelpers('User')
 export default {
     data() {
         return {
@@ -55,6 +57,9 @@ export default {
     },
     components: {},
     methods: {
+        ...mapActions([
+            "getUserInfo"
+        ]),
         async changeCompany(index) {
             let param = {
                 companySixiId: this.companyList[index].sixiId
@@ -63,6 +68,7 @@ export default {
             if (res.status != 200) {
                 return MessageBox("提示", res.msg);
             }
+            this.getUserInfo()
             this.$router.push({
                 name: 'personalServie'
             })
