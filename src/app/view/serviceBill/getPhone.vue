@@ -53,6 +53,8 @@ import {
   setmobileByworkSheetId
 } from "@/api/customer/customer";
 import { getcode, validatecode } from "@/api/messageService/messageService";
+import { createNamespacedHelpers } from 'vuex'
+const { mapState, mapActions } = createNamespacedHelpers('User')
 export default {
   data() {
     return {
@@ -78,6 +80,9 @@ export default {
     this.getCustomerPhone();
   },
   methods: {
+    ...mapActions([
+        "getUserInfo"
+    ]),
     getCustomerPhone() {
       getcustomerbysixiid(this.userSixiId).then(e => {
         if (e.status !== 200) {
@@ -156,6 +161,7 @@ export default {
                     this.$messagebox("提示", res.msg);
                     return;
                 }
+                this.getUserInfo();
                 this.$router.push({
                     name: "bindSuccess",
                     query: { mobile: this.phone, userSixiId: this.userSixiId }
@@ -170,6 +176,7 @@ export default {
                 }
                 // this.$messagebox("提示", e.msg);
                 this.getCustomerPhone();
+                this.getUserInfo();
                 this.$router.push({
                     name: "bindSuccess",
                     query: { mobile: this.phone, userSixiId: this.userSixiId }
