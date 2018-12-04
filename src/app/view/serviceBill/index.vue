@@ -1,6 +1,6 @@
 <template>
   <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="loading" infinite-scroll-distance="10">
-    <span class="noData" v-if="billList.length<=0">暂无数据</span>
+    <no-Data v-if="billList.length<=0" message="抱歉，您还未创建工单！"></no-data>
     <div class="servicebill" v-for="(el,index) in billList" :key="index">
       <router-link :to="{ name: 'serviceBillInfo', query: { id: el.id,identity:2,companySixiId:companySixiId } }" tag="h3">{{workType[el.workType]}}</router-link>
       <p class="BillId">工单编号{{num}}：
@@ -23,8 +23,9 @@
 import { getCompanyWorkSheetList } from "@/api/workOrder/worksheet";
 import { formatTime } from "@/libs/util/time";
 import { mapState } from "vuex";
+import noData from "@/components/app/public/noData"
 export default {
-  components: {},
+  components: { noData },
   created() {
     this.$parent.$parent.setTitle("服务工单");
   },
