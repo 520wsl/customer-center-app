@@ -145,6 +145,11 @@ export default {
     save() {
       if (!this.verify(true)) return true;
       // 接口调用
+      // 当有原手机号时 修改手机号不能相同
+      if(this.data.mobile && (this.data.mobile == this.phone)){
+          this.$messagebox("提示", "原手机号和现手机号不能相同！");
+          return;
+      }
       validatecode(this.phone, this.verifyCode).then(e => {
         if (e.status !== 200) {
           this.$messagebox("提示", e.msg);
