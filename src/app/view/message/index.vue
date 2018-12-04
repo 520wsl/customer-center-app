@@ -11,7 +11,7 @@
             <div class="message-item">
                 <span>
                     <b>*</b>联系电话：</span>
-                <input type="number" maxlength="11" v-model="params.mobile">
+                <input type="text" maxlength="11" v-model="params.mobile">
             </div>
             <div class="line"></div>
             <div class="message-item">
@@ -48,9 +48,13 @@ export default {
         sentMessage() {
             if (
                 this.params.name == "" ||
-                this.params.phone == ""
+                this.params.mobile == ""
             ) {
                 return MessageBox("提示", "请填写留言必填信息！");
+            }
+            if (!(/^\d{11}$/.test(this.params.mobile))) {
+                MessageBox("提示", '请输入11位手机号');
+                return false;
             }
             sentMessageData(this.params).then(res => {
                 if (res.status != 200) {
