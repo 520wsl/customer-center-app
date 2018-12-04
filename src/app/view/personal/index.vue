@@ -29,7 +29,7 @@
                 </div>
                 <span>&gt;</span>
             </router-link>
-            <router-link class="item border" :to='{name:"customerService"}'>
+            <router-link class="item border" :to='{name:"serviceBill"}'>
                 <div>
                     <img :src="$CDN('/service-sheet.png')">
                     <span>服务工单</span>
