@@ -11,13 +11,13 @@
                 tag="h3"
             >{{workType[el.workType]}}</router-link>
             <p class="BillId">
-                工单编号{{num}}：
+                工单编号：
                 <span>{{el.identifier}}</span>
             </p>
             <ul class="item">
                 <li>我的公司：{{el.companyName}}</li>
                 <li>提交时间：{{getTime(el.startTime,'YYYY-MM-DD')}}</li>
-                <li>持续时间：{{el.hourSum}}h</li>
+                <li>持续时间：{{el.durationStr}}</li>
                 <li>客服人员：{{el.userVo && el.userVo.userName}}</li>
             </ul>
             <p class="status">

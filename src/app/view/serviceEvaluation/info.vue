@@ -38,7 +38,7 @@ export default {
             this.customerId = this.$route.query.customerId || ""; // 人员id
             this.workSheetId = this.$route.query.workSheetId || ""; // 工单id
             this.name = this.$route.query.servicePersonnel || ""; // 服务人员
-            this.count = this.$route.query.count || ""; // 用于校验是否已经评价参数之一
+            this.count = this.$route.query.count || 1; // 用于校验是否已经评价参数之一
             this.companyId = this.$route.query.companyId || "";
             if (this.id == 1) {
                 this.typeName = "美工";
