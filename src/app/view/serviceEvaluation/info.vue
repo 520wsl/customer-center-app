@@ -5,7 +5,7 @@
         <editEvaluation :list='list' :isEdit='true'></editEvaluation>
         <div class="submit-btn">
             <mt-button class="btn" @click="addEvaluate">提交</mt-button>
-            <router-link class="btn2" :to="{name: 'serviceBillInfo',query:{ id: workSheetId, identity: 2, companySixiId: companyId }}">点击 查看工单&gt;&gt;</router-link>
+            <router-link class="btn2" :to="{name: 'serviceBill',query:{ id: workSheetId, identity: 2, companySixiId: companyId }}">点击 查看工单&gt;&gt;</router-link>
         </div>
     </div>
 </template>
