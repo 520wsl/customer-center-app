@@ -7,20 +7,6 @@ function get(url, params) {
   return api.get(baseUrl + url, params);
 }
 
-// 新增评价
-export const postEvaluateAdd = ({
-  sixiId,
-  orderNumber,
-  evaluateContent,
-  sendtime
-}) => {
-  return post("/evaluate/add", {
-    sixiId,
-    orderNumber,
-    evaluateContent,
-    sendtime
-  });
-};
 // 评价信息
 export const postEvaluateInfo = ({ sixiId, orderNumber }) => {
   return post("/evaluate/evaluategetone", {
@@ -29,9 +15,9 @@ export const postEvaluateInfo = ({ sixiId, orderNumber }) => {
   });
 };
 // 是否评价
-export const getCheckEvaluate = ({ orderNumber, sendtime }) => {
+export const getCheckEvaluate = ({ orderNumber, time }) => {
   return post("/evaluate/check", {
     orderNumber,
-    sendtime
+    time
   });
 };
