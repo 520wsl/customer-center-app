@@ -26,7 +26,7 @@ export default {
         this.$parent.$parent.setTitle("服务评价反馈");
         let sixiId = this.$route.query.customerId;
         let orderNumber = this.$route.query.workSheetId;
-        postEvaluateInfo({ sixiId, orderNumber }).then(res => {
+        postEvaluateInfo({ orderNumber }).then(res => {
             console.log(res);
             if (res.status != 200) {
                 return MessageBox("提示", res.msg);
