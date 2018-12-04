@@ -31,7 +31,7 @@
             >
           </a>
         </p>
-        <p class="store-info-item">
+        <p v-if="isAdd" class="store-info-item">
           <span style="vertical-align: top;" class="item-key">验证码：</span>
           <span style="width:40%;vertical-align: top;" class="item-value">
             <input
