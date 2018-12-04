@@ -34,6 +34,14 @@ export const setmobilebysixiid = (customerSixiId, mobile) => {
     mobile
   });
 }
+// 根据workSheetId修改工单手机号码
+export const setmobileByworkSheetId = ({ mobile, workSheetId })=>{
+    return post("/workorder/collectphone", {
+        mobile,
+        workSheetId
+    })
+}
+
 export const selectCompanyAndMobile = () => {
   return post("/customer/selectcompanyandmobile", {});
 }

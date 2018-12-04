@@ -49,7 +49,8 @@
 <script>
 import {
   getcustomerbysixiid,
-  setmobilebysixiid
+  setmobilebysixiid,
+  setmobileByworkSheetId
 } from "@/api/customer/customer";
 import { getcode, validatecode } from "@/api/messageService/messageService";
 export default {
@@ -144,21 +145,37 @@ export default {
           this.$messagebox("提示", e.msg);
           return;
         }
-        // 若验证正确
-        setmobilebysixiid(this.userSixiId, this.phone).then(e => {
-          if (e.status !== 200) {
-            this.$messagebox("提示", e.msg);
-            return;
-          }
-          // this.$messagebox("提示", e.msg);
-          this.getCustomerPhone();
-          this.phone = "";
-          this.verifyCode = "";
-          this.$router.push({
-            name: "bindSuccess",
-            query: { mobile: this.phone, userSixiId: this.userSixiId }
-          });
-        });
+        // 若验证正确 有工单ID则修改工单手机号
+        if(this.$route.query.workSheetId){
+            let param = {
+                workSheetId: this.$route.query.workSheetId,
+                mobile: this.phone
+            };
+            setmobileByworkSheetId(param).then(res=>{
+                if (res.status !== 200) {
+                    this.$messagebox("提示", res.msg);
+                    return;
+                }
+                this.$router.push({
+                    name: "bindSuccess",
+                    query: { mobile: this.phone, userSixiId: this.userSixiId }
+                });
+            });
+        } else {
+            // 无工单ID则修改客户手机号
+            setmobilebysixiid(this.userSixiId, this.phone).then(e => {
+                if (e.status !== 200) {
+                    this.$messagebox("提示", e.msg);
+                    return;
+                }
+                // this.$messagebox("提示", e.msg);
+                this.getCustomerPhone();
+                this.$router.push({
+                    name: "bindSuccess",
+                    query: { mobile: this.phone, userSixiId: this.userSixiId }
+                });
+            });
+        }
       });
     },
     // 返回上一页
