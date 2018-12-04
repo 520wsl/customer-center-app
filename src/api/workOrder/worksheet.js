@@ -39,3 +39,13 @@ export const confirm = (workSheetId, handleType) => {
     handleType
   });
 }
+// 新增工单评价
+export const postEvaluateAdd = ({
+        orderNumber,
+        evaluateContent
+    }) => {
+    return post("/worksheet/evaluate/add", {
+        orderNumber,
+        evaluateContent
+    });
+};

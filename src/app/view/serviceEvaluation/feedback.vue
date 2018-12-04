@@ -29,7 +29,7 @@ export default {
         postEvaluateInfo({ sixiId, orderNumber }).then(res => {
             console.log(res);
             if (res.status != 200) {
-                return MessageBox("提示", "服务器繁忙，请稍后再试！");
+                return MessageBox("提示", res.msg);
             }
             this.list = res.data.evaluateContent || [];
         });

@@ -11,14 +11,9 @@
 </template>
 <script>
 import editEvaluation from "@/components/app/editEvaluation";
-import {
-
-    postEvaluateAdd,
-    getCheckEvaluate
-} from "@/api/evaluate/evaluate";
-import {
-    postTemplateInfo
-} from "@/api/evaluate/template";
+import { getCheckEvaluate } from "@/api/evaluate/evaluate";
+import { postTemplateInfo } from "@/api/evaluate/template";
+import { postEvaluateAdd } from "@/api/workOrder/worksheet";
 import { MessageBox } from "mint-ui";
 export default {
     data() {
@@ -43,7 +38,7 @@ export default {
             this.customerId = this.$route.query.customerId || ""; // 人员id
             this.workSheetId = this.$route.query.workSheetId || ""; // 工单id
             this.name = this.$route.query.servicePersonnel || ""; // 服务人员
-            this.sendtime = this.$route.query.sendtime || ""; // 用于校验是否已经评价参数之一
+            this.count = this.$route.query.count || ""; // 用于校验是否已经评价参数之一
             this.companyId = this.$route.query.companyId || "";
             if (this.id == 1) {
                 this.typeName = "美工";
@@ -64,9 +59,9 @@ export default {
         }
         this.$parent.$parent.setTitle(titleName + "服务评价");
         // 判断工单评价是否评价
-        getCheckEvaluate({ orderNumber: this.workSheetId, sendtime: this.sendtime }).then(res => {
+        getCheckEvaluate({ orderNumber: this.workSheetId, time: this.count }).then(res => {
             if (res.status != 200) {
-                return MessageBox("提示", "服务器繁忙，请稍后再试！");
+                return MessageBox("提示", res.msg);
             }
             if (res.data) {
                 // 已评价
@@ -87,9 +82,9 @@ export default {
         getList() {
             // alert(this.id);
             postTemplateInfo({ id: this.id }).then(res => {
-                // if (res.data) {
-                //   return;
-                // }
+                if (res.status != 200) {
+                    return MessageBox("提示", res.msg);
+                }
                 let list = res.data[0].content;
                 list.forEach(item => {
                     if (
@@ -104,22 +99,22 @@ export default {
         },
         addEvaluate() {
             let bool = false;
+            let str = "请填写必填项";
             this.list.forEach(item => {
                 if (item.isRequired == 1 && (item.value == "" || item.value == [])) {
                     bool = true;
+                    str += " "+ item.evaluateName;
                 }
             });
             if (bool) {
-                return MessageBox("提示", "请填写必填选项！");
+                return MessageBox("提示", str);
             }
             MessageBox.confirm("确定提交评价?")
                 .then(action => {
                     console.log(action, this.list);
                     postEvaluateAdd({
-                        sixiId: this.customerId,
                         orderNumber: this.workSheetId,
-                        evaluateContent: JSON.stringify(this.list),
-                        sendtime: this.sendtime
+                        evaluateContent: JSON.stringify(this.list)
                     }).then(res => {
                         if (res.status != 200) {
                             return MessageBox("提示", res.msg);
