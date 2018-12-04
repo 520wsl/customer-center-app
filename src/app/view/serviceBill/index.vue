@@ -1,146 +1,163 @@
 <template>
-  <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="loading" infinite-scroll-distance="10">
-    <no-Data v-if="billList.length<=0" message="抱歉，您还未创建工单！"></no-data>
-    <div class="servicebill" v-for="(el,index) in billList" :key="index">
-      <router-link :to="{ name: 'serviceBillInfo', query: { id: el.id,identity:2,companySixiId:companySixiId } }" tag="h3">{{workType[el.workType]}}</router-link>
-      <p class="BillId">工单编号{{num}}：
-        <span>{{el.identifier}}</span>
-      </p>
-      <ul class="item">
-        <li>我的公司：{{el.companyName}}</li>
-        <li>提交时间：{{getTime(el.startTime,'YYYY-MM-DD')}}</li>
-        <li>持续时间：{{el.hourSum}}h</li>
-        <li>客服人员：{{el.userVo && el.userVo.userName}}</li>
-      </ul>
-      <p class="status">
-        <span>状态：{{handleType[el.type] || ''}}</span>
-        <router-link v-if="el.type == 3" :to="{ name: 'serviceEvaluationInfo', query: { id: el.id } }" tag="mt-button" class="btn">评价</router-link>
-      </p>
+    <div
+        v-infinite-scroll="loadMore"
+        :infinite-scroll-disabled="loading"
+        infinite-scroll-distance="10"
+    >
+        <no-data v-if="billList.length<=0" message="抱歉，您还未创建工单！"></no-data>
+        <div class="servicebill" v-for="(el,index) in billList" :key="index">
+            <router-link
+                :to="{ name: 'serviceBillInfo', query: { id: el.id,identity:2,companySixiId:companySixiId } }"
+                tag="h3"
+            >{{workType[el.workType]}}</router-link>
+            <p class="BillId">
+                工单编号{{num}}：
+                <span>{{el.identifier}}</span>
+            </p>
+            <ul class="item">
+                <li>我的公司：{{el.companyName}}</li>
+                <li>提交时间：{{getTime(el.startTime,'YYYY-MM-DD')}}</li>
+                <li>持续时间：{{el.hourSum}}h</li>
+                <li>客服人员：{{el.userVo && el.userVo.userName}}</li>
+            </ul>
+            <p class="status">
+                <span>状态：{{handleType[el.type] || ''}}</span>
+                <router-link
+                    v-if="el.type == 3"
+                    :to="{ name: 'serviceEvaluationInfo', query: { id: el.id } }"
+                    tag="mt-button"
+                    class="btn"
+                >评价</router-link>
+            </p>
+        </div>
     </div>
-  </div>
 </template>
 <script>
 import { getCompanyWorkSheetList } from "@/api/workOrder/worksheet";
 import { formatTime } from "@/libs/util/time";
 import { mapState } from "vuex";
-import noData from "@/components/app/public/noData"
+import noData from "@/components/app/public/noData";
 export default {
-  components: { noData },
-  created() {
-    this.$parent.$parent.setTitle("服务工单");
-  },
-  data() {
-    return {
-      loading: false,
-      billList: [],
-      size: 10,
-      count: Number,
-      num: 1,
-      companySixiId: this.$route.query.companySixiId || ""
-      // sixiId: ""
-    };
-  },
-  mounted() {
-    // （滚动条底部事件）存在请求两次的情况，暂时去除mounted触发
-    // this.getWorkSheetList();
-    // if (this.$route.query) {
-    //   this.sixiId = this.$route.query.sixiId || "";
-    // }
-  },
-  computed: {
-    ...mapState({
-      handleType: state => state.Servicebill.handleType,
-      workType: state => state.Servicebill.workType
-    })
-  },
-  methods: {
-    getWorkSheetList() {
-      // 是否可以请求
-      if (this.count / this.size < this.num - 1) return;
-      this.loading = true;
-      let param = {
-        companySixiId: this.companySixiId,
-        pageNum: this.num,
-        pageSize: this.size
-      };
-      getCompanyWorkSheetList(param).then(e => {
-        if (e.status !== 200) {
-          this.$messagebox("提示", "服务器繁忙，请稍后再试！");
-          return;
+    components: {
+        /* eslint-disable */
+        noData
+        /* eslint-disable */
+    },
+    created() {
+        this.$parent.$parent.setTitle("服务工单");
+    },
+    data() {
+        return {
+            loading: false,
+            billList: [],
+            size: 10,
+            count: Number,
+            num: 1,
+            companySixiId: this.$route.query.companySixiId || ""
+            // sixiId: ""
+        };
+    },
+    mounted() {
+        // （滚动条底部事件）存在请求两次的情况，暂时去除mounted触发
+        // this.getWorkSheetList();
+        // if (this.$route.query) {
+        //   this.sixiId = this.$route.query.sixiId || "";
+        // }
+    },
+    computed: {
+        ...mapState({
+            handleType: state => state.Servicebill.handleType,
+            workType: state => state.Servicebill.workType
+        })
+    },
+    methods: {
+        getWorkSheetList() {
+            // 是否可以请求
+            if (this.count / this.size < this.num - 1) return;
+            this.loading = true;
+            let param = {
+                companySixiId: this.companySixiId,
+                pageNum: this.num,
+                pageSize: this.size
+            };
+            getCompanyWorkSheetList(param).then(e => {
+                if (e.status !== 200) {
+                    this.$messagebox("提示", "服务器繁忙，请稍后再试！");
+                    return;
+                }
+                e.data.list.forEach(e => {
+                    // console.log(e);
+                    this.billList.push(e);
+                });
+                this.num = ++e.data.num;
+                this.count = e.data.count;
+                this.loading = false;
+                console.log(this.num);
+            });
+        },
+        getTime(time, norms) {
+            return formatTime(time, norms);
+        },
+        loadMore() {
+            this.getWorkSheetList();
         }
-        e.data.list.forEach(e => {
-          // console.log(e);
-          this.billList.push(e);
-        });
-        this.num = ++e.data.num;
-        this.count = e.data.count;
-        this.loading = false;
-        console.log(this.num);
-      });
-    },
-    getTime(time, norms) {
-      return formatTime(time, norms);
-    },
-    loadMore() {
-      this.getWorkSheetList();
     }
-  }
 };
 </script>
 <style lang="less" scoped>
 .top {
-  margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 .noData {
-  font-size: 28px;
-  color: #6e7790;
-  padding: 30px;
+    font-size: 28px;
+    color: #6e7790;
+    padding: 30px;
 }
 .servicebill {
-  padding-top: 20px;
-  padding-left: 20px;
-  background: #fff;
-  color: #6e7790;
-  margin-bottom: 20px;
-  h3 {
-    font-size: 30px;
-    margin: 10px 0;
-    color: #6e7790;
-  }
-  .BillId {
-    font-size: 28px;
-    padding-bottom: 20px;
-    span {
-      color: #6e7790;
-    }
-  }
-  .item {
-    border-top: 2px solid #f4f4f4;
-    font-size: 28px;
     padding-top: 20px;
+    padding-left: 20px;
+    background: #fff;
+    color: #6e7790;
     margin-bottom: 20px;
-    overflow: hidden;
-    li {
-      padding-bottom: 20px;
+    h3 {
+        font-size: 30px;
+        margin: 10px 0;
+        color: #6e7790;
     }
-  }
-  .status {
-    display: flex;
-    overflow: hidden;
-    height: 100px;
-    font-size: 28px;
-    border-top: 1px solid #f4f4f4;
-    align-items: center;
-    span {
-      flex: 1;
+    .BillId {
+        font-size: 28px;
+        padding-bottom: 20px;
+        span {
+            color: #6e7790;
+        }
     }
-    .btn {
-      font-size: 28px;
-      margin-right: 52px;
-      width: 136px;
-      height: 52px;
+    .item {
+        border-top: 2px solid #f4f4f4;
+        font-size: 28px;
+        padding-top: 20px;
+        margin-bottom: 20px;
+        overflow: hidden;
+        li {
+            padding-bottom: 20px;
+        }
     }
-  }
+    .status {
+        display: flex;
+        overflow: hidden;
+        height: 100px;
+        font-size: 28px;
+        border-top: 1px solid #f4f4f4;
+        align-items: center;
+        span {
+            flex: 1;
+        }
+        .btn {
+            font-size: 28px;
+            margin-right: 52px;
+            width: 136px;
+            height: 52px;
+        }
+    }
 }
 </style>
 
