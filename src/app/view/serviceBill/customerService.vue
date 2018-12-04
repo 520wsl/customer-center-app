@@ -1,6 +1,6 @@
 <template>
   <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="loading" infinite-scroll-distance="10">
-    <span class="noData" v-if="billList.length<=0">暂无数据</span>
+    <no-data v-if="billList.length<=0" message="抱歉，目前暂无数据！"></no-data >
     <div class="servicebill" v-for="(el,index) in billList" :key="index">
       <router-link :to="{ name: 'serviceBillInfo', query: { id: el.id,identity:1,companySixiId:el.companyId } }" tag="h3">
         {{el.title}}
@@ -22,8 +22,9 @@
 import { getWorkSheetList } from "@/api/workOrder/worksheet";
 import { formatTime } from "@/libs/util/time";
 import { mapState } from "vuex";
+import noData from "@/components/app/public/noData"
 export default {
-  components: {},
+  components: { noData },
   created() {
     this.$parent.$parent.setTitle("我的工单");
   },

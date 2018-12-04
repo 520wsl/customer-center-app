@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { judgeLogin } from "@/libs/tools";
 import { createNamespacedHelpers } from "vuex";
 const { mapActions } = createNamespacedHelpers("User");
 export default {
@@ -71,6 +72,8 @@ export default {
             }
 
             return;
+        } else {
+            judgeLogin();
         }
     }
 };

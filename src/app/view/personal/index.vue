@@ -29,7 +29,7 @@
                 </div>
                 <span>&gt;</span>
             </router-link>
-            <router-link class="item border" :to='{name:"serviceBill"}'>
+            <router-link class="item border" :to='{name:"customerService"}'>
                 <div>
                     <img :src="$CDN('/service-sheet.png')">
                     <span>服务工单</span>
@@ -49,9 +49,8 @@
 <script>
 import config from "@/config";
 import { getItem } from "@/libs/util/session";
-import {encryptionPhone } from '@/libs/tools'
+import { encryptionPhone } from '@/libs/tools'
 // import { getUserInfoData } from "@/api/customer/customer";
-
 export default {
     data() {
         return {
@@ -59,10 +58,10 @@ export default {
     },
     computed: {
         info: function () {
-            return this.$store.state.User[config.storeagewxUserInfoKey]
+            return this.$store.state.User.wxUserInfo;
         },
         companyUrl: function () {
-            return this.$store.state.User.avatorImgPath;
+            return this.$store.state.User.wxUserInfo.wechatAvatar || this.$store.state.User.avatorImgPath;
         }
     },
     mounted() {
@@ -70,7 +69,7 @@ export default {
         console.log('微信', "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3c0c1aef00b3d175&redirect_uri=http://workapp.sixi.com/personal/index&response_type=code&scope=snsapi_userinfo&state=weChat&connect_redirect=1#wechat_redirect")
         this.$parent.$parent.setTitle("我的服务");
         let res = getItem(config.storeagewxUserInfoKey)
-        console.log(res);
+        console.log(res, this.info);
         // this.getInfo();
         // console.log(this.$store.state.User[config.storeagewxUserInfoKey], res)
         // console.log(this.$store.state.User.avatorImgPath)
@@ -82,15 +81,16 @@ export default {
                 name: "getPhone"
             })
         },
-        encryptionPhone(phone){
+        encryptionPhone(phone) {
             return encryptionPhone(phone)
-        }
+        },
         // async getInfo() {
         //     let res = await getUserInfoData();
-        //     if (res.status == 200) {
+        //     if (res.status != 200) {
         //         return MessageBox("提示", res.msg);
         //     }
         //     this.$store.commit("setUserInfo", res.data);
+        //     console.log(this.$store)
         //     this.$store.commit("setAvator", res.data.wechatAvatar);
         // }
     }
@@ -155,9 +155,9 @@ export default {
   height: 96px;
 }
 .item div {
+  flex: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 .item div img {
   height: 28px;
