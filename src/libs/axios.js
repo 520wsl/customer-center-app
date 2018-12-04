@@ -2,7 +2,7 @@
  * @Author: Mad Dragon 395548460@qq.com
  * @Date: 2018-11-07 15:32:18
  * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-12-04 09:59:50
+ * @Last Modified time: 2018-12-04 10:07:21
  * @explanatory:  axios 接口封装
  */
 import axios from "axios";
@@ -114,7 +114,7 @@ class HttpRequest {
 				console.log(
 					"-------------------【错误拦截】------------------------------"
 				);
-				alert("403:" + mdg);
+				alert("403:" + msg);
 				break;
 			case 401:
 				console.log(

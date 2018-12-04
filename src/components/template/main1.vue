@@ -2,7 +2,7 @@
  * @Author: Mad Dragon 395548460@qq.com 
  * @Date: 2018-11-07 23:36:01 
  * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-12-03 18:28:55
+ * @Last Modified time: 2018-12-04 10:14:24
  * @explanatory:  模板页 不带底部按钮
  */
 <template>
@@ -37,7 +37,7 @@ export default {
         let route = this.$route;
         let queryData = route.query;
         let codeData = queryData.code || "";
-        let stateData = queryData.state || "enterpriseWeChat";
+        let stateData = queryData.state || "";
 
         if (!codeData && !stateData) {
             this.getUserInfoAction();
@@ -72,9 +72,9 @@ export default {
             }
 
             return;
-        } else {
-            judgeLogin();
         }
+
+        judgeLogin();
     }
 };
 </script>
