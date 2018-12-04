@@ -8,9 +8,8 @@ function get(url, params) {
 }
 
 // 评价信息
-export const postEvaluateInfo = ({ sixiId, orderNumber }) => {
+export const postEvaluateInfo = ({ orderNumber }) => {
   return post("/evaluate/evaluategetone", {
-    sixiId,
     orderNumber
   });
 };
