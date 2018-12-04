@@ -22,7 +22,7 @@
                 </div>
                 <span>&gt;</span>
             </router-link>
-            <router-link v-if="info.role == 1" class="item border" :to='{name:"passwordsearch"}'>
+            <router-link v-if="info.role == 1" class="item border" :to='{name:"passwordSearch"}'>
                 <div>
                     <img :src="$CDN('/store-account-password.png')">
                     <span>查询店铺账号密码</span>

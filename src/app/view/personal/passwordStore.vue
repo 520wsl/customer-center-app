@@ -34,7 +34,12 @@
         <p class="store-info-item">
           <span style="vertical-align: top;" class="item-key">验证码：</span>
           <span style="width:40%;vertical-align: top;" class="item-value">
-            <input style="border:0;outline:none;" type="text" v-model="params.captcha">
+            <input
+              style="border:0;outline:none;"
+              @blur="toTOP"
+              type="text"
+              v-model="params.captcha"
+            >
           </span>
           <a
             class="code-a"

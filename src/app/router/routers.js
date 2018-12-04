@@ -2,7 +2,7 @@
  * @Author: Mad Dragon 395548460@qq.com
  * @Date: 2018-11-07 22:22:23
  * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-12-02 17:22:42
+ * @Last Modified time: 2018-12-03 09:30:03
  * @explanatory: Routers Config   路由 路径 配置
  */
 /**
@@ -228,8 +228,8 @@ export default [{
           )
       },
       {
-        path: "passwordsearch",
-        name: "passwordsearch",
+        path: "passwordSearch",
+        name: "passwordSearch",
         meta: {
           title: "店铺账号密码查询"
         },
@@ -241,7 +241,7 @@ export default [{
           )
       },
       {
-        path: "passwordstore",
+        path: "passwordStore",
         name: "passwordStore",
         meta: {
           title: "店铺账号密码"

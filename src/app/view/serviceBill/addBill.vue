@@ -84,7 +84,6 @@ import { saveWorkOrder } from "@/api/workOrder/workOrder";
 import { mapState, mapActions } from "vuex";
 import { selectCompanyAndMobile } from "@/api/customer/customer";
 export default {
-  components: {},
   computed: {
     ...mapState({
       avatorImgPath: state => {
@@ -129,7 +128,10 @@ export default {
   },
   methods: {
     cancel() {
-      this.$router.push({ name: 'personalServie' })
+      // this.$router.push({ name: 'personalServie' })
+      // 微信端关闭页面
+      WeixinJSBridge.call('closeWindow');
+
     },
     toTOP() {
       window.scrollTo(0, 0);

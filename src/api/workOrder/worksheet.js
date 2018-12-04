@@ -19,7 +19,7 @@ export const getWorkSheetList = ({sixiId, pageNum, pageSize}) => {
 }
 // 获取客户工单列表
 export const getCompanyWorkSheetList = ({companySixiId, pageNum , pageSize}) => {
-  return post("/worksheet/list", {
+  return post("/worksheet/customerlist", {
     companySixiId,
     pageNum,
     pageSize
