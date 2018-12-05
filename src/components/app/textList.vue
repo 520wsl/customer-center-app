@@ -1,5 +1,5 @@
 <template>
-  <textarea class="textarea" v-model='showValue' @input="descArea" :maxLength="maxLength" :disabled="!isEdit" placeholder="还有其他想说的写这里"></textarea>
+  <textarea class="textarea" v-model='showValue' @blur="toTop" @input="descArea" :maxLength="maxLength" :disabled="!isEdit" placeholder="还有其他想说的写这里"></textarea>
 </template>
 <script>
 export default {
@@ -13,6 +13,9 @@ export default {
   methods: {
     descArea() {
       this.$emit("getValue", { value: this.showValue, index: this.index });
+    },
+    toTop(){
+        window.scrollTo(0,0);
     }
   }
 };
