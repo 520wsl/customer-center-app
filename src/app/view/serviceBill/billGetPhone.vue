@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="bindPhone">
-      <p>{{detail.customerDetailVo.callName}}&ensp;您好，为了我们的客服人员，能够通过电话沟通，处理事情，请提供该工单的联系人电话</p>
+      <p>{{detail.customerDetailVo && detail.customerDetailVo.callName}}&ensp;您好，为了我们的客服人员，能够通过电话沟通，处理事情，请提供该工单的联系人电话</p>
       <div class="phone">
         <label class="title"><img class="icon" :src="$CDN('/phone.png')" alt="404">请输入工单联系人手机号</label>
         <input v-model="phone" class="input input-block " type="number" placeholder="请输入要绑定的手机号">
@@ -85,10 +85,9 @@ export default {
           this.$messagebox("提示", res.msg);
           return;
         }
-        this.getUserInfo();
         this.$router.push({
           name: "bindSuccess",
-          query: { mobile: this.phone, userSixiId: this.userSixiId }
+          query: { mobile: this.phone, type: 2 }
         });
       });
     }
