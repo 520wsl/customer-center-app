@@ -34,7 +34,7 @@
 import { getDetail } from "@/api/workOrder/worksheet";
 import { formatTime } from "@/libs/util/time";
 import { mapState } from "vuex";
-import { setmobileByworkSheetId } from "@/api/customer/customer";
+import { setmobileByworkSheetId } from "@/api/workOrder/workOrder";
 export default {
   created() {
     // this.$parent.$parent.setTitle("完善工单联系人");
