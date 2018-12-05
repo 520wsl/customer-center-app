@@ -41,27 +41,33 @@
       </div>
     </mt-loadmore>
     <!--客户可见-->
-    <div v-if="identity == 2 && (detail.handleType == 3 || detail.handleType == 4)" class="assess">
-      <img :src="$CDN('/work_list_logo.png')" alt="">
-      <span class="assessTime">
-        <strong>工单评价</strong>
-        <span v-if="detail.handleType == 3 ">({{getTime(detail.finishTime,'YYYY-MM-DD')}})</span>
-        <span v-if="detail.handleType == 4 ">({{getTime(detail.evaluateTime,'YYYY-MM-DD')}})</span>
-      </span>
-      <router-link v-if="detail.handleType == 3 " :to="{ name: 'serviceEvaluationInfo', query: {
+
+    <router-link v-if="detail.handleType == 3 " :to="{ name: 'serviceEvaluationInfo', query: {
           type: detail.workType,
           customerId: detail.workerOrderDetailVo && detail.workerOrderDetailVo.sixiId,
           workSheetId: id,
           servicePersonnel: detail.leadingUser && detail.leadingUser.userName
           }
-        }" tag="span" class="btn">待评价&emsp; &gt;
-      </router-link>
-      <router-link v-if="detail.handleType == 4 " :to="{ name: 'serviceEvaluationBreview', query: {
+        }" tag="div" class="assess">
+      <img :src="$CDN('/work_list_logo.png')" alt="">
+      <span class="assessTime">
+        <strong>工单评价</strong>
+        <!-- <span>({{getTime(detail.finishTime,'YYYY-MM-DD')}})</span> -->
+      </span>
+      <span class="btn">待评价&emsp; &gt;</span>
+    </router-link>
+
+    <router-link v-if="detail.handleType == 4 " :to="{ name: 'serviceEvaluationBreview', query: {
           workSheetId: id
           }
-        }" tag="span">已评价&emsp; &gt;
-      </router-link>
-    </div>
+        }" tag="div" class="assess">
+      <img :src="$CDN('/work_list_logo.png')" alt="">
+      <span class="assessTime">
+        <strong>工单评价</strong>
+        <span>({{getTime(detail.evaluateTime,'YYYY-MM-DD')}})</span>
+      </span>
+      <span class="btn">已评价&emsp; &gt;</span>
+    </router-link>
     <!-- 客服(执行人)可见 detail.executorId 执行人id  detail.executorId && detail.executorId-->
     <tab v-if="identity == 1 && detail.handleType != 1" class="tab" :type="detail.handleType" :companySixiId="companySixiId"></tab>
   </div>
