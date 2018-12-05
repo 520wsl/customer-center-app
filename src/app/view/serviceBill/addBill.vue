@@ -272,6 +272,7 @@ export default {
   padding: 20px 0;
   border: none;
   border-bottom: 1px #d9d9d9 solid;
+  border-radius: 0;
 }
 .my-moblie:focus {
   outline: none;
@@ -372,6 +373,6 @@ export default {
 }
 .my-company .mint-cell,
 .my-company .mint-cell-wrapper {
-  border: 1px solid #fff;
+  background: #fff;
 }
 </style>
