@@ -1,6 +1,6 @@
 <template>
-    <div class="message-body">
-        <img class="message-bg" :src="$CDN('/save-message-bg.png')" alt="">
+    <div class="message-body" :style="'background-image: url('+$CDN('/save-message-bg.png')+')'">
+        <!-- <img class="message-bg" :src="$CDN('/save-message-bg.png')" alt=""> -->
         <div class="message-content">
             <div class="message-item">
                 <span>
@@ -70,9 +70,16 @@ export default {
 };
 </script>
 <style scoped>
+html,
+body,
+#app,
+.message-body{
+    height: 100%;
+}
 .message-body {
   padding-top: 10px;
   position: relative;
+  background-size: 100% 100%;
 }
 .message-body .message-bg {
   position: absolute;
@@ -173,10 +180,5 @@ export default {
   border-radius: 4px;
   height: 76px;
   line-height: 76px;
-}
-</style>
-<style>
-#app {
-  height: auto;
 }
 </style>
