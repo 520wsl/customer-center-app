@@ -67,13 +67,13 @@
         客服人员{{staffName}}，稍后将与您取得联系，请确保您
         的手机号{{params.mobile}}，保持畅通
       </p>
-      <p v-if="!hasTelephone" class="msg-go">
+      <!-- <p v-if="!hasTelephone" class="msg-go">
         <span>为了更好的为您提供服务，</span>
         <router-link
           style="color:#fc7c1f;"
           :to="{name:'getPhone',query:{userSixiId:params.companySixiId}}"
         >请绑定您的手机号</router-link>
-      </p>
+      </p>-->
     </div>
   </div>
 </template>
@@ -92,13 +92,17 @@ export default {
       name: state => {
         return state.User.wxUserInfo.callName || state.User.wxUserInfo.wechatNickname || ''
       }
-    })
+    }),
+    companySixiId() {
+      return this.params.companySixiId
+    }
   },
   data() {
     return {
       state: 0,
       staffName: '',
       hasTelephone: false,
+      userMobile: '',
       // 公司列表
       companyList: [],
       // 工单列表
@@ -169,17 +173,27 @@ export default {
       })[0] || {};
       return res.label
     },
+    findCompanyMobile(sixiId) {
+      if (this.companyList.length <= 0) {
+        return ''
+      }
+      const res = [...this.companyList].filter(item => {
+        return item.value == sixiId
+      })[0] || {};
+      return res.mobile
+    },
     // 获取公司列表
     async getCompanyList() {
       let res = await selectCompanyAndMobile();
       if (res.status === 200) {
         this.hasTelephone = res.data.mobile ? true : false;
-        this.params.mobile = res.data.mobile || ''
+        this.userMobile = res.data.mobile || '';
         const list = res.data.companys || [];
         this.companyList = [...list].map(item => {
           return {
             label: item.name,
-            value: item.sixiId
+            value: item.sixiId,
+            mobile: item.mobile
           }
         })
         if (list[0]) {
@@ -189,6 +203,11 @@ export default {
         this.$messagebox("提示", res.msg);
       }
     },
+  },
+  watch: {
+    companySixiId(newValue, oldValue) {
+      this.params.mobile = this.findCompanyMobile(newValue) || this.userMobile || '';
+    }
   }
 }
 </script>
