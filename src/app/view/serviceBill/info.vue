@@ -26,10 +26,10 @@
         <li>客服人员：{{detail.leadingUser && detail.leadingUser.userName}}</li>
       </ul>
       <!--未绑定手机 v-if="detail.cellphone"  -->
-      <p class="notice" v-if="detail.cellphone">注意：为了更好的为您提供服务,客服人员能够与您电话沟通, 请绑定 您的手机号。
+      <!-- <p class="notice" v-if="detail.cellphone">注意：为了更好的为您提供服务,客服人员能够与您电话沟通, 请绑定 您的手机号。
         <router-link :to="{name:'getPhone'}" tag="span">绑定手机号&ensp;&gt;</router-link>
       </p>
-      <p class="notice" v-else-if="detail.customerDetailVo && !detail.customerDetailVo.companyName">注意：为了更好的为您提供服务,请联系我们的业务员,将您的合作公司跟您的微信做绑定操作;</p>
+      <p class="notice" v-else-if="detail.customerDetailVo && !detail.customerDetailVo.companyName">注意：为了更好的为您提供服务,请联系我们的业务员,将您的合作公司跟您的微信做绑定操作;</p> -->
       <div class="serviceRemark">
         <h3>服务记录</h3>
         <msgTpl v-for="(el,index) in talknews" :key="index" :info="el">
