@@ -56,11 +56,13 @@ export const addUser = ({
 }
 export const updateUser = ({
   account,
-  password
+  password,
+  captcha
 }) => {
   return post("/secretstore/update", {
     account,
     password,
+    captcha,
     type: "wangwang"
   });
 }

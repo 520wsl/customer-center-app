@@ -1,10 +1,10 @@
 <template>
   <div class="password-store">
-    <div class="msg-store">
+    <div v-if="!subOk" class="msg-store">
       <i class="mintui mintui-field-warning"></i>
       请勿将账号密码直接告知我们的工作人员，请在此输入店铺的 账号密码，我们将以加密的形式进行保存，绝不泄露!
     </div>
-    <div class="msg-store-item">
+    <div v-if="!subOk" class="msg-store-item">
       <div class="store-info">
         <p class="store-info-item">
           <span class="item-key">店铺账号：</span>
@@ -31,7 +31,7 @@
             >
           </a>
         </p>
-        <p v-if="isAdd" class="store-info-item">
+        <p class="store-info-item">
           <span style="vertical-align: top;" class="item-key">验证码：</span>
           <span style="width:40%;vertical-align: top;" class="item-value">
             <input
@@ -50,13 +50,18 @@
           </a>
         </p>
       </div>
-      <div v-if="isAdd" style="text-align:center;">
+      <div style="text-align:center;">
         <mt-button plain type="default" @click="reset" size="small" class="cancel">重置</mt-button>
-        <mt-button size="small" @click="addUser" type="default" class="ok">确定</mt-button>
+        <mt-button size="small" @click="save" type="default" class="ok">确定</mt-button>
       </div>
-      <div v-if="!isAdd" style="text-align:center;">
+      <!-- <div v-if="!isAdd" style="text-align:center;">
         <mt-button size="small" @click="updateUser" type="default" class="ok">修改</mt-button>
-      </div>
+      </div>-->
+    </div>
+    <div class="form-submited" v-if="subOk">
+      <img :src="$CDN('/success_icon.png')">
+      <p class="form-submited-text">您的店铺账号密码提交成功！</p>
+      <router-link :to="{name:'personalServie'}" class="bind" tag="mt-button">查看我的服务</router-link>
     </div>
   </div>
 </template>
@@ -76,6 +81,7 @@ export default {
       captcha: '/api/wechat-proxy-service/verifyCode/get',
       companySixiId: '',
       companyAndMobile: {},
+      subOk: false,
       params: {
         account: '',
         password: '',
@@ -108,6 +114,13 @@ export default {
     }
   },
   methods: {
+    save() {
+      if (this.isAdd) {
+        this.addUser();
+      } else {
+        this.updateUser();
+      }
+    },
     toTOP() {
       window.scrollTo(0, 0);
     },
@@ -139,7 +152,7 @@ export default {
       }
       let res = await addUser(this.params);
       if (res.status === 200) {
-        this.$messagebox("提示", res.msg);
+        this.subOk = true;
       }
     },
     async updateUser() {
@@ -153,7 +166,7 @@ export default {
       }
       let res = await updateUser(this.params);
       if (res.status === 200) {
-        this.$messagebox("提示", res.msg);
+        this.subOk = true;
       }
     }
   }
@@ -232,5 +245,36 @@ export default {
 .code-a,
 .code {
   height: 60px;
+}
+.form-submited {
+  margin-top: 10px;
+  border: 1px solid transparent;
+  background: #fff;
+}
+.form-submited > img {
+  display: block;
+  margin: 42px auto;
+  width: 110px;
+  height: 110px;
+}
+.form-submited-text {
+  font-size: 32px;
+  color: #444444;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 40px;
+}
+.form-submited-text-msg {
+  width: 616px;
+  margin: 0 auto;
+  font-size: 28px;
+  color: #929eaa;
+}
+.bind {
+  display: block;
+  width: 400px;
+  margin: 0 auto;
+  color: #fff;
+  background: #697eff;
 }
 </style>
