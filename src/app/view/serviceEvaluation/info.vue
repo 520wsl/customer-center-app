@@ -168,10 +168,8 @@ export default {
   font-size: 32px;
   color: #ffffff;
 }
-</style>
-<style>
-body,
 html,
+body,
 #app {
   background: #f4f4f4;
   height: auto;
