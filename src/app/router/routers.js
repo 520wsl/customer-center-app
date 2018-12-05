@@ -1,8 +1,8 @@
 /*
  * @Author: Mad Dragon 395548460@qq.com
  * @Date: 2018-11-07 22:22:23
- * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-12-03 09:30:03
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-12-05 10:19:53
  * @explanatory: Routers Config   路由 路径 配置
  */
 /**
@@ -38,10 +38,10 @@ export default [{
       require.ensure([], () => r(require("@/app/view/login/login")), "appLogin") //登录页面
   },
   {
-      path: "/",
-      redirect: {
-        name: "personalServie"
-      },
+    path: "/",
+    redirect: {
+      name: "personalServie"
+    },
   },
   // {
   //   path: "/",
@@ -409,6 +409,20 @@ export default [{
             [],
             () => r(require("@/app/view/serviceBill/getPhone")),
             "getPhone"
+          )
+      },
+      // billGetPhone 工单采集手机号
+      {
+        path: "billGetPhone",
+        name: "billGetPhone",
+        meta: {
+          title: "完善工单联系人"
+        },
+        component: r =>
+          require.ensure(
+            [],
+            () => r(require("@/app/view/serviceBill/billGetPhone")),
+            "billGetPhone"
           )
       },
       // 绑定成功

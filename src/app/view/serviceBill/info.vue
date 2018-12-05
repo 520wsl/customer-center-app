@@ -56,7 +56,11 @@
           }
         }" tag="span" class="btn">待评价&emsp; &gt;
       </router-link>
-      <span v-if="detail.handleType == 4 ">已评价</span>
+      <router-link v-if="detail.handleType == 4 " :to="{ name: 'serviceEvaluationBreview', query: {
+          workSheetId: id
+          }
+        }" tag="span">已评价&emsp; &gt;
+      </router-link>
     </div>
     <!-- 客服(执行人)可见 detail.executorId 执行人id  detail.executorId && detail.executorId-->
     <tab v-if="identity == 1 && detail.handleType != 1" class="tab" :type="detail.handleType" :companySixiId="companySixiId"></tab>
