@@ -186,12 +186,12 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100%;
-  margin-top: -90px;
+  // margin-top: -90px;
   font-size: 28px;
 }
 /** 工单编号信息 */
 .identifier {
-  margin: 100px 0 10px 0;
+  margin: 0px 0 10px 0;
   padding: 20px 30px 0 30px;
   font-size: 28px;
   background: #fff;
