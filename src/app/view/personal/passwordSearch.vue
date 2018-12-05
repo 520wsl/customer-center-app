@@ -80,6 +80,7 @@ export default {
       if (!item.mobile) {
         this.$messagebox("提示", '抱歉您还未绑定手机号!');
       } else {
+
         const msg = `密码将以短信的形式发送到以下手机上<br>手机号：${item.mobile}`
         MessageBox.confirm(msg).then(async action => {
           if (action == 'confirm') {
