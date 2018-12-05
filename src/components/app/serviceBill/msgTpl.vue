@@ -1,7 +1,8 @@
 <template>
   <div :class="info.sign == 1 ?['message']:['message msg-r']">
     <div class="portrait">
-      <img :src="$CDN(portraitUrl)" alt="404">
+      <img v-if="info.sign == 1" :src="$CDN(portraitUrl)" alt="404">
+      <img v-else :src="companyUrl" alt="404">
       <!-- 客户微信头像，该功能暂无 -->
     </div>
     <div class="content">
@@ -34,7 +35,13 @@ export default {
     // }
     ...mapState({
       billStatus: state => state.Servicebill.billStatus
-    })
+    }),
+    companyUrl: function() {
+      return (
+        this.$store.state.User.wxUserInfo.wechatAvatar ||
+        this.$store.state.User.avatorImgPath
+      );
+    }
   },
   methods: {
     getTime(time, norms) {
