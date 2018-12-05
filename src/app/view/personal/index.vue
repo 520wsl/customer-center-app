@@ -1,48 +1,57 @@
 <template>
-    <div class="personal">
-        <!-- <div class="company" :style="'background-image: url('+$CDN('/my_company_bg.png')+')'"> -->
-        <div class="company">
-            <div class="company-image">
-                <img v-if="companyUrl" :src="companyUrl" class="img">
-                <div v-else class="default-img"></div>
-            </div>
-            <div class="company-info">
-                <div>{{info.companyName}}</div>
-                <div v-if="info.mobile">{{encryptionPhone(info.mobile)}}</div>
-                <div v-else>
-                    <mt-button class="btn" type='default' @click="bindPhone">点击绑定手机号</mt-button>
+    <div>
+        <div class="personal" v-if="info.mobile || info.companyName">
+            <!-- <div class="company" :style="'background-image: url('+$CDN('/my_company_bg.png')+')'"> -->
+            <div class="company">
+                <div class="company-image">
+                    <img v-if="companyUrl" :src="companyUrl" class="img">
+                    <div v-else class="default-img"></div>
+                </div>
+                <div class="company-info">
+                    <div>{{info.companyName}}</div>
+                    <div v-if="info.mobile">{{encryptionPhone(info.mobile)}}</div>
+                    <div v-else>
+                        <mt-button class="btn" type='default' @click="bindPhone">点击绑定手机号</mt-button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="personal-other">
-            <router-link class="item border" :to="{name: 'personalCompany'}">
-                <div>
-                    <img :src="$CDN('/personal-company.png')">
-                    <span>我的公司</span>
-                </div>
-                <span>&gt;</span>
-            </router-link>
-            <router-link v-if="info.role == 1" class="item border" :to='{name:"passwordSearch"}'>
-                <div>
-                    <img :src="$CDN('/store-account-password.png')">
-                    <span>查询店铺账号密码</span>
-                </div>
-                <span>&gt;</span>
-            </router-link>
-            <router-link class="item border" :to='{name:"serviceBill"}'>
-                <div>
-                    <img :src="$CDN('/service-sheet.png')">
-                    <span>服务工单</span>
-                </div>
-                <span>&gt;</span>
-            </router-link>
-            <!-- <a class="item border" href="#">
+            <div class="personal-other">
+                <router-link class="item border" :to="{name: 'personalCompany'}">
+                    <div>
+                        <img :src="$CDN('/personal-company.png')">
+                        <span>我的公司</span>
+                    </div>
+                    <span>&gt;</span>
+                </router-link>
+                <router-link v-if="info.role == 1" class="item border" :to='{name:"passwordSearch"}'>
+                    <div>
+                        <img :src="$CDN('/store-account-password.png')">
+                        <span>查询店铺账号密码</span>
+                    </div>
+                    <span>&gt;</span>
+                </router-link>
+                <router-link class="item border" :to='{name:"serviceBill"}'>
+                    <div>
+                        <img :src="$CDN('/service-sheet.png')">
+                        <span>服务工单</span>
+                    </div>
+                    <span>&gt;</span>
+                </router-link>
+                <!-- <a class="item border" href="#">
                 <div>
                     <img :src="$CDN('/qustion_logo.png')">
                     <span>常见问题</span>
                 </div>
                 <span>&gt;</span>
             </a> -->
+            </div>
+        </div>
+        <div v-else class="no-data">
+            <div class="img">
+                <img :src="$CDN('/null-icon.png')" alt="">
+            </div>
+            <h3>非常抱歉，您的微信号还未关联公司！</h3>
+            <p>注：请联系我们的业务员，将您的合作公司跟您的微信做关联操作；</p>
         </div>
     </div>
 </template>
@@ -78,7 +87,11 @@ export default {
     methods: {
         bindPhone() {
             this.$router.push({
-                name: "getPhone"
+                name: "getPhone",
+                query: {
+                    userSixiId: this.info.customerSixiId || "",
+                    companySixiId: this.info.companySixiId || ""
+                }
             })
         },
         encryptionPhone(phone) {
@@ -172,6 +185,28 @@ export default {
   padding: 0 30px;
   background: #fff;
   margin-top: 20px;
+}
+
+/* 空数据 */
+.no-data .img {
+  width: 210px;
+  margin: 54px auto 0;
+}
+.no-data .img img {
+  width: 100%;
+  display: block;
+}
+.no-data h3 {
+  font-size: 28px;
+  color: #6e7790;
+  text-align: center;
+  font-weight: normal;
+  margin: 66px 0 40px;
+}
+.no-data p {
+  padding: 0 30px;
+  font-size: 26px;
+  color: #929eaa;
 }
 </style>
 <style>
