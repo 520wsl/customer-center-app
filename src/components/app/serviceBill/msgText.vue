@@ -1,6 +1,6 @@
 <template>
   <div class="text">
-    <span v-html="info.record"></span>{{info.sign}}
+    <span v-html="info.record"></span>
     <img v-if="info.sign == 1" class="horn_l" :src="$CDN('/white_horn_left.png')" alt="">
     <img v-else class="horn_r" :src="$CDN('/white_horn.png')" alt="">
   </div>

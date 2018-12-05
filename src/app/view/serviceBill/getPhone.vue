@@ -49,9 +49,11 @@
 <script>
 import {
   getcustomerbysixiid,
-  setmobilebysixiid,
-  setmobileByworkSheetId
+  setmobilebysixiid
 } from "@/api/customer/customer";
+import {
+  setmobileByworkSheetId
+} from "@/api/workOrder/workOrder";
 import { getcode, validatecode } from "@/api/messageService/messageService";
 import { createNamespacedHelpers } from 'vuex'
 const { mapState, mapActions } = createNamespacedHelpers('User')

@@ -1,8 +1,10 @@
 <template>
   <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="loading" infinite-scroll-distance="10">
     <no-data v-if="billList.length<=0" message="抱歉，您还未创建工单！"></no-data>
-    <div class="servicebill" v-for="(el,index) in billList" :key="index">
-      <router-link :to="{ name: 'serviceBillInfo', query: { id: el.id,identity:2,companySixiId:companySixiId } }" tag="h3">{{workType[el.workType]}}</router-link>
+    <!--此处改为整个div跳转-->
+    <router-link :to="{ name: 'serviceBillInfo', query: { id: el.id,identity:2,companySixiId:companySixiId } }"  tag="div" class="servicebill" v-for="(el,index) in billList" :key="index">
+      <h3>{{workType[el.workType]}}</h3>
+      <!-- <router-link :to="{ name: 'serviceBillInfo', query: { id: el.id,identity:2,companySixiId:companySixiId } }" tag="h3">{{workType[el.workType]}}</router-link> -->
       <p class="BillId">
         工单编号：
         <span>{{el.identifier}}</span>
@@ -17,7 +19,7 @@
         <span>状态：{{handleType[el.type] || ''}}</span>
         <router-link v-if="el.type == 3" :to="{ name: 'serviceEvaluationInfo', query: { workSheetId: el.id } }" tag="mt-button" class="btn">评价</router-link>
       </p>
-    </div>
+    </router-link>
   </div>
 </template>
 <script>
