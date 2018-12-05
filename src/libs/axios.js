@@ -114,7 +114,7 @@ class HttpRequest {
 				console.log(
 					"-------------------【错误拦截】------------------------------"
 				);
-				alert("403:" + msg);
+				alert(msg);
 				break;
 			case 401:
 				console.log(
