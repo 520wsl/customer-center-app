@@ -78,10 +78,12 @@ export const getUserInfoData = () => {
 };
 export const sendInfo = ({
   account,
-  password
+  password,
+  mobile
 }) => {
   return post("/customer/send", {
     account,
-    password
+    password,
+    mobile
   })
 }
