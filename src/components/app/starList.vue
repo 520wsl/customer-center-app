@@ -39,10 +39,10 @@ export default {
         this.$emit("getValue", { value: num, index: this.index });
       } else {
         let num = 0;
-        if (index + 0.5 == this.chooseNum) {
-          num = this.chooseNum + 0.5;
+        if (index + 1 == this.chooseNum) {
+          num = this.chooseNum - 0.5;
         } else {
-          num = index + 0.5;
+          num = index + 1;
         }
         this.$emit("getValue", { value: num, index: this.index });
       }
@@ -55,7 +55,8 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  width: 400px;
+  width: 460px;
+  padding-right: 70px;
 }
 .star-item {
   position: relative;
