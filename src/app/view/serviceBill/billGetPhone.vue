@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="bindPhone">
-      <p>{{detail.customerDetailVo.callName}}&ensp;您好，为了我们的客服人员，能够通过电话沟通，处理事情，请提供该工单的联系人电话</p>
+      <p>{{detail.customerDetailVo && detail.customerDetailVo.callName}}&ensp;您好，为了我们的客服人员，能够通过电话沟通，处理事情，请提供该工单的联系人电话</p>
       <div class="phone">
         <label class="title"><img class="icon" :src="$CDN('/phone.png')" alt="404">请输入工单联系人手机号</label>
-        <input v-model="phone" class="input input-block " type="number" placeholder="请输入要绑定的手机号">
+        <input v-model="phone" class="input input-block " type="number" placeholder="请输入11位手机号码">
         <div class="GroupButton">
           <mt-button class="btn btn-purple" @click="bingPhone()">保存</mt-button>
         </div>
@@ -23,7 +23,7 @@
         <li>客服人员：{{detail.leadingUser && detail.leadingUser.userName}}</li>
       </ul>
       <p class="status">
-        <span class="state">状态：</span>
+        <span class="state">状态：{{handleType[detail.handleType] || ''}}</span>
         <router-link v-if="true" :to="{ name: 'serviceBillInfo', query: { id: id, identity:2} }" class="btn" tag="span">查看工单>></router-link>
       </p>
     </div>
@@ -85,10 +85,9 @@ export default {
           this.$messagebox("提示", res.msg);
           return;
         }
-        this.getUserInfo();
         this.$router.push({
           name: "bindSuccess",
-          query: { mobile: this.phone, userSixiId: this.userSixiId }
+          query: { mobile: this.phone, type: 2 }
         });
       });
     }
@@ -116,9 +115,9 @@ export default {
       height: 32px;
     }
     .input {
+      margin: 30px 0;
       font-size: 32px;
-      margin: 0;
-      padding: 20px 0;
+      padding: 30px 0;
       border: none;
       border-bottom: 1px #d9d9d9 solid;
     }
@@ -136,8 +135,8 @@ export default {
     .btn {
       margin-left: 20px;
       font-size: 28px;
-      width: 150px;
-      height: 48px;
+      width: 185px;
+      height: 60px;
     }
     .btn-purple {
       font-size: 28px;
