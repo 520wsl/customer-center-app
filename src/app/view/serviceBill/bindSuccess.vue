@@ -3,7 +3,7 @@
     <img :src="$CDN('/success_icon.png')">
     <h3>手机号绑定成功</h3>
     <p class="bindPhone">绑定手机号：{{hidePhone}} &emsp;
-      <router-link :to="{name:'getPhone',query:{userSixiId:userSixiId}}" tag="span">变更手机号</router-link>
+      <router-link v-if="type == 1" :to="{name:'getPhone',query:{userSixiId:userSixiId}}" tag="span">变更手机号</router-link>
     </p>
     <router-link :to="{name:'personalServie',query:{userSixiId:userSixiId}}" class="bind" tag="mt-button">查看我的服务</router-link>
   </div>
@@ -14,7 +14,8 @@ export default {
   data() {
     return {
       userSixiId: this.$route.query.userSixiId || "",
-      mobile: this.$route.query.mobile || ""
+      mobile: this.$route.query.mobile || "",
+      type: this.$route.query.type || 1
     };
   },
   computed: {
