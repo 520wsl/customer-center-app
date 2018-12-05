@@ -27,10 +27,11 @@ export const changeMyCompany = ({
     companySixiId
   });
 }
-// 根据customerSixiId修改手机号码
-export const setmobilebysixiid = (customerSixiId, mobile) => {
+// 根据companySixiId,customerSixiId修改手机号码
+export const setmobilebysixiid = (customerSixiId, companySixiId, mobile) => {
   return post("/customer/setmobilebysixiid", {
     customerSixiId,
+    companySixiId,
     mobile
   });
 }
