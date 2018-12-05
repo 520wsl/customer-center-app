@@ -5,7 +5,7 @@
       <div>
         <span class="problemType">{{detail.title}}</span>
         <!--此处为小时单位，工单响应时长-->
-        <span class="time">{{responseTime}}</span>
+        <span class="time">{{detail.durationStr}}</span>
       </div>
       <div>
         <span class="identifierNum">
