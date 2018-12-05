@@ -51,17 +51,16 @@ import {
   getcustomerbysixiid,
   setmobilebysixiid
 } from "@/api/customer/customer";
-import {
-  setmobileByworkSheetId
-} from "@/api/workOrder/workOrder";
+import { setmobileByworkSheetId } from "@/api/workOrder/workOrder";
 import { getcode, validatecode } from "@/api/messageService/messageService";
-import { createNamespacedHelpers } from 'vuex'
-const { mapState, mapActions } = createNamespacedHelpers('User')
+import { createNamespacedHelpers } from "vuex";
+const { mapState, mapActions } = createNamespacedHelpers("User");
 export default {
   data() {
     return {
-      // 客户id 不同于companySiXiId
+      // 客户id 同
       userSixiId: this.$route.query.userSixiId || "",
+      companySixiId: this.$route.query.companySixiId || "",
       // 获取的信息集合，含手机号
       data: {},
       // 是否绑定 false 未绑定 true 已绑定
@@ -82,9 +81,7 @@ export default {
     this.getCustomerPhone();
   },
   methods: {
-    ...mapActions([
-        "getUserInfo"
-    ]),
+    ...mapActions(["getUserInfo"]),
     getCustomerPhone() {
       getcustomerbysixiid(this.userSixiId).then(e => {
         if (e.status !== 200) {
@@ -148,48 +145,31 @@ export default {
       if (!this.verify(true)) return true;
       // 接口调用
       // 当有原手机号时 修改手机号不能相同
-      if(this.isBind && (this.data.mobile == this.phone)){
-          this.$messagebox("提示", "原手机号和现手机号不能相同！");
-          return;
+      if (this.isBind && this.data.mobile == this.phone) {
+        this.$messagebox("提示", "原手机号和现手机号不能相同！");
+        return;
       }
       validatecode(this.phone, this.verifyCode).then(e => {
         if (e.status !== 200) {
           this.$messagebox("提示", e.msg);
           return;
         }
-        // 若验证正确 有工单ID则修改工单手机号
-        if(this.$route.query.workSheetId){
-            let param = {
-                workSheetId: this.$route.query.workSheetId,
-                mobile: this.phone
-            };
-            setmobileByworkSheetId(param).then(res=>{
-                if (res.status !== 200) {
-                    this.$messagebox("提示", res.msg);
-                    return;
-                }
-                this.getUserInfo();
-                this.$router.push({
-                    name: "bindSuccess",
-                    query: { mobile: this.phone, userSixiId: this.userSixiId }
-                });
+        // 修改客户手机号
+        setmobilebysixiid(this.userSixiId, this.companySixiId, this.phone).then(
+          e => {
+            if (e.status !== 200) {
+              this.$messagebox("提示", e.msg);
+              return;
+            }
+            // this.$messagebox("提示", e.msg);
+            this.getCustomerPhone();
+            this.getUserInfo();
+            this.$router.push({
+              name: "bindSuccess",
+              query: { mobile: this.phone, userSixiId: this.userSixiId }
             });
-        } else {
-            // 无工单ID则修改客户手机号
-            setmobilebysixiid(this.userSixiId, this.phone).then(e => {
-                if (e.status !== 200) {
-                    this.$messagebox("提示", e.msg);
-                    return;
-                }
-                // this.$messagebox("提示", e.msg);
-                this.getCustomerPhone();
-                this.getUserInfo();
-                this.$router.push({
-                    name: "bindSuccess",
-                    query: { mobile: this.phone, userSixiId: this.userSixiId }
-                });
-            });
-        }
+          }
+        );
       });
     },
     // 返回上一页
