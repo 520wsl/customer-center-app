@@ -39,3 +39,11 @@ export const updataWorkOrder = ({
     companyName
   });
 }
+
+// 根据workSheetId修改工单手机号码
+export const setmobileByworkSheetId = ({ mobile, workSheetId })=>{
+    return post("/workorder/collectphone", {
+        mobile,
+        workSheetId
+    })
+}
