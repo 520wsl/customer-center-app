@@ -8,7 +8,7 @@
         </div>
 
         <div class="submit-btn">
-            <mt-button class="btn" @click="addEvaluate">提交</mt-button>
+            <mt-button class="btn" @click="addEvaluate" :disabled="disabled">提交</mt-button>
             <router-link class="btn2" :to="{name: 'serviceBillInfo',query:{ id: workSheetId, identity: 2, companySixiId: companyId }}">点击 查看工单&gt;&gt;</router-link>
         </div>
     </div>
@@ -32,7 +32,8 @@ export default {
             customerId: "",
             servicePersonnel: "",
             sendtime: "",
-            workSheetId: ""
+            workSheetId: "",
+            disabled: true
         };
     },
     components: { editEvaluation },
@@ -88,21 +89,26 @@ export default {
         ...mapMutations(["changeEvaluateList"]),
         getList() {
             // alert(this.id);
-            postTemplateInfo({ id: this.id }).then(res => {
-                if (res.status != 200) {
-                    return MessageBox("提示", res.msg);
-                }
-                let list = res.data[0].content;
-                list.forEach(item => {
-                    if (
-                        (item.type == "checkbox") ||
-                        (item.type == "redio")
-                    ) {
-                        item.value = [];
+            if (this.$store.state.Servicebill.evaluateList.length == 0) {
+                postTemplateInfo({ id: this.id }).then(res => {
+                    if (res.status != 200) {
+                        return MessageBox("提示", res.msg);
                     }
+                    let list = res.data[0].content;
+                    list.forEach(item => {
+                        if (
+                            (item.type == "checkbox") ||
+                            (item.type == "redio")
+                        ) {
+                            item.value = [];
+                        }
+                    });
+                    this.disabled = false;
+                    this.list = list;
                 });
-                this.list = list;
-            });
+            } else {
+                this.list = this.$store.state.Servicebill.evaluateList;
+            }
         },
         addEvaluate() {
             let bool = false;
