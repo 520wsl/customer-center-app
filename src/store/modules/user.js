@@ -2,7 +2,7 @@
  * @Author: Mad Dragon 395548460@qq.com
  * @Date: 2018-11-08 10:50:44
  * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-12-06 11:37:20
+ * @Last Modified time: 2018-12-06 12:08:13
  * @explanatory:  store demo
  */
 import { getWxSnsapiUserInfoData, logout } from "@/api/wechatProxy/wxSDK";
@@ -54,7 +54,7 @@ export default {
 			});
 		},
 		async getUserInfoAction({ dispatch, state, commit }) {
-			let userInfo = getStore(state.storeagewxUserInfoKey);
+			let userInfo = JSON.parse(getStore(state.storeagewxUserInfoKey));
 			console.log("getUserInfoAction", userInfo);
 			if (userInfo) {
 				commit("setAvator", userInfo.wechatAvatar);
