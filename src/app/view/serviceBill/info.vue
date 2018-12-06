@@ -24,6 +24,9 @@
         <!--提交时间是否是创建时间-->
         <li>提交时间：{{getTime(detail.startTime,'YYYY-MM-DD')}}</li>
         <li>客服人员：{{detail.leadingUser && detail.leadingUser.userName}}</li>
+        <li>联系手机号：{{detail.mobile}}&emsp;
+          <router-link tag="span" :to="{name:'billGetPhone',query:{workSheetId:id}}" class="textfl">{{detail.mobile?'修改':'添加联系手机号'}}</router-link>
+        </li>
       </ul>
       <!--未绑定手机 v-if="detail.cellphone"  -->
       <!-- <p class="notice" v-if="detail.cellphone">注意：为了更好的为您提供服务,客服人员能够与您电话沟通, 请绑定 您的手机号。
@@ -33,10 +36,10 @@
       <div class="serviceRemark">
         <h3>服务记录</h3>
         <msgTpl v-for="(el,index) in talknews" :key="index" :info="el">
-          <msgText v-if="el.record !=''" :info="el"></msgText>
-          <msgImg v-else-if="el.type === 2" :enclosure="el.enclosure"></msgImg>
+          <msgImg v-if="el.type === 2" :enclosure="el.enclosure"></msgImg>
           <msgAudio v-else-if="el.type === 8 || el.type === 3" :userType="el.sign" :src="el.enclosure"></msgAudio>
           <msgVedio v-else-if="el.type === 5" :userType="el.sign" :src="el.enclosure"></msgVedio>
+          <msgText v-else :info="el"></msgText>
         </msgTpl>
       </div>
     </mt-loadmore>
@@ -235,6 +238,10 @@ export default {
     color: #6e7790;
     li {
       margin-top: 20px;
+      .textfl {
+        float: right;
+        color: #697eff;
+      }
     }
   }
   .notice {

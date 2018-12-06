@@ -18,8 +18,9 @@ export const getWorkSheetList = ({sixiId, pageNum, pageSize}) => {
   });
 }
 // 获取客户工单列表
-export const getCompanyWorkSheetList = ({companySixiId, pageNum , pageSize}) => {
+export const getCompanyWorkSheetList = ({isCarryOut,companySixiId, pageNum , pageSize}) => {
   return post("/worksheet/customerlist", {
+    isCarryOut,
     companySixiId,
     pageNum,
     pageSize
