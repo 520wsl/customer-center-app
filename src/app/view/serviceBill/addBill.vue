@@ -162,7 +162,7 @@ export default {
           name: 'messageInfo',
           query: {
             text: '您的问题，已经提交成功！',
-            textMsg: `客服人员${res.data.staffName}，稍后将与您取得联系，请确保您的手机号${params.mobile}，保持畅通`
+            textMsg: `客服人员${res.data.staffName}，稍后将与您取得联系，请确保您的手机号${this.params.mobile}，保持畅通`
           }
         })
       } else {
