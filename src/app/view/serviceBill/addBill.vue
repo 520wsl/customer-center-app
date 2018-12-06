@@ -55,7 +55,7 @@
         <button size="small" @click="save" type="default" class="ok">确定</button>
       </div>
     </div>
-    <div class="null-info" v-if="companyList.length<=0">
+    <div class="null-info" v-if="companyList.length<=0 && !hasCompany">
       <img class="null-info-img" :src="$CDN('/null-icon.png')">
       <p>非常抱歉，您的微信号还未关联公司！</p>
       <div class="msg-store">注：请联系我们的业务员，将您的合作公司跟您的微信做关联操作。</div>
@@ -103,12 +103,13 @@ export default {
       staffName: '',
       hasTelephone: false,
       userMobile: '',
+      hasCompany: true,
       // 公司列表
       companyList: [],
       // 工单列表
       workOrderTypeList: [
         {
-          label: '客户主管',
+          label: '客服主管',
           value: 2
         },
         {
@@ -191,6 +192,7 @@ export default {
     async getCompanyList() {
       let res = await selectCompanyAndMobile();
       if (res.status === 200) {
+        this.hasCompany = false;
         this.hasTelephone = res.data.mobile ? true : false;
         this.userMobile = res.data.mobile || '';
         const list = res.data.companys || [];

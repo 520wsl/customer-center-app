@@ -42,7 +42,7 @@
         </li>
       </ul>
     </div>
-    <div class="null-info" v-else>
+    <div class="null-info" v-if="passwordlist.length<=0 && !hasCompany">
       <img class="null-info-img" :src="$CDN('/null-icon.png')">
       <p>抱歉，您还没有登记店铺账号密码</p>
     </div>
@@ -59,6 +59,7 @@ export default {
   data() {
     return {
       mobile: '',
+      hasCompany: true,
       passwordlist: []
     }
   },
@@ -100,6 +101,7 @@ export default {
     async getList() {
       let res = await getCompanyListBoss();
       if (res.status == 200) {
+        this.hasCompany = false;
         const list = [...res.data].map(item => {
           item.showpassword = false
           return item
