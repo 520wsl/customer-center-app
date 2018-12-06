@@ -24,8 +24,8 @@
         <!--提交时间是否是创建时间-->
         <li>提交时间：{{getTime(detail.startTime,'YYYY-MM-DD')}}</li>
         <li>客服人员：{{detail.leadingUser && detail.leadingUser.userName}}</li>
-        <li>联系手机号：{{detail.mobile}}&emsp;
-          <router-link tag="span" :to="{name:'billGetPhone',query:{workSheetId:id}}" class="textfl">{{detail.mobile?'修改':'添加联系手机号'}}</router-link>
+        <li>联系手机号：{{detail.customerDetailVo && detail.customerDetailVo.mobile}}&emsp;
+          <router-link tag="span" :to="{name:'billGetPhone',query:{workSheetId:id}}" class="textfl">{{detail.customerDetailVo && detail.customerDetailVo.mobile?'修改':'添加联系手机号'}}</router-link>
         </li>
       </ul>
       <!--未绑定手机 v-if="detail.cellphone"  -->
