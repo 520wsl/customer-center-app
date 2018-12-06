@@ -2,12 +2,12 @@
  * @Author: Mad Dragon 395548460@qq.com
  * @Date: 2018-11-08 10:50:44
  * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-12-02 22:47:13
+ * @Last Modified time: 2018-12-06 12:08:13
  * @explanatory:  store demo
  */
 import { getWxSnsapiUserInfoData, logout } from "@/api/wechatProxy/wxSDK";
 import { getUserInfoData } from "@/api/customer/customer";
-import { setItem, getItem } from "@/libs/util/session";
+import { setStore, getStore } from "@/libs/util/storeage";
 import config from "@/config";
 const { storeagewxUserInfoKey } = config;
 export default {
@@ -28,7 +28,7 @@ export default {
 			state.userName = name;
 		},
 		setUserInfo(state, wxUserInfo) {
-			setItem(state.storeagewxUserInfoKey, wxUserInfo);
+			setStore(state.storeagewxUserInfoKey, wxUserInfo);
 			state.wxUserInfo = wxUserInfo;
 		},
 		setAvator(state, avatorPath) {
@@ -54,7 +54,7 @@ export default {
 			});
 		},
 		async getUserInfoAction({ dispatch, state, commit }) {
-			let userInfo = getItem(state.storeagewxUserInfoKey);
+			let userInfo = JSON.parse(getStore(state.storeagewxUserInfoKey));
 			console.log("getUserInfoAction", userInfo);
 			if (userInfo) {
 				commit("setAvator", userInfo.wechatAvatar);
