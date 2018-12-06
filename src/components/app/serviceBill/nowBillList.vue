@@ -1,10 +1,9 @@
 <template>
     <div>
         <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="loading" infinite-scroll-distance="10" v-if="billList.lenth != 0">
-            <div class="now-bill-title" v-if="billList.length != 0">当前工单</div>
+            <div class="now-bill-title" v-if="billList.length != 0"><img :src="$CDN('/service-sheet.png')"><span>当前工单</span></div>
             <!--此处改为整个div跳转-->
             <router-link :to="{ name: 'serviceBillInfo', query: { id: el.id,identity:2,companySixiId:companySixiId } }" tag="div" class="servicebill" v-for="(el,index) in billList" :key="index">
-                <h3>{{workType[el.workType]}}</h3>
                 <p class="BillId">
                     工单编号：
                     <span>{{el.identifier}}</span>
@@ -48,7 +47,7 @@ export default {
     methods: {
         getWorkSheetList() {
             // 是否可以请求
-            if (this.count / this.size < this.num - 1) return;
+            if ((this.count / this.size < this.num - 1) && !this.loading) return;
             this.loading = true;
             let param = {
                 isCarryOut: this.isCarryOut,
@@ -93,9 +92,15 @@ export default {
   font-size: 28px;
   height: 96px;
   line-height: 96px;
-  //   font-weight: bold;
   color: #9b9b9b;
-  border-bottom: 2px solid #f4f4f4;
+  display: flex;
+  align-items: center;
+}
+.now-bill-title img {
+  height: 28px;
+}
+.now-bill-title span {
+  padding-left: 20px;
 }
 .servicebill {
   padding-top: 20px;
