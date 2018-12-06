@@ -36,7 +36,7 @@
               </a>
             </p>
           </div>
-          <div style="text-align:center;">
+          <div v-if="item.password" style="text-align:center;">
             <button @click="sendMobileInfo(item)" class="search-button">将密码发送到手机</button>
           </div>
         </li>
