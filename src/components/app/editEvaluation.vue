@@ -19,7 +19,9 @@ const { mapState, mapMutations } = createNamespacedHelpers("Servicebill");
 export default {
     props: ["list", "isEdit"],
     data() {
-        return {};
+        return {
+            arr:this.list
+        };
     },
     computed: {
         showList: function () {

@@ -88,21 +88,25 @@ export default {
         ...mapMutations(["changeEvaluateList"]),
         getList() {
             // alert(this.id);
-            postTemplateInfo({ id: this.id }).then(res => {
-                if (res.status != 200) {
-                    return MessageBox("提示", res.msg);
-                }
-                let list = res.data[0].content;
-                list.forEach(item => {
-                    if (
-                        (item.type == "checkbox") ||
-                        (item.type == "redio")
-                    ) {
-                        item.value = [];
+            if (this.$store.state.Servicebill.evaluateList.length == 0) {
+                postTemplateInfo({ id: this.id }).then(res => {
+                    if (res.status != 200) {
+                        return MessageBox("提示", res.msg);
                     }
+                    let list = res.data[0].content;
+                    list.forEach(item => {
+                        if (
+                            (item.type == "checkbox") ||
+                            (item.type == "redio")
+                        ) {
+                            item.value = [];
+                        }
+                    });
+                    this.list = list;
                 });
-                this.list = list;
-            });
+            } else {
+                this.list = this.$store.state.Servicebill.evaluateList;
+            }
         },
         addEvaluate() {
             let bool = false;
