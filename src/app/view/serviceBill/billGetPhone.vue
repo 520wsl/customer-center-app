@@ -85,9 +85,15 @@ export default {
           this.$messagebox("提示", res.msg);
           return;
         }
+        // this.$router.push({
+        //   name: "bindSuccess",
+        //   query: { mobile: this.phone, type: 2 }
+        // });
         this.$router.push({
-          name: "bindSuccess",
-          query: { mobile: this.phone, type: 2 }
+          name: "messageInfo",
+          query: {
+            textMsg: `工单联系电话修改成功,手机号为：${this.phone}`
+          }
         });
       });
     }

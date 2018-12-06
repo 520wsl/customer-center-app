@@ -42,8 +42,7 @@ export default {
       size: 10,
       count: Number,
       num: 1,
-      companySixiId: this.$route.query.companySixiId || "",
-      isCarryOut: parseInt(this.$route.query.isCarryOut) || 1
+      companySixiId: this.$route.query.companySixiId || ""
       // sixiId: ""
     };
   },
@@ -66,7 +65,6 @@ export default {
       if (this.count / this.size < this.num - 1) return;
       this.loading = true;
       let param = {
-        isCarryOut: this.isCarryOut,
         companySixiId: this.companySixiId,
         pageNum: this.num,
         pageSize: this.size
