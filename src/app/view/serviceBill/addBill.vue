@@ -158,8 +158,13 @@ export default {
         companyName: this.findCompanyName(this.params.companySixiId)
       });
       if (res.status === 200) {
-        this.state = 1;
-        this.staffName = res.data.staffName;
+        this.$router.push({
+          name: 'messaInfo',
+          query: {
+            text: '您的问题，已经提交成功！',
+            textMsg: `客服人员${res.data.staffName}，稍后将与您取得联系，请确保您的手机号${params.mobile}，保持畅通`
+          }
+        })
       } else {
         this.$messagebox("提示", res.msg);
       }
