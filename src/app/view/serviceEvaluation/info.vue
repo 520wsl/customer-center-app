@@ -1,8 +1,12 @@
 <template>
     <div>
         <div class="evaluation">请你为{{typeName}}
-            <span>{{name}}</span>，本次服务做个评价</div>
-        <editEvaluation :list='list' :isEdit='true'></editEvaluation>
+            <span>{{name}}</span>，本次服务做个评价
+        </div>
+        <div v-if="list.length>0">
+            <editEvaluation :list='list' :isEdit='true'></editEvaluation>
+        </div>
+
         <div class="submit-btn">
             <mt-button class="btn" @click="addEvaluate">提交</mt-button>
             <router-link class="btn2" :to="{name: 'serviceBillInfo',query:{ id: workSheetId, identity: 2, companySixiId: companyId }}">点击 查看工单&gt;&gt;</router-link>
@@ -15,6 +19,8 @@ import { getCheckEvaluate } from "@/api/evaluate/evaluate";
 import { postTemplateInfo } from "@/api/evaluate/template";
 import { postEvaluateAdd } from "@/api/workOrder/worksheet";
 import { MessageBox } from "mint-ui";
+import { createNamespacedHelpers } from "vuex";
+const { mapState, mapMutations } = createNamespacedHelpers("Servicebill");
 export default {
     data() {
         return {
@@ -76,9 +82,10 @@ export default {
                 // 未评价
                 this.getList();
             }
-        });
+        })
     },
     methods: {
+        ...mapMutations(["changeEvaluateList"]),
         getList() {
             // alert(this.id);
             postTemplateInfo({ id: this.id }).then(res => {
@@ -103,7 +110,7 @@ export default {
             this.list.forEach(item => {
                 if (item.isRequired == 1 && (item.value == "" || item.value == [])) {
                     bool = true;
-                    str += " "+ item.evaluateName;
+                    str += " " + item.evaluateName;
                 }
             });
             if (bool) {
@@ -119,6 +126,8 @@ export default {
                         if (res.status != 200) {
                             return MessageBox("提示", res.msg);
                         }
+                        // 提交成功后，清空存在store的数据
+                        this.changeEvaluateList([]);
                         this.$router.push({
                             name: "serviceEvaluationBreview",
                             query: {
