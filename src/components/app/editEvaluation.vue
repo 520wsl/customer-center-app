@@ -4,7 +4,7 @@
             <div v-if="item.evaluateName">{{item.evaluateName}}:</div>
             <starList v-if="item.type == 'number' && item.otherAttribute.showType == 'score'" :maxNum='item.otherAttribute.maxNum' :chooseNum='item.value' :index='index' @getValue='getValue' :isEdit='isEdit' :isHalf='item.otherAttribute.isHalf'></starList>
             <checkboxList v-if="item.type == 'checkbox'" :isEdit='isEdit' :index='index' :list='item.tagList' :value='item.value' class="checkBox" @getValue='getValue'></checkboxList>
-            <radioList v-if="item.type == 'redio'" :isEdit='isEdit' :index='index' :list='item.tagList' :value='item.value' class="checkBox" @getValue='getValue'></radioList>
+            <radioList v-if="item.type == 'radio'" :isEdit='isEdit' :index='index' :list='item.tagList' :value='item.value' class="checkBox" @getValue='getValue'></radioList>
             <textList v-if="item.type == 'text'" :isEdit='isEdit' :index='index' :value='item.value' :maxLength='item.otherAttribute.maxNum' @getValue='getValue'></textList>
         </div>
     </div>

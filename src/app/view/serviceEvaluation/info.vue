@@ -98,7 +98,7 @@ export default {
                     list.forEach(item => {
                         if (
                             (item.type == "checkbox") ||
-                            (item.type == "redio")
+                            (item.type == "radio")
                         ) {
                             item.value = [];
                         }
@@ -107,6 +107,7 @@ export default {
                     this.list = list;
                 });
             } else {
+                this.disabled = false;
                 this.list = this.$store.state.Servicebill.evaluateList;
             }
         },
