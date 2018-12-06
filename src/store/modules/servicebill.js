@@ -37,7 +37,9 @@ export default {
     ],
     companyAndMobile: {},
     //视频播放状态
-    videoPlayStatus: false
+    videoPlayStatus: false,
+    // 评价详情未提交保存数据
+    evaluateList: []
   },
   mutations: {
     // 关闭
@@ -46,6 +48,9 @@ export default {
     },
     selectCAM(state, value) {
       state.companyAndMobile = value;
+    },
+    changeEvaluateList(state, value) {
+      state.evaluateList = value;
     }
   },
   actions: {

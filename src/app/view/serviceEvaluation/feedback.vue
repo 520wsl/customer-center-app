@@ -32,6 +32,9 @@ export default {
                 return MessageBox("提示", res.msg);
             }
             this.list = res.data.evaluateContent || [];
+            let timer = setTimeout(() => {
+                wx.closeWindow()
+            }, 3000);
         });
     },
     methods: {}
