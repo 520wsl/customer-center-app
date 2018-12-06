@@ -5,6 +5,10 @@
       <p class="form-submited-text">{{text}}</p>
       <p class="form-submited-text-msg">{{textMsg}}</p>
     </div>
+    <div class="timer">
+      <span>{{timer}}</span>
+      <span style="color: #929eaa;">秒后关闭页面</span>
+    </div>
   </div>
 </template>
 <script>
@@ -12,15 +16,20 @@ export default {
   data() {
     return {
       text: '',
-      textMsg: ''
+      textMsg: '',
+      timer: 3,
     }
   },
   mounted() {
     this.text = this.$route.query.text || "提交成功！";
     this.textMsg = this.$route.query.textMsg || "";
-    let timer = setTimeout(() => {
-      wx.closeWindow()
-    }, 3000);
+    let timer = setInterval(() => {
+      if (this.timer === 0) {
+        clearInterval(timer)
+        wx.closeWindow();
+      }
+      this.timer--;
+    }, 1000);
   }
 }
 </script>
@@ -48,5 +57,14 @@ export default {
   margin: 0 auto;
   font-size: 28px;
   color: #929eaa;
+}
+.timer {
+  position: fixed;
+  bottom: 10px;
+  right: 0;
+  left: 0;
+  text-align: center;
+  font-size: 32px;
+  color: #697eff;
 }
 </style>
