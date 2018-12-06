@@ -8,7 +8,7 @@
         </div>
 
         <div class="submit-btn">
-            <mt-button class="btn" @click="addEvaluate">提交</mt-button>
+            <mt-button class="btn" @click="addEvaluate" :disabled="disabled">提交</mt-button>
             <router-link class="btn2" :to="{name: 'serviceBillInfo',query:{ id: workSheetId, identity: 2, companySixiId: companyId }}">点击 查看工单&gt;&gt;</router-link>
         </div>
     </div>
@@ -32,7 +32,8 @@ export default {
             customerId: "",
             servicePersonnel: "",
             sendtime: "",
-            workSheetId: ""
+            workSheetId: "",
+            disabled: true
         };
     },
     components: { editEvaluation },
@@ -102,6 +103,7 @@ export default {
                             item.value = [];
                         }
                     });
+                    this.disabled = false;
                     this.list = list;
                 });
             } else {
