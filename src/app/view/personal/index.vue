@@ -47,7 +47,7 @@
                 <nowBillList :companySixiId="info.companySixiId"></nowBillList>
             </div>
         </div>
-        <div v-else class="no-data">
+        <div v-if="!info.mobile && !info.companyName && bool" class="no-data">
             <div class="img">
                 <img :src="$CDN('/null-icon.png')" alt="">
             </div>
@@ -65,7 +65,8 @@ import nowBillList from "@/components/app/serviceBill/nowBillList";
 export default {
     data() {
         return {
-            list:[]
+            list: [],
+            bool: false
         };
     },
     computed: {
@@ -109,6 +110,16 @@ export default {
         //     console.log(this.$store)
         //     this.$store.commit("setAvator", res.data.wechatAvatar);
         // }
+    },
+    watch: {
+        info(val) {
+            if (val.mobile == "" && val.companyName == "") {
+                this.bool = true;
+            } else {
+                this.bool = false;
+            }
+            console.log(this.bool)
+        }
     }
 };
 </script>

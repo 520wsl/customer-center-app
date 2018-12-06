@@ -1,6 +1,6 @@
 <template>
   <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="loading" infinite-scroll-distance="10">
-    <no-data v-if="billList.length<=0" message="抱歉，您还未创建工单！"></no-data>
+    <no-data v-if="billList.length<=0 && bool" message="抱歉，您还未创建工单！"></no-data>
     <!--此处改为整个div跳转-->
     <router-link :to="{ name: 'serviceBillInfo', query: { id: el.id,identity:2,companySixiId:companySixiId } }" tag="div" class="servicebill" v-for="(el,index) in billList" :key="index">
       <h3>{{workType[el.workType]}}</h3>
@@ -37,6 +37,7 @@ export default {
   },
   data() {
     return {
+      bool: false,
       loading: false,
       billList: [],
       size: 10,
@@ -78,6 +79,11 @@ export default {
           // console.log(e);
           this.billList.push(e);
         });
+        if(this.billList.length == 0){
+            this.bool = true;
+        } else {
+            this.bool = false;
+        }
         this.num = ++e.data.num;
         this.count = e.data.count;
         this.loading = false;
