@@ -62,7 +62,7 @@ export default {
   methods: {
     getWorkSheetList() {
       // 是否可以请求
-      if (this.count / this.size < this.num - 1) return;
+      if ((this.count / this.size < this.num - 1) && !this.loading ) return;
       this.loading = true;
       let param = {
         companySixiId: this.companySixiId,
