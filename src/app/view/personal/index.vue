@@ -38,12 +38,13 @@
                     <span>&gt;</span>
                 </router-link>
                 <!-- <a class="item border" href="#">
-                <div>
-                    <img :src="$CDN('/qustion_logo.png')">
-                    <span>常见问题</span>
-                </div>
-                <span>&gt;</span>
-            </a> -->
+                    <div>
+                        <img :src="$CDN('/qustion_logo.png')">
+                        <span>常见问题</span>
+                    </div>
+                    <span>&gt;</span>
+                </a> -->
+                <nowBillList :companySixiId="info.companySixiId"></nowBillList>
             </div>
         </div>
         <div v-else class="no-data">
@@ -60,9 +61,11 @@ import config from "@/config";
 import { getItem } from "@/libs/util/session";
 import { encryptionPhone } from '@/libs/tools'
 // import { getUserInfoData } from "@/api/customer/customer";
+import nowBillList from "@/components/app/serviceBill/nowBillList";
 export default {
     data() {
         return {
+            list:[]
         };
     },
     computed: {
@@ -83,7 +86,7 @@ export default {
         // console.log(this.$store.state.User[config.storeagewxUserInfoKey], res)
         // console.log(this.$store.state.User.avatorImgPath)
     },
-    components: {},
+    components: { nowBillList },
     methods: {
         bindPhone() {
             this.$router.push({
