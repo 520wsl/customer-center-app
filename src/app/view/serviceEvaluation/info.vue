@@ -107,8 +107,8 @@ export default {
                     this.list = list;
                 });
             } else {
-                this.disabled = false;
                 this.list = this.$store.state.Servicebill.evaluateList;
+                this.disabled = false;
             }
         },
         addEvaluate() {
