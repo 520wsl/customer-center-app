@@ -139,7 +139,8 @@ export default {
                             name: "serviceEvaluationBreview",
                             query: {
                                 customerId: this.customerId,
-                                workSheetId: this.workSheetId
+                                workSheetId: this.workSheetId,
+                                isClose: true
                             }
                         });
                     });
