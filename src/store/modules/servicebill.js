@@ -2,7 +2,7 @@
  * @Author: Mad Dragon 395548460@qq.com 
  * @Date: 2018-11-08 10:50:44 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-11-20 09:30:43
+ * @Last Modified time: 2018-12-07 10:30:08
  * @explanatory:  store demo
  */
 import {
@@ -35,6 +35,8 @@ export default {
         value: "其他"
       }
     ],
+    // 发起事件类型
+    eventType: ['普通消息', '电话沟通', '发起电话采集', '发起账号密码采集'],
     companyAndMobile: {},
     //视频播放状态
     videoPlayStatus: false,
