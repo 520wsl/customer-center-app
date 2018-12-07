@@ -24,11 +24,11 @@ export default {
     this.text = this.$route.query.text || "提交成功！";
     this.textMsg = this.$route.query.textMsg || "";
     let timer = setInterval(() => {
+      this.timer--
       if (this.timer === 0) {
         clearInterval(timer)
         wx.closeWindow();
       }
-      this.timer--;
     }, 1000);
   }
 }
