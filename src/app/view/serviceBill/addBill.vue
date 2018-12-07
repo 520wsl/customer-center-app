@@ -52,7 +52,7 @@
       </div>
       <div class="btn-ok-cancel" style="text-align:center;">
         <button size="small" @click="cancel" type="default" class="cancel">取消</button>
-        <button size="small" @click="save" type="default" class="ok">确定</button>
+        <button size="small" @click="save" :disabled="isDisabled" type="default" class="ok">确定</button>
       </div>
     </div>
     <div class="null-info" v-if="companyList.length<=0 && !hasCompany">
@@ -102,6 +102,7 @@ export default {
       state: 0,
       staffName: '',
       hasTelephone: false,
+      isDisabled: false,
       userMobile: '',
       hasCompany: true,
       // 公司列表
@@ -154,21 +155,32 @@ export default {
         this.$messagebox("提示", '请输入11位手机号');
         return false;
       }
-      let res = await saveWorkOrder({
+
+      this.isDisabled = true;
+      saveWorkOrder({
         ...this.params,
         companyName: this.findCompanyName(this.params.companySixiId)
+      }).then(res => {
+        if (res.status === 200) {
+
+          this.isDisabled = false;
+          this.$router.push({
+            name: 'messageInfo',
+            query: {
+              text: '您的问题，已经提交成功！',
+              textMsg: `客服人员${res.data.staffName}，稍后将与您取得联系，请确保您的手机号${this.params.mobile}，保持畅通`
+            }
+          })
+        } else {
+          this.$messagebox("提示", res.msg);
+        }
+      }).catch(e => {
+        if (e.status == 403) {
+          this.$messagebox("提示", e.msg);
+          this.isDisabled = false;
+        }
       });
-      if (res.status === 200) {
-        this.$router.push({
-          name: 'messageInfo',
-          query: {
-            text: '您的问题，已经提交成功！',
-            textMsg: `客服人员${res.data.staffName}，稍后将与您取得联系，请确保您的手机号${this.params.mobile}，保持畅通`
-          }
-        })
-      } else {
-        this.$messagebox("提示", res.msg);
-      }
+
     },
     findCompanyName(sixiId) {
       if (this.companyList.length <= 0) {
