@@ -5,6 +5,10 @@
             <span>感谢您的评价，您的信任是的对我们最大的<br>支持，我们将会再接再厉！</span>
         </div>
         <editEvaluation v-if="list.length !=0" :list='list' :isEdit='false'></editEvaluation>
+        <div class="timer" v-if="showTime">
+            <span>{{timer}}</span>
+            <span style="color: #929eaa;">秒后关闭页面</span>
+        </div>
     </div>
 </template>
 <script>
@@ -16,6 +20,8 @@ import { MessageBox } from "mint-ui";
 export default {
     data() {
         return {
+            showTime: false,
+            timer: 3,
             list: [],
             sixiId: "",
             orderNumber: ""
@@ -31,10 +37,15 @@ export default {
             if (res.status != 200) {
                 return MessageBox("提示", res.msg);
             }
+            this.showTime = true;
             this.list = res.data.evaluateContent || [];
-            let timer = setTimeout(() => {
-                wx.closeWindow()
-            }, 3000);
+            let timer = setInterval(() => {
+                this.timer--
+                if (this.timer === 0) {
+                    clearInterval(timer)
+                    wx.closeWindow();
+                }
+            }, 1000);
         });
     },
     methods: {}
@@ -57,5 +68,14 @@ export default {
   font-size: 28px;
   color: #6e7790;
   text-align: center;
+}
+.timer {
+  position: fixed;
+  bottom: 10px;
+  right: 0;
+  left: 0;
+  text-align: center;
+  font-size: 32px;
+  color: #697eff;
 }
 </style>
