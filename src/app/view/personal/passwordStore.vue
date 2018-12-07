@@ -58,11 +58,11 @@
         <mt-button size="small" @click="updateUser" type="default" class="ok">修改</mt-button>
       </div>-->
     </div>
-    <div class="form-submited" v-if="subOk">
+    <!-- <div class="form-submited" v-if="subOk">
       <img :src="$CDN('/success_icon.png')">
       <p class="form-submited-text">您的店铺账号密码提交成功！</p>
       <router-link :to="{name:'personalServie'}" class="bind" tag="mt-button">查看我的服务</router-link>
-    </div>
+    </div>-->
   </div>
 </template>
 <script>
@@ -152,7 +152,12 @@ export default {
       }
       let res = await addUser(this.params);
       if (res.status === 200) {
-        this.subOk = true;
+        this.$router.push({
+          name: 'messageInfo',
+          query: {
+            text: '您的店铺账号密码提交成功！'
+          }
+        })
       }
     },
     async updateUser() {
@@ -166,7 +171,12 @@ export default {
       }
       let res = await updateUser(this.params);
       if (res.status === 200) {
-        this.subOk = true;
+        this.$router.push({
+          name: 'messageInfo',
+          query: {
+            text: '您的店铺账号密码提交成功！'
+          }
+        })
       }
     }
   }
