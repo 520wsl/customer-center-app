@@ -27,7 +27,7 @@ import { getCompanyWorkSheetList } from "@/api/workOrder/worksheet";
 import { formatTime } from "@/libs/util/time";
 import { mapState } from "vuex";
 export default {
-    poros: ["companySixiId"],
+    poros: ["companyiId"],
     data() {
         return {
             loading: false,
@@ -35,7 +35,8 @@ export default {
             size: 10,
             count: Number,
             num: 1,
-            isCarryOut: 0
+            isCarryOut: 0,
+            companySixiId: this.companyiId
         }
     },
     computed: {
