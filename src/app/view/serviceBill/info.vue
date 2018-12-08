@@ -33,7 +33,7 @@
         <h3>服务记录</h3>
         <msgTpl v-for="(el,index) in talknews" :key="index" :info="el">
           <msgImg v-if="el.type === 2" :enclosure="el.enclosure"></msgImg>
-          <msgAudio v-else-if="el.type === 8 || el.type === 3" :userType="el.sign" :src="el.enclosure"></msgAudio>
+          <msgAudio v-else-if="el.type === 8 || el.type === 3" :userType="el.sign" :src="el.enclosure" :record="el.record"></msgAudio>
           <msgVedio v-else-if="el.type === 5" :userType="el.sign" :src="el.enclosure"></msgVedio>
           <msgText v-else :info="el"></msgText>
         </msgTpl>

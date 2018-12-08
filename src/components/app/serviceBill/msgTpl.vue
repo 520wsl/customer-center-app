@@ -96,8 +96,7 @@ export default {
     }
   }
   .text,
-  .moive,
-  .audio {
+  .moive {
     display: inline-block;
     text-align: left;
     border-radius: 10px 0 10px 10px !important;
