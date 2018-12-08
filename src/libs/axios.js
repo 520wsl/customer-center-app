@@ -114,7 +114,6 @@ class HttpRequest {
 				console.log(
 					"-------------------【错误拦截】------------------------------"
 				);
-				alert(msg);
 				break;
 			case 401:
 				console.log(
@@ -166,7 +165,10 @@ class HttpRequest {
 					error.response.data.msg || error.response.data.error,
 					error.response.config.url,
 					error.response.config.data || {}
-				);
+        );
+        if (error.response.status === 403) {
+          return Promise.reject(error.response.data);
+        }
 				return Promise.reject(error);
 			}
 		);
