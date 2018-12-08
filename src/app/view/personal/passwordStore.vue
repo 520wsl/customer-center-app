@@ -20,16 +20,14 @@
               v-model="params.password"
             >
           </span>
-          <a
-            style="display:inline-block;;width:10%;text-align:center;"
-            @click="showpassword=!showpassword"
-          >
+          <span style="display:inline-block;width:10%;text-align:center;">
             <img
               class="show-pass-word"
               onselectstart="return false"
+              @click="showpassword=!showpassword"
               :src="showpassword?$CDN('/icon_hidden_pwd.png'):$CDN('/icon_show_pwd.png')"
             >
-          </a>
+          </span>
         </p>
         <p class="store-info-item">
           <span style="vertical-align: top;" class="item-key">验证码：</span>
@@ -52,7 +50,7 @@
       </div>
       <div style="text-align:center;">
         <mt-button plain type="default" @click="reset" size="small" class="cancel">重置</mt-button>
-        <mt-button size="small" @click="save" type="default" class="ok">确定</mt-button>
+        <mt-button size="small" @click="save" :disabled="isDisabled" type="default" class="ok">确定</mt-button>
       </div>
       <!-- <div v-if="!isAdd" style="text-align:center;">
         <mt-button size="small" @click="updateUser" type="default" class="ok">修改</mt-button>
@@ -82,10 +80,12 @@ export default {
       companySixiId: '',
       companyAndMobile: {},
       subOk: false,
+      isDisabled: false,
       params: {
         account: '',
         password: '',
-        captcha: ''
+        captcha: '',
+        workSheetId: ''
       }
     }
   },
@@ -98,6 +98,11 @@ export default {
   async mounted() {
     this.$parent.$parent.setTitle("店铺账号密码");
     this.companySixiId = this.$route.query.companySixiId || '';
+    this.params.workSheetId = this.$route.query.workSheetId || '';
+    if (!this.companySixiId) {
+      this.$messagebox("提示", 'companySixiId不能为空！');
+      return false
+    }
     const res = await selectCompanyAndMobile();
     if (res.status == 200) {
       this.companyAndMobile = res.data || {}
@@ -115,10 +120,40 @@ export default {
   },
   methods: {
     save() {
+      if (!this.params.account) {
+        this.$messagebox("提示", '账号不能为空');
+        return false
+      }
+      if (!this.params.password) {
+        this.$messagebox("提示", '密码不能为空');
+        return false
+      }
+      if (!this.params.captcha.replace(/\s+/g, "")) {
+        this.$messagebox("提示", '验证码不能为空');
+        return false
+      }
+      this.isDisabled = true;
       if (this.isAdd) {
-        this.addUser();
+        addUser(this.params).then(this.saveCallBack).catch(this.saveCatchCallBack)
       } else {
-        this.updateUser();
+        updateUser(this.params).then(this.saveCallBack).catch(this.saveCatchCallBack)
+      }
+    },
+    saveCallBack(res) {
+      if (res.status === 200) {
+        this.isDisabled = false;
+        this.$router.push({
+          name: 'messageInfo',
+          query: {
+            text: '您的店铺账号密码提交成功！'
+          }
+        })
+      }
+    },
+    saveCatchCallBack(e) {
+      if (e.status == 403) {
+        this.isDisabled = false;
+        this.$messagebox("提示", e.msg);
       }
     },
     toTOP() {
@@ -140,44 +175,6 @@ export default {
         return item.sixiId == sixiId
       })[0] || {};
       return res.account
-    },
-    async addUser() {
-      if (!this.params.account) {
-        this.$messagebox("提示", '账号不能为空');
-        return false
-      }
-      if (!this.params.password) {
-        this.$messagebox("提示", '密码不能为空');
-        return false
-      }
-      let res = await addUser(this.params);
-      if (res.status === 200) {
-        this.$router.push({
-          name: 'messageInfo',
-          query: {
-            text: '您的店铺账号密码提交成功！'
-          }
-        })
-      }
-    },
-    async updateUser() {
-      if (!this.params.account) {
-        this.$messagebox("提示", '账号不能为空');
-        return false
-      }
-      if (!this.params.password) {
-        this.$messagebox("提示", '密码不能为空');
-        return false
-      }
-      let res = await updateUser(this.params);
-      if (res.status === 200) {
-        this.$router.push({
-          name: 'messageInfo',
-          query: {
-            text: '您的店铺账号密码提交成功！'
-          }
-        })
-      }
     }
   }
 }

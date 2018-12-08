@@ -45,24 +45,28 @@ export const getCompanyListBoss = () => {
 export const addUser = ({
   account,
   password,
-  captcha
+  captcha,
+  workSheetId
 }) => {
   return post("/secretstore/add", {
     account,
     password,
     captcha,
+    workSheetId,
     type: "wangwang"
   });
 }
 export const updateUser = ({
   account,
   password,
-  captcha
+  captcha,
+  workSheetId
 }) => {
   return post("/secretstore/update", {
     account,
     password,
     captcha,
+    workSheetId,
     type: "wangwang"
   });
 }

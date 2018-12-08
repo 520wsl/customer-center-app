@@ -27,13 +27,14 @@
                   :value="item.password"
                 >
               </span>
-              <a style="width:10%;" @click="item.showpassword=!item.showpassword">
+              <span style="display:inline-block;width:10%;">
                 <img
                   class="show-pass-word"
+                  @click="item.showpassword=!item.showpassword"
                   onselectstart="return false"
                   :src="item.showpassword?$CDN('/icon_hidden_pwd.png'):$CDN('/icon_show_pwd.png')"
                 >
-              </a>
+              </span>
             </p>
           </div>
           <div v-if="item.password" style="text-align:center;">
