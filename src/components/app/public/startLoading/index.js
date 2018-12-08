@@ -53,11 +53,9 @@ export default {
     config (options) {
     },
     destroy () {
-        setTimeout(() => {
-            let instance = getloadingBarInstance();
-            startLoadingInstance = null;
-            instance.destroy();
-        }, 400);
         clearTimer();
+        let instance = getloadingBarInstance();
+        startLoadingInstance = null;
+        instance.destroy();
     }
 };
