@@ -44,7 +44,7 @@
                     </div>
                     <span>&gt;</span>
                 </a> -->
-                <nowBillList :companySixiId="info.companySixiId"></nowBillList>
+                <nowBillList :companyiId="info.companySixiId"></nowBillList>
             </div>
         </div>
         <div v-if="!info.mobile && !info.companyName && bool" class="no-data">
