@@ -335,7 +335,7 @@ export default [{
         path: "index",
         name: "serviceBill",
         meta: {
-          title: "服务工单"
+          title: "历史工单"
         },
         component: r =>
           require.ensure(

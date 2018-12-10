@@ -33,7 +33,7 @@ export default {
     /* eslint-disable */
   },
   created() {
-    this.$parent.$parent.setTitle("历史工单");
+    // this.$parent.$parent.setTitle("历史工单");
   },
   data() {
     return {
