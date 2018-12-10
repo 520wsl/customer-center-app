@@ -110,7 +110,7 @@ export default {
       // 工单列表
       workOrderTypeList: [
         {
-          label: '客服主管',
+          label: '客户主管',
           value: 2
         },
         {
