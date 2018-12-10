@@ -126,6 +126,7 @@ export default {
             MessageBox.confirm("确定提交评价?")
                 .then(action => {
                     console.log(action, this.list);
+                    this.disabled = true;
                     postEvaluateAdd({
                         orderNumber: this.workSheetId,
                         evaluateContent: JSON.stringify(this.list)
