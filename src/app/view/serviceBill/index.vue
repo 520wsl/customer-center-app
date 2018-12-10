@@ -33,7 +33,7 @@ export default {
     /* eslint-disable */
   },
   created() {
-    this.$parent.$parent.setTitle("服务工单");
+    this.$parent.$parent.setTitle("历史工单");
   },
   data() {
     return {
@@ -68,7 +68,9 @@ export default {
       let param = {
         companySixiId: this.companySixiId,
         pageNum: this.num,
-        pageSize: this.size
+        pageSize: this.size,
+        // 已完成工单状态
+        isCarryOut: 1
       };
       getCompanyWorkSheetList(param).then(e => {
         if (e.status !== 200) {
