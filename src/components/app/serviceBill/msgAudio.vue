@@ -16,7 +16,7 @@
     </div>
     <div></div>
     <div v-if="record" class="audioToText">
-      {{record}}
+      【语音备注】{{record}}
     </div>
   </div>
 </template>
