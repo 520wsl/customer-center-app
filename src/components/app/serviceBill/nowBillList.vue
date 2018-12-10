@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="loading" infinite-scroll-distance="10" v-if="billList.lenth != 0">
-            <div class="now-bill-title" v-if="billList.length != 0"><img :src="$CDN('/service-sheet.png')"><span>当前工单</span></div>
+            <div class="now-bill-title" v-if="billList.length != 0"><img :src="$CDN('/service-sheet.png')"><span>在服工单</span></div>
             <!--此处改为整个div跳转-->
             <router-link :to="{ name: 'serviceBillInfo', query: { id: el.id,identity:2,companySixiId:companySixiId } }" tag="div" class="servicebill" v-for="(el,index) in billList" :key="index">
                 <p class="BillId">
