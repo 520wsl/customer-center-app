@@ -27,13 +27,14 @@
                   :value="item.password"
                 >
               </span>
-              <a style="width:10%;" @click="item.showpassword=!item.showpassword">
+              <span style="display:inline-block;width:10%;">
                 <img
                   class="show-pass-word"
+                  @click="item.showpassword=!item.showpassword"
                   onselectstart="return false"
                   :src="item.showpassword?$CDN('/icon_hidden_pwd.png'):$CDN('/icon_show_pwd.png')"
                 >
-              </a>
+              </span>
             </p>
           </div>
           <div v-if="item.password" style="text-align:center;">
@@ -42,7 +43,7 @@
         </li>
       </ul>
     </div>
-    <div class="null-info" v-else>
+    <div class="null-info" v-if="passwordlist.length<=0 && !hasCompany">
       <img class="null-info-img" :src="$CDN('/null-icon.png')">
       <p>抱歉，您还没有登记店铺账号密码</p>
     </div>
@@ -59,6 +60,7 @@ export default {
   data() {
     return {
       mobile: '',
+      hasCompany: true,
       passwordlist: []
     }
   },
@@ -100,6 +102,7 @@ export default {
     async getList() {
       let res = await getCompanyListBoss();
       if (res.status == 200) {
+        this.hasCompany = false;
         const list = [...res.data].map(item => {
           item.showpassword = false
           return item

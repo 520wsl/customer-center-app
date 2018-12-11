@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="bindPhone">
-      <p>{{detail.customerDetailVo && detail.customerDetailVo.callName}}&ensp;您好，为了我们的客服人员，能够通过电话沟通，处理事情，请提供该工单的联系人电话</p>
+      <!-- <p v-if="!detail.mobile" class="notice">{{detail.customerDetailVo && detail.customerDetailVo.callName}}&ensp;您好，为了我们的客服人员，能够通过电话沟通，处理事情，请提供该工单的联系人电话</p> -->
+      <!-- <div v-else class="notice"> -->
+      <div class="notice">
+        <p>{{detail.customerDetailVo && detail.customerDetailVo.callName}}&ensp;您好，请修改该工单的联系电话！</p>
+        <p>原工单联系电话：{{detail.mobile}}</p>
+      </div>
       <div class="phone">
         <label class="title"><img class="icon" :src="$CDN('/phone.png')" alt="404">请输入工单联系人手机号</label>
         <input v-model="phone" class="input input-block " type="number" placeholder="请输入11位手机号码">
@@ -85,9 +90,15 @@ export default {
           this.$messagebox("提示", res.msg);
           return;
         }
+        // this.$router.push({
+        //   name: "bindSuccess",
+        //   query: { mobile: this.phone, type: 2 }
+        // });
         this.$router.push({
-          name: "bindSuccess",
-          query: { mobile: this.phone, type: 2 }
+          name: "messageInfo",
+          query: {
+            textMsg: `工单联系电话修改成功,手机号为：${this.phone}`
+          }
         });
       });
     }
@@ -100,7 +111,7 @@ export default {
   padding: 40px 20px;
   font-size: 28px;
   background: #fff;
-  p {
+  .notice {
     padding: 50px 0 50px 0;
     font-size: 28px;
     color: #6e7790;

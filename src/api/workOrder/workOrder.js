@@ -20,7 +20,8 @@ export const saveWorkOrder = ({
     workOrderType,
     mobile,
     companySixiId,
-    companyName
+    companyName,
+    sponsorType: 0
   });
 }
 // 修改工单
@@ -41,9 +42,12 @@ export const updataWorkOrder = ({
 }
 
 // 根据workSheetId修改工单手机号码
-export const setmobileByworkSheetId = ({ mobile, workSheetId })=>{
-    return post("/workorder/collectphone", {
-        mobile,
-        workSheetId
-    })
+export const setmobileByworkSheetId = ({
+  mobile,
+  workSheetId
+}) => {
+  return post("/workorder/collectphone", {
+    mobile,
+    workSheetId
+  })
 }

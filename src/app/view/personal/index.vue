@@ -33,20 +33,21 @@
                 <router-link class="item border" :to='{name:"serviceBill"}'>
                     <div>
                         <img :src="$CDN('/service-sheet.png')">
-                        <span>服务工单</span>
+                        <span>历史工单</span>
                     </div>
                     <span>&gt;</span>
                 </router-link>
                 <!-- <a class="item border" href="#">
-                <div>
-                    <img :src="$CDN('/qustion_logo.png')">
-                    <span>常见问题</span>
-                </div>
-                <span>&gt;</span>
-            </a> -->
+                    <div>
+                        <img :src="$CDN('/qustion_logo.png')">
+                        <span>常见问题</span>
+                    </div>
+                    <span>&gt;</span>
+                </a> -->
+                <nowBillList :companyiId="info.companySixiId"></nowBillList>
             </div>
         </div>
-        <div v-else class="no-data">
+        <div v-if="!info.mobile && !info.companyName && bool" class="no-data">
             <div class="img">
                 <img :src="$CDN('/null-icon.png')" alt="">
             </div>
@@ -60,9 +61,12 @@ import config from "@/config";
 import { getStore } from "@/libs/util/storeage";
 import { encryptionPhone } from '@/libs/tools'
 // import { getUserInfoData } from "@/api/customer/customer";
+import nowBillList from "@/components/app/serviceBill/nowBillList";
 export default {
     data() {
         return {
+            list: [],
+            bool: false
         };
     },
     computed: {
@@ -83,7 +87,7 @@ export default {
         // console.log(this.$store.state.User[config.storeagewxUserInfoKey], res)
         // console.log(this.$store.state.User.avatorImgPath)
     },
-    components: {},
+    components: { nowBillList },
     methods: {
         bindPhone() {
             this.$router.push({
@@ -106,6 +110,16 @@ export default {
         //     console.log(this.$store)
         //     this.$store.commit("setAvator", res.data.wechatAvatar);
         // }
+    },
+    watch: {
+        info(val) {
+            if (val.mobile == "" && val.companyName == "") {
+                this.bool = true;
+            } else {
+                this.bool = false;
+            }
+            console.log(this.bool)
+        }
     }
 };
 </script>

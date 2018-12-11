@@ -1,8 +1,8 @@
 <template>
   <div :class="info.sign == 1 ?['message']:['message msg-r']">
     <div class="portrait">
-      <img v-if="info.sign == 1" :src="$CDN(portraitUrl)">
-      <img v-else :src="companyUrl">
+      <img :src="$CDN(portraitUrl)">
+      <!-- <img v-else :src="companyUrl"> -->
       <!-- 客户微信头像，该功能暂无 -->
     </div>
     <div class="content">
@@ -55,11 +55,12 @@ export default {
   .portrait {
     margin-right: 20px;
     img {
-      margin-top: 48px;
+      margin-top: 52px;
       border-radius: 100%;
+      border: 1px solid #dcdcdc;
+      box-shadow: 1px 1px 1px 1px #e2e2e2;
       height: 64px;
       width: 64px;
-      background: #697eff;
     }
   }
   // 内容
@@ -67,6 +68,7 @@ export default {
     font-size: 18px;
     color: #697eff;
     margin-bottom: 16px;
+    height: 40px;
     // 身份标记 客服客户
     .customer {
       float: left;
@@ -94,8 +96,7 @@ export default {
     }
   }
   .text,
-  .moive,
-  .audio {
+  .moive {
     display: inline-block;
     text-align: left;
     border-radius: 10px 0 10px 10px !important;

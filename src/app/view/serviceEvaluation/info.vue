@@ -1,10 +1,14 @@
 <template>
     <div>
         <div class="evaluation">请你为{{typeName}}
-            <span>{{name}}</span>，本次服务做个评价</div>
-        <editEvaluation :list='list' :isEdit='true'></editEvaluation>
+            <span>{{name}}</span>，本次服务做个评价
+        </div>
+        <div v-if="list.length>0">
+            <editEvaluation :list='list' :isEdit='true'></editEvaluation>
+        </div>
+
         <div class="submit-btn">
-            <mt-button class="btn" @click="addEvaluate">提交</mt-button>
+            <mt-button class="btn" @click="addEvaluate" :disabled="disabled">提交</mt-button>
             <router-link class="btn2" :to="{name: 'serviceBillInfo',query:{ id: workSheetId, identity: 2, companySixiId: companyId }}">点击 查看工单&gt;&gt;</router-link>
         </div>
     </div>
@@ -15,6 +19,8 @@ import { getCheckEvaluate } from "@/api/evaluate/evaluate";
 import { postTemplateInfo } from "@/api/evaluate/template";
 import { postEvaluateAdd } from "@/api/workOrder/worksheet";
 import { MessageBox } from "mint-ui";
+import { createNamespacedHelpers } from "vuex";
+const { mapState, mapMutations } = createNamespacedHelpers("Servicebill");
 export default {
     data() {
         return {
@@ -26,7 +32,8 @@ export default {
             customerId: "",
             servicePersonnel: "",
             sendtime: "",
-            workSheetId: ""
+            workSheetId: "",
+            disabled: true
         };
     },
     components: { editEvaluation },
@@ -76,26 +83,33 @@ export default {
                 // 未评价
                 this.getList();
             }
-        });
+        })
     },
     methods: {
+        ...mapMutations(["changeEvaluateList"]),
         getList() {
             // alert(this.id);
-            postTemplateInfo({ id: this.id }).then(res => {
-                if (res.status != 200) {
-                    return MessageBox("提示", res.msg);
-                }
-                let list = res.data[0].content;
-                list.forEach(item => {
-                    if (
-                        (item.type == "checkbox") ||
-                        (item.type == "redio")
-                    ) {
-                        item.value = [];
+            if (this.$store.state.Servicebill.evaluateList.length == 0) {
+                postTemplateInfo({ id: this.id }).then(res => {
+                    if (res.status != 200) {
+                        return MessageBox("提示", res.msg);
                     }
+                    let list = res.data[0].content;
+                    list.forEach(item => {
+                        if (
+                            (item.type == "checkbox") ||
+                            (item.type == "radio")
+                        ) {
+                            item.value = [];
+                        }
+                    });
+                    this.disabled = false;
+                    this.list = list;
                 });
-                this.list = list;
-            });
+            } else {
+                this.disabled = false;
+                this.list = this.$store.state.Servicebill.evaluateList;
+            }
         },
         addEvaluate() {
             let bool = false;
@@ -103,7 +117,7 @@ export default {
             this.list.forEach(item => {
                 if (item.isRequired == 1 && (item.value == "" || item.value == [])) {
                     bool = true;
-                    str += " "+ item.evaluateName;
+                    str += " " + item.evaluateName;
                 }
             });
             if (bool) {
@@ -112,6 +126,7 @@ export default {
             MessageBox.confirm("确定提交评价?")
                 .then(action => {
                     console.log(action, this.list);
+                    this.disabled = true;
                     postEvaluateAdd({
                         orderNumber: this.workSheetId,
                         evaluateContent: JSON.stringify(this.list)
@@ -119,11 +134,14 @@ export default {
                         if (res.status != 200) {
                             return MessageBox("提示", res.msg);
                         }
+                        // 提交成功后，清空存在store的数据
+                        this.changeEvaluateList([]);
                         this.$router.push({
                             name: "serviceEvaluationBreview",
                             query: {
                                 customerId: this.customerId,
-                                workSheetId: this.workSheetId
+                                workSheetId: this.workSheetId,
+                                isClose: true
                             }
                         });
                     });

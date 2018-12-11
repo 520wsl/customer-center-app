@@ -8,6 +8,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import routes from "@/app/router/routers";
+import startLoading from "@/components/app/public/startLoading";
 
 Vue.use(Router);
 const router = new Router({
@@ -19,7 +20,8 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
 	console.log("router.beforeEach:from=>", from);
 	console.log("router.beforeEach:to=>", to);
-	console.log(to.path + "=>" + from.path);
+    console.log(to.path + "=>" + from.path);
+    startLoading.start()
 	if (to.meta.title) {
 		//判断是否有标题
 		document.title = to.meta.title;
@@ -29,8 +31,9 @@ router.beforeEach((to, from, next) => {
 // 全局解析守卫
 router.beforeResolve((to, from, next) => {
 	// console.log("router.beforeResolve:from=>", from);
-	// console.log("router.beforeResolve:to=>", to);
-	next();
+    // console.log("router.beforeResolve:to=>", to);
+    startLoading.destroy()
+    next();
 });
 // 全局后置钩子
 // eslint-disable-next-line

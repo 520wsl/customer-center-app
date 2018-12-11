@@ -167,6 +167,19 @@ export default [{
           )
       },
       {
+        path: "messageInfo",
+        name: "messageInfo",
+        meta: {
+          title: "提交成功"
+        },
+        component: r =>
+          require.ensure(
+            [],
+            () => r(require("@/app/view/message/messageInfo")),
+            "message"
+          )
+      },
+      {
         path: "success",
         name: "messageSuccess",
         meta: {
@@ -322,7 +335,7 @@ export default [{
         path: "index",
         name: "serviceBill",
         meta: {
-          title: "服务工单"
+          title: "历史工单"
         },
         component: r =>
           require.ensure(
