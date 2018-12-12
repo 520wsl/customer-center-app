@@ -168,7 +168,7 @@ export default {
 }
 .submit-btn {
   background: #fff;
-  padding: 150px 100px;
+  padding: 50px 100px 150px;
   position: relative;
 }
 .submit-btn .btn2 {
@@ -184,6 +184,7 @@ export default {
   background: #697eff;
   border-radius: 2px;
   font-size: 32px;
+  height: 90px;
   color: #ffffff;
 }
 html,
