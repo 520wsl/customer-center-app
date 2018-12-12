@@ -34,7 +34,7 @@ export default {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  height: 300px;
+  height: 150px;
   line-height: 40px;
   font-size: 26px;
 }
