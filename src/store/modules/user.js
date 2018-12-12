@@ -59,9 +59,10 @@ export default {
 			if (userInfo) {
 				commit("setAvator", userInfo.wechatAvatar);
 				commit("setUserInfo", userInfo);
-				return;
-			}
-			alert("未登录或登陆超时,请退出重新登陆!");
+				return true;
+            }
+            return false;
+			// alert("未登录或登陆超时,请退出重新登陆!");
 			// await dispatch("getUserInfo");
 		},
 		// 获取用户相关信息

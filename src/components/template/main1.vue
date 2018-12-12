@@ -72,9 +72,12 @@ export default {
         let queryData = route.query;
         let codeData = queryData.code || "";
         let stateData = queryData.state || "";
-
+        
         if (!codeData && !stateData) {
-            this.getUserInfoAction();
+            let isLogin = await this.getUserInfoAction();
+            if (!isLogin) {
+                judgeLogin();
+            }
             return;
         }
         let res = await this.loginScheduler({
