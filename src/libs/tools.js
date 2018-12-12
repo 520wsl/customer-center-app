@@ -90,17 +90,16 @@ export const getUUID = function(len, radix) {
 };
 // 登录信息过期，跳转到登录页 仅限手机端
 export const judgeLogin = function() {
-	if (isMobile()) {
-		MessageBox.confirm("登录失败,是否重新登录?")
-			.then(action => {
-				if (action === "confirm") {
-					window.location.href = config.toLoginUrl;
-				}
-			})
-			.catch(action => {
-				console.log(action);
-			});
-	}
+    MessageBox.confirm("登录失败,是否重新登录?")
+        .then(action => {
+            if (action === "confirm") {
+                window.location.href = config.toLoginUrl;
+            }
+        })
+        .catch(action => {
+            console.log(action);
+        });
+	
 };
 // 判断当前使用页面的是手机 还是PC
 export const isMobile = function() {
