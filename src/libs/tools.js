@@ -90,7 +90,7 @@ export const getUUID = function(len, radix) {
 };
 // 登录信息过期，跳转到登录页 仅限手机端
 export const judgeLogin = function() {
-    MessageBox.confirm("登录失败,是否重新登录?")
+    MessageBox.confirm("未登录或登陆超时,请退出重新登陆!")
         .then(action => {
             if (action === "confirm") {
                 window.location.href = config.toLoginUrl;
