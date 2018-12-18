@@ -1,5 +1,5 @@
 import api from "@/libs/api.request";
-const baseUrl = "/message-service";
+const baseUrl = "/work-order/message";
 
 function post(url, params) {
   return api.post(baseUrl + url, params);
