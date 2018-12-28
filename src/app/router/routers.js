@@ -501,5 +501,26 @@ export default [{
           )
       }
     ]
+  },
+  {
+    path: "/casebase",
+    name: "_casebase",
+    redirect: {
+      name: "casebase"
+    },
+    component: Main1,
+    children: [{
+        path: "index",
+        name: "casebase",
+        meta: {
+          title: "案例列表"
+        },
+        component: r =>
+          require.ensure(
+            [],
+            () => r(require("@/app/view/casebase/index")),
+            "casebase"
+          )
+    }]
   }
 ];
