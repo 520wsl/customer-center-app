@@ -96,7 +96,7 @@ export default {
             if ((this.count / this.pageSize < this.pageNum - 1) && !this.loading) return;
             this.loading = true;
             let params = {
-                shareKey: this.$route.query.shareKey,
+                shareKey: this.$route.query.shareKey || '',
                 pageSize: this.pageSize,
                 pageNum: this.pageNum
             }
