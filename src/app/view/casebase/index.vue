@@ -76,6 +76,7 @@ export default {
             workType: state => state.Servicebill.workType
         })
     },
+    // eslint-disable-next-line
     components: {
         editEvaluation,
         noData
@@ -100,7 +101,7 @@ export default {
         },
         getList() {
             // 判断是否可以查询
-            if ((this.count / this.pageSize < this.pageNum - 1) && !this.loading) return;
+            if ((this.count == this.list.length && this.count != 0) && !this.loading) return;
             this.loading = true;
             let params = {
                 shareKey: this.$route.query.shareKey || '',
@@ -130,7 +131,7 @@ export default {
                     this.list.push(item);
                 });
                 this.count = res.data.count || 0;
-                this.pageNum = res.data.num + 1;
+                this.pageNum = this.pageNum + 1;
                 this.loading = false;
             })
         },
@@ -200,12 +201,13 @@ export default {
   padding-bottom: 30px;
 }
 .case-item-evaluate {
-  padding: 30px;
+  padding: 30px 0;
   background: #fff;
   margin-top: 2px;
 }
 .case-item-evaluate .evaluate-status {
   height: 40px;
+  padding: 0 30px;
   line-height: 40px;
   font-size: 28px;
   color: #6e7790;
