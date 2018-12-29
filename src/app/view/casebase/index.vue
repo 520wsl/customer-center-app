@@ -4,7 +4,7 @@
             <div class="case-item" v-for="(item,index) in list" :key="index">
                 <div class="case-item-header">
                     <h3>{{item.title}}</h3>
-                    <div class="info" @click="changeDown(index)">
+                    <div class="info">
                         <div>
                             <img :src="$CDN('/case-company-icon.png')">
                             <span>公司名称：{{item.companyName}}</span>
@@ -13,13 +13,13 @@
                             <img :src="$CDN('/case-time-icon.png')">
                             <span>提交时间：{{getTime(item.startTime,'YYYY-MM-DD')}}</span>
                         </div>
-                        <div>
+                        <div  @click="changeDown(index)">
                             <img :src="$CDN('/case-number-icon.png')">
                             <span>工单编号：{{item.identifier}}</span>
                         </div>
                         <div :class="item.isDown?'arrow down':'arrow up'">
                             <span class="mint-button-icon">
-                                <i class="mintui mintui-back"></i>.
+                                <i class="mintui mintui-back"></i>
                             </span>
                         </div>
                     </div>
