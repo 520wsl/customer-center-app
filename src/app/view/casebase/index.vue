@@ -101,7 +101,7 @@ export default {
                 pageNum: this.pageNum
             }
             getShareWorkList(params).then(res => {
-                if (e.status !== 200) {
+                if (res.status !== 200) {
                     this.$messagebox("提示", "服务器繁忙，请稍后再试！");
                     return;
                 }
@@ -110,8 +110,8 @@ export default {
                     item.identifier = this.strSlice(item.identifier, 2, 4, 3);
                     item.companyName = this.strSlice(item.companyName, 2, 4, 3);
                     item.mobile = this.strSlice(item.mobile, 3, 6, 4);
-                    item.executorName = this.strSlice(item.executorName, 1, 2, 1);
-                    item.userName = this.strSlice(item.userName, 1, 2, 1);
+                    item.executorName = this.strSlice(item.executorName, 1, 1, 1);
+                    item.userName = this.strSlice(item.userName, 1, 1, 1);
                     if (item.evaluateContent[0]) {
                         item.evaluateContent = item.evaluateContent || [];
                     } else {
