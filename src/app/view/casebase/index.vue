@@ -76,10 +76,11 @@ export default {
             workType: state => state.Servicebill.workType
         })
     },
-    // eslint-disable-next-line
     components: {
         editEvaluation,
+        /* eslint-disable */
         noData
+        /* eslint-disable */
     },
     methods: {
         getTime(time, norms) {
