@@ -101,7 +101,9 @@ export default {
         },
         getList() {
             // 判断是否可以查询
-            if ((this.count == this.list.length && this.count != 0) && !this.loading) return;
+            if ((this.count <= this.list.length && this.count != 0) && !this.loading) {
+                return;
+            }
             this.loading = true;
             let params = {
                 shareKey: this.$route.query.shareKey || '',
@@ -117,6 +119,10 @@ export default {
                     return this.isSearch = true;
                 }
                 res.data.list.forEach(item => {
+                    if (this.list.length == this.count && this.count != 0) {
+                        this.loading = false;
+                        return;
+                    }
                     item.isDown = false;
                     item.identifier = this.strSlice(item.identifier, 2, 4, 3);
                     item.companyName = this.strSlice(item.companyName, 2, 4, 3);
