@@ -2,7 +2,7 @@
  * @Author: Mad Dragon 395548460@qq.com
  * @Date: 2018-11-07 15:32:18
  * @Last Modified by: Mad Dragon
- * @Last Modified time: 2018-12-04 10:07:21
+ * @Last Modified time: 2018-12-27 14:18:09
  * @explanatory:  axios 接口封装
  */
 import axios from "axios";
@@ -165,10 +165,10 @@ class HttpRequest {
 					error.response.data.msg || error.response.data.error,
 					error.response.config.url,
 					error.response.config.data || {}
-        );
-        if (error.response.status === 403) {
-          return Promise.reject(error.response.data);
-        }
+				);
+				if (error.response.status === 403) {
+					return Promise.reject(error.response.data);
+				}
 				return Promise.reject(error);
 			}
 		);
