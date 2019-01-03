@@ -5,18 +5,18 @@
             <div class="message-item">
                 <span>
                     <b>*</b>您的称呼：</span>
-                <input type="text" maxlength="12" v-model="params.name">
+                <input type="text" maxlength="12" v-model="params.name" @blur="toTOP">
             </div>
             <div class="line"></div>
             <div class="message-item">
                 <span>
                     <b>*</b>联系电话：</span>
-                <input type="text" maxlength="11" v-model="params.mobile">
+                <input type="text" maxlength="11" v-model="params.mobile" @blur="toTOP">
             </div>
             <div class="line"></div>
             <div class="message-item">
                 <span>留言：</span>
-                <textarea maxlength="120" v-model="params.context"></textarea>
+                <textarea maxlength="120" v-model="params.context" @blur="toTOP"></textarea>
             </div>
             <div class="message-header">
                 <img :src="$CDN('/incustomlist_cooperation_icon.png')" alt="">
@@ -45,6 +45,9 @@ export default {
     },
     components: {},
     methods: {
+        toTOP() {
+            window.scrollTo(0, 0);
+        },
         sentMessage() {
             if (
                 this.params.name == "" ||
@@ -73,8 +76,8 @@ export default {
 html,
 body,
 #app,
-.message-body{
-    height: 100%;
+.message-body {
+  height: 100%;
 }
 .message-body {
   padding-top: 10px;

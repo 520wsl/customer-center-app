@@ -17,7 +17,8 @@
             <p>现在来讲，淘宝上买东西是很快速的，有的时候只要客户看到了咱的宝贝， 通过咱的信息展示， 客户就可以判断这款产品是不是自己要找的,重点就是要把咱的宝贝内页做到更好，我们的用材，我们的宝贝图片，细节图片, 还有就是我们的物流, 公司的宗旨，服务的周全，用户的体验这些方面都是要给您丰富好, 整条信息的图片全部都是要按照高要求给你设计好处理好，排版也是要根据咱的产品给您最适合的排版。</p>
         </div>
         <div class="shop-footer">
-            <a :href="'tel:'+tel">电话咨询</a>
+            <!-- <a :href="'tel:'+tel">电话咨询</a> -->
+            <a href="javascript:;" @click="goLeaveMessage">联系点我</a>
         </div>
     </div>
 </template>
@@ -29,7 +30,13 @@ export default {
         };
     },
     components: {},
-    methods: {},
+    methods: {
+        goLeaveMessage() {
+            this.$router.push({
+                name: "message"
+            })
+        }
+    },
     created() {
         this.$parent.$parent.setTitle("旺铺管理");
     }
