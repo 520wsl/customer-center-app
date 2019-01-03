@@ -80,7 +80,7 @@
 
 <script>
 import { Radio } from 'mint-ui';
-import { saveWorkOrder } from "@/api/workOrder/workOrder";
+import { saveWorkOrder, setUrgeorder } from "@/api/workOrder/workOrder";
 import { mapState, mapActions } from "vuex";
 import { selectCompanyAndMobile } from "@/api/customer/customer";
 export default {
@@ -162,22 +162,44 @@ export default {
         companyName: this.findCompanyName(this.params.companySixiId)
       }).then(res => {
         if (res.status === 200) {
-
-          this.isDisabled = false;
-          this.$router.push({
-            name: 'messageInfo',
-            query: {
+          // 有花名 创建成功
+          if(res.data.staffName){
+            this.isDisabled = false;
+            this.$router.push({
+              name: 'messageInfo',
+              query: {
               text: '您的问题，已经提交成功！',
               textMsg: `客服人员${res.data.staffName}，稍后将与您取得联系，请确保您的手机号${this.params.mobile}，保持畅通`
+              }
+            })
+          } else {
+            if (!res.data.urgeOrder) {
+              this.$messagebox({
+              title: '提醒',
+              message: e.msg,
+              showCancelButton: true,
+              confirmButtonText: "加速处理"
+              }).then(action => { 
+                console.log(action)
+                if(action == "confirm"){
+                  let id = res.data.id || "";
+                  setUrgeorder({id}).then(result=>{
+                    this.$messagebox("提醒", result.msg); 
+                  })
+                }
+              }).catch(action=>{
+              });
+            } else {
+                this.$messagebox("提醒", e.msg);
             }
-          })
+          }
         } else {
           this.$messagebox("提示", res.msg);
         }
       }).catch(e => {
         if (e.status == 403) {
-          this.$messagebox("提示", e.msg);
           this.isDisabled = false;
+          this.$messagebox("提示", e.msg);
         }
       });
 

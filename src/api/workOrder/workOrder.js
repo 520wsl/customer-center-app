@@ -51,3 +51,11 @@ export const setmobileByworkSheetId = ({
     workSheetId
   })
 }
+// 催单
+export const setUrgeorder = ({
+    id
+  }) => {
+  return post("/workorder/urgeorder", {
+    id
+  });
+}
