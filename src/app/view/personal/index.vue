@@ -180,6 +180,7 @@ export default {
   align-items: center;
   font-size: 28px;
   height: 96px;
+  padding: 0 30px;
 }
 .item div {
   flex: 1;
@@ -196,7 +197,6 @@ export default {
   border-bottom: 2px solid #f7f7f7;
 }
 .personal-other {
-  padding: 0 30px;
   background: #fff;
   margin-top: 20px;
 }

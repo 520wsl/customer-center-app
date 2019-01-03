@@ -114,22 +114,36 @@ export default {
         addEvaluate() {
             let bool = false;
             let str = "请填写必填项";
+            let isBad = 0;
             this.list.forEach(item => {
                 if (item.isRequired == 1 && (item.value == "" || item.value == [])) {
                     bool = true;
                     str += " " + item.evaluateName;
                 }
+                // 差评判断 目前仅判断星级评价
+                if (item.type == "number" && item.otherAttribute.badMax) {
+                    if (item.value <= item.otherAttribute.badMax) {
+                        item.isBad = 1;
+                        isBad = 1;
+                    } else {
+                        item.isBad = 0;
+                    }
+                } else if (item.type == "number" && !item.otherAttribute.badMax) {
+                    item.isBad = 0;
+                }
             });
             if (bool) {
                 return MessageBox("提示", str);
             }
+
             MessageBox.confirm("确定提交评价?")
                 .then(action => {
                     console.log(action, this.list);
                     this.disabled = true;
                     postEvaluateAdd({
                         orderNumber: this.workSheetId,
-                        evaluateContent: JSON.stringify(this.list)
+                        evaluateContent: JSON.stringify(this.list),
+                        isBad
                     }).then(res => {
                         if (res.status != 200) {
                             return MessageBox("提示", res.msg);

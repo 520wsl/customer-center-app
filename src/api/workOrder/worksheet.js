@@ -43,10 +43,12 @@ export const confirm = (workSheetId, handleType) => {
 // 新增工单评价
 export const postEvaluateAdd = ({
         orderNumber,
-        evaluateContent
+        evaluateContent,
+        isBad
     }) => {
     return post("/worksheet/evaluate/add", {
         orderNumber,
-        evaluateContent
+        evaluateContent,
+        isBad
     });
 };
