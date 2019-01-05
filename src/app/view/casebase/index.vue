@@ -13,6 +13,10 @@
                             <img :src="$CDN('/case-time-icon.png')">
                             <span>提交时间：{{getTime(item.startTime,'YYYY-MM-DD')}}</span>
                         </div>
+                        <div>
+                            <img :src="$CDN('/case-responsetime-icon.png')">
+                            <span>响应时间：{{item.responseStr}}</span>
+                        </div>
                         <div  @click="changeDown(index)">
                             <img :src="$CDN('/case-number-icon.png')">
                             <span>工单编号：{{item.identifier}}</span>
@@ -25,9 +29,6 @@
                     </div>
                 </div>
                 <div class="case-item-detail" v-if="item.isDown">
-                    <div class="detail-item">
-                        响应时间：{{item.responseStr}}
-                    </div>
                     <div class="detail-item">
                         持续时间：{{item.durationStr}}
                     </div>
