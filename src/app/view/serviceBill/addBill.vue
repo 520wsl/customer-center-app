@@ -161,9 +161,9 @@ export default {
         ...this.params,
         companyName: this.findCompanyName(this.params.companySixiId)
       }).then(res => {
-        if (res.status === 200) {
+        if (res.status == 200) {
           // 有花名 创建成功
-          if(res.data.staffName){
+          if(!res.data.staffName){
             this.isDisabled = false;
             this.$router.push({
               name: 'messageInfo',
@@ -173,24 +173,26 @@ export default {
               }
             })
           } else {
-            if (!res.data.urgeOrder) {
+            this.isDisabled = false;
+            if (res.data.urgeOrder) {
               this.$messagebox({
               title: '提醒',
-              message: e.msg,
+              message: "客户有未完结的工单!",
               showCancelButton: true,
               confirmButtonText: "加速处理"
-              }).then(action => { 
-                console.log(action)
+              }).then(action => {
                 if(action == "confirm"){
                   let id = res.data.id || "";
                   setUrgeorder({id}).then(result=>{
                     this.$messagebox("提醒", result.msg); 
+                  }).catch(error=>{
+                    this.$messagebox("提醒", error.msg); 
                   })
                 }
               }).catch(action=>{
               });
             } else {
-                this.$messagebox("提醒", e.msg);
+                this.$messagebox("提醒", "客户有未完结的工单!");
             }
           }
         } else {
