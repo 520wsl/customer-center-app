@@ -1,9 +1,12 @@
 import api from "@/libs/api.request";
 const baseUrl = "/work-order/customer";
-
+const noWorkOrderBaseUrl = "/customer";
 function post(url, params) {
   return api.post(baseUrl + url, params);
 }
+function noWorkOrderPost(url, params) {
+    return api.post(noWorkOrderBaseUrl + url, params);
+  }
 
 function get(url, params) {
   return api.get(baseUrl + url, params);
@@ -73,7 +76,7 @@ export const updateUser = ({
 export const getUserDetail = ({
   account
 }) => {
-  return post("/secretstore/detail", {
+  return noWorkOrderPost("/secretstore/detail", {
     account,
     type: "wangwang"
   });
