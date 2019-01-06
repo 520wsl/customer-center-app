@@ -52,7 +52,7 @@ export const addUser = ({
   captcha,
   workSheetId
 }) => {
-  return post("/secretstore/add", {
+  return noWorkOrderPost("/secretstore/add", {
     account,
     password,
     captcha,
@@ -66,7 +66,7 @@ export const updateUser = ({
   captcha,
   workSheetId
 }) => {
-  return post("/secretstore/update", {
+  return noWorkOrderPost("/secretstore/update", {
     account,
     password,
     captcha,
