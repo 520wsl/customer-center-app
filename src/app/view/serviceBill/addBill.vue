@@ -163,7 +163,7 @@ export default {
       }).then(res => {
         if (res.status == 200) {
           // 有花名 创建成功
-          if(!res.data.staffName){
+          if(res.data.staffName){
             this.isDisabled = false;
             this.$router.push({
               name: 'messageInfo',
@@ -174,7 +174,7 @@ export default {
             })
           } else {
             this.isDisabled = false;
-            if (res.data.urgeOrder) {
+            if (!res.data.urgeOrder) {
               this.$messagebox({
               title: '提醒',
               message: "客户有未完结的工单!",
