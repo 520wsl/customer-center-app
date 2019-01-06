@@ -6,7 +6,7 @@
  * @explanatory:  axios 接口封装
  */
 import axios from "axios";
-
+import { judgeLogin } from "@/libs/tools";
 class HttpRequest {
 	constructor(baseUrl = baseUrl) {
 		this.baseUrl = baseUrl;
@@ -123,7 +123,8 @@ class HttpRequest {
 				console.log(
 					"-------------------【错误拦截】------------------------------"
 				);
-				alert("未登录或登陆超时 401：请重新登陆");
+                // alert("未登录或登陆超时 401：请重新登陆");
+                judgeLogin();
 				// this.goLogin();
 				break;
 

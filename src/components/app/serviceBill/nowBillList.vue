@@ -96,6 +96,7 @@ export default {
   color: #9b9b9b;
   display: flex;
   align-items: center;
+  padding: 0 30px;
 }
 .now-bill-title img {
   height: 28px;
@@ -104,11 +105,10 @@ export default {
   padding-left: 20px;
 }
 .servicebill {
-  padding-top: 20px;
-  padding-left: 20px;
+  padding: 20px 50px;
   background: #fff;
   color: #6e7790;
-  margin-bottom: 20px;
+  border-bottom: 20px solid #f4f4f4;
   h3 {
     font-size: 30px;
     margin: 10px 0;
