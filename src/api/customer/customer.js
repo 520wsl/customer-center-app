@@ -4,6 +4,9 @@ const noWorkOrderBaseUrl = "/customer";
 function post(url, params) {
   return api.post(baseUrl + url, params);
 }
+function noWorkOrderPost(url, params) {
+    return api.post(noWorkOrderBaseUrl + url, params);
+  }
 
 function noWorkOrderPost(url, params) {
     return api.post(noWorkOrderBaseUrl + url, params);
