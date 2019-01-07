@@ -12,7 +12,7 @@
         <li>我的公司：{{el.companyName}}</li>
         <li>提交时间：{{getTime(el.startTime,'YYYY-MM-DD')}}</li>
         <li>持续时间：{{el.durationStr}}</li>
-        <li>客服人员：{{el.userVo && el.userVo.userName}}</li>
+        <li>客服人员：{{el.userVo && el.userVo.extattr || el.userVo && el.userVo.userName}}</li>
       </ul>
       <p class="status">
         <span>状态：{{handleType[el.type] || ''}}</span>

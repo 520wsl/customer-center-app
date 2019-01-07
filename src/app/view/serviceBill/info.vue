@@ -23,7 +23,7 @@
         <li>工单状态：{{handleType[detail.handleType] || ''}}</li>
         <!--提交时间是否是创建时间-->
         <li>提交时间：{{getTime(detail.startTime,'YYYY-MM-DD')}}</li>
-        <li>客服人员：{{detail.leadingUser && detail.leadingUser.userName}}</li>
+        <li>客服人员：{{detail.leadingUser && detail.leadingUser.extattr || detail.leadingUser && detail.leadingUser.userName}}</li>
         <li>工单联系电话：{{detail.mobile}}&emsp;
           <!-- <router-link tag="span" :to="{name:'billGetPhone',query:{workSheetId:id}}" class="textfl">{{detail.customerDetailVo && detail.customerDetailVo.mobile?'修改':'添加联系手机号'}}</router-link> -->
           <router-link tag="span" :to="{name:'billGetPhone',query:{workSheetId:id}}" class="textfl">修改</router-link>
