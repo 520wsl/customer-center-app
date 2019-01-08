@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="loading" infinite-scroll-distance="10" class="case-list">
+        <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="loading" :infinite-scroll-distance="10" class="case-list">
             <div class="case-item" v-for="(item,index) in list" :key="index">
                 <div class="case-item-header">
                     <h3>{{item.title}}</h3>
@@ -17,7 +17,7 @@
                             <img :src="$CDN('/case-responsetime-icon.png')">
                             <span>响应时间：{{item.responseStr}}</span>
                         </div>
-                        <div  @click="changeDown(index)">
+                        <div @click="changeDown(index)">
                             <img :src="$CDN('/case-number-icon.png')">
                             <span>工单编号：{{item.identifier}}</span>
                         </div>
@@ -51,7 +51,7 @@
                 </div>
             </div>
         </div>
-        <no-data v-if="list.length<=0 && isSearch" message="抱歉，目前暂无案例访问权限，请联系客服！"></no-data>
+        <no-data v-if="list.length == 0 && isSearch" message="抱歉，目前暂无案例访问权限，请联系客服！"></no-data>
     </div>
 
 </template>
@@ -67,7 +67,7 @@ export default {
             loading: false,
             pageSize: 5,
             count: 0,
-            pageNum: 1,
+            pageNum: 0,
             list: [],
             isSearch: false
         }
@@ -102,11 +102,8 @@ export default {
             }
         },
         getList() {
-            // 判断是否可以查询
-            if ((this.count <= this.list.length && this.count != 0) && !this.loading) {
-                return;
-            }
             this.loading = true;
+            this.pageNum = this.pageNum + 1;
             let params = {
                 shareKey: this.$route.query.shareKey || '',
                 pageSize: this.pageSize,
@@ -117,9 +114,7 @@ export default {
                     this.$messagebox("提示", "服务器繁忙，请稍后再试！");
                     return;
                 }
-                if (this.pageNum == 1 && res.data && res.data.list && res.data.list.length == 0) {
-                    return this.isSearch = true;
-                }
+                this.isSearch = true;
                 res.data.list.forEach(item => {
                     if (this.list.length == this.count && this.count != 0) {
                         this.loading = false;
@@ -139,12 +134,19 @@ export default {
                     this.list.push(item);
                 });
                 this.count = res.data.count || 0;
-                this.pageNum = this.pageNum + 1;
                 this.loading = false;
             })
         },
         loadMore() {
+            // 判断是否可以查询 
+            if (this.count <= this.list.length && this.count != 0) {
+                return alert(1111);
+            }
+            if (Math.ceil(this.count / this.pageSize) < this.pageNum + 1 && this.count != 0) {
+                return
+            }
             this.getList();
+
         }
     }
 }
