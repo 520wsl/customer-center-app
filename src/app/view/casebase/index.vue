@@ -139,11 +139,11 @@ export default {
         },
         loadMore() {
             // 判断是否可以查询 
-            if (this.count <= this.list.length && this.count != 0) {
-                return alert(1111);
+            if (this.count <= this.list.length && this.count != 0 && (!this.loading && this.isSearch)) {
+                return;
             }
             if (Math.ceil(this.count / this.pageSize) < this.pageNum + 1 && this.count != 0) {
-                return
+                return;
             }
             this.getList();
 
