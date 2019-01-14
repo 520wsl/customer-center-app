@@ -14,14 +14,18 @@ export const saveWorkOrder = ({
   workOrderType,
   mobile,
   companySixiId,
-  companyName
+  companyName,
+  remark,
+  target
 }) => {
   return post("/workorder/save", {
     workOrderType,
     mobile,
     companySixiId,
     companyName,
-    sponsorType: 0
+    sponsorType: 0,
+    remark,
+    target
   });
 }
 // 修改工单
