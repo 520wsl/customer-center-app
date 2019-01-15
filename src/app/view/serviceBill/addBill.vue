@@ -12,7 +12,14 @@
             </div>
             <div v-if="isComplaintsSuggestions" class="question-type">
                 <p>请选择您要反馈的问题类型</p>
-                <div @click="sheetVisible=!sheetVisible" class="type-name">{{params.workOrderType == 10?"投诉 对现在的服务、客服的响应等不满意":'建议 对业务的建议、对产品的功能反馈'}}
+                <div @click="sheetVisible=!sheetVisible" class="type-name">
+                    <!-- {{params.workOrderType == 10?"投诉 对现在的服务、客服的响应等不满意":'建议 对业务的建议、对产品的功能反馈'}} -->
+                    <div v-if="params.workOrderType == 10">投诉
+                        <span class="type-name-info">对现在的服务、客服的响应等不满意</span>
+                    </div>
+                    <div v-else>建议
+                        <span class="type-name-info">对业务的建议、对产品的功能反馈</span>
+                    </div>
                     <span class="arrow"></span>
                 </div>
                 <mt-actionsheet :actions="actions" v-model="sheetVisible">
@@ -358,9 +365,13 @@ export default {
   font-size: 28px;
   margin: 8px;
   line-height: 40px;
-  padding: 8px;
+  padding: 8px 20px;
   border: 1px solid #ccc;
   position: relative;
+}
+.type-name .type-name-info {
+  color: #999;
+  font-size: 24px;
 }
 .add-bill .teatarea {
   resize: none;
@@ -370,6 +381,7 @@ export default {
   height: 140px;
   font-size: 28px;
   padding: 10px;
+  border: 2px solid #ccc;
 }
 .message-btn {
   display: flex;
@@ -401,6 +413,9 @@ export default {
   border: 2px solid #ccc;
   color: #ccc;
   text-align: center;
+}
+.work-order-item > div:nth-child(1){
+    margin-left: 0;
 }
 .work-order-item > div.work-order-item-checked {
   position: relative;
