@@ -14,10 +14,10 @@
                 <p>请选择您要反馈的问题类型</p>
                 <div @click="sheetVisible=!sheetVisible" class="type-name">
                     <!-- {{params.workOrderType == 10?"投诉 对现在的服务、客服的响应等不满意":'建议 对业务的建议、对产品的功能反馈'}} -->
-                    <div v-if="params.workOrderType == 10">投诉
+                    <div v-if="params.workOrderType == 10">投诉&nbsp;&nbsp;&nbsp;&nbsp;
                         <span class="type-name-info">对现在的服务、客服的响应等不满意</span>
                     </div>
-                    <div v-else>建议
+                    <div v-else>建议&nbsp;&nbsp;&nbsp;&nbsp;
                         <span class="type-name-info">对业务的建议、对产品的功能反馈</span>
                     </div>
                     <span class="arrow"></span>
@@ -320,7 +320,7 @@ export default {
 </script>
 <style scoped>
 .add-bill {
-  height: 100%;
+  min-height: 100%;
   border: 1px solid transparent;
   background: #fff;
   font-size: 32px;
@@ -377,7 +377,7 @@ export default {
   resize: none;
   display: block;
   width: 580px;
-  margin-left: 20px;
+  margin-left: 16px;
   height: 140px;
   font-size: 28px;
   padding: 10px;
