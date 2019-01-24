@@ -176,7 +176,7 @@ export default {
                 revokeWorkorder(params).then(res => {
                     this.num = 1;
                     this.billList = [];
-                    this.getWorkSheetList();
+                    // this.getWorkSheetList();
                 }).catch(error => {
                     this.$messagebox("提醒", error.msg || error.message || "");
                 })
@@ -227,7 +227,7 @@ export default {
             setWorkSheetState(params).then(res => {
                 this.num = 1;
                 this.billList = [];
-                this.getWorkSheetList();
+                // this.getWorkSheetList();
             })
         }
     }
