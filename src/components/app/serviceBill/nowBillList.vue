@@ -176,7 +176,7 @@ export default {
                 revokeWorkorder(params).then(res => {
                     this.num = 1;
                     this.billList = [];
-                    this.getWorkSheetList();
+                    // this.getWorkSheetList();
                 }).catch(error => {
                     this.$messagebox("提醒", error.msg || error.message || "");
                 })
@@ -227,7 +227,7 @@ export default {
             setWorkSheetState(params).then(res => {
                 this.num = 1;
                 this.billList = [];
-                this.getWorkSheetList();
+                // this.getWorkSheetList();
             })
         }
     }
@@ -291,7 +291,8 @@ export default {
   padding: 5px 10px;
   background-image: linear-gradient(-90deg, #ff0066 0%, #697eff 100%);
   font-size: 20px;
-  height: 30px;
+  line-height: 28px;
+  height: 28px;
   color: #fff;
   display: inline-block;
   margin-right: 10px;
