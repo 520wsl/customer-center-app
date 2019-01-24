@@ -5,7 +5,7 @@
                 <div class="case-item-header">
                     <h3>{{item.title}}</h3>
                     <div class="info">
-                        <div>
+                        <div @click="changeDown(index)">
                             <img :src="$CDN('/case-company-icon.png')">
                             <span>公司名称：{{item.companyName}}</span>
                         </div>
@@ -17,37 +17,44 @@
                             <img :src="$CDN('/case-responsetime-icon.png')">
                             <span>响应时间：{{item.responseStr}}</span>
                         </div>
-                        <div @click="changeDown(index)">
+                        <div>
                             <img :src="$CDN('/case-number-icon.png')">
                             <span>工单编号：{{item.identifier}}</span>
                         </div>
-                        <div :class="item.isDown?'arrow down':'arrow up'">
+                        <div @click="changeDown(index)" :class="item.isDown?'arrow down':'arrow up'">
                             <span class="mint-button-icon">
                                 <i class="mintui mintui-back"></i>
                             </span>
                         </div>
+                        <div class="info-handleType">
+                            {{handleType[item.handleType]}}
+                        </div>
                     </div>
                 </div>
-                <div class="case-item-detail" v-if="item.isDown">
-                    <div class="detail-item">
-                        持续时间：{{item.durationStr}}
+                <div class="case-item-evaluate" :style="item.isDown?'padding-top:26px;':''">
+                    <div class="case-item-detail" v-if="item.isDown">
+                        <div class="detail-item">
+                            持续时间：{{item.durationStr}}
+                        </div>
+                        <div class="detail-item">
+                            客服人员：{{item.executorName}}
+                        </div>
+                        <div class="detail-item">
+                            <!-- eslint-disable-next-line -->
+                            发起人　：{{item.userName}}
+                        </div>
+                        <div class="detail-item">
+                            工单联系电话：{{item.mobile}}
+                        </div>
                     </div>
-                    <div class="detail-item">
-                        客服人员：{{item.executorName}}
-                    </div>
-                    <div class="detail-item">
-                        <!-- eslint-disable-next-line -->
-                        发起人　：{{item.userName}}
-                    </div>
-                    <div class="detail-item">
-                        工单联系电话：{{item.mobile}}
-                    </div>
-                </div>
-                <div class="case-item-evaluate">
-                    <div class="evaluate-status">
+                    <!-- <div class="evaluate-status">
                         状态:{{workType[item.workType]}}
-                    </div>
-                    <editEvaluation v-if="item.evaluateContent && item.evaluateContent.length !=0" :list='item.evaluateContent' :isEdit='false'></editEvaluation>
+                    </div> -->
+                    <!-- <editEvaluation v-if="item.evaluateContent && item.evaluateContent.length !=0" :list='item.evaluateContent' :isEdit='false'></editEvaluation> -->
+                    <evaluateList v-if="item.evaluateContent && item.evaluateContent.length !=0" :list='item.evaluateContent'></evaluateList>
+                </div>
+                <div class="case-item-buttom">
+                    <img :src="$CDN('/case-buttom.png')">
                 </div>
             </div>
         </div>
@@ -59,7 +66,7 @@
 import { getShareWorkList } from "@/api/casebase/case";
 import { formatTime } from "@/libs/util/time";
 import { mapState } from "vuex";
-import editEvaluation from "@/components/app/editEvaluation";
+import evaluateList from "@/components/app/caseEvaluate/evaluateList";
 import noData from "@/components/app/public/noData";
 export default {
     data() {
@@ -74,11 +81,12 @@ export default {
     },
     computed: {
         ...mapState({
-            workType: state => state.Servicebill.workType
+            workType: state => state.Servicebill.workType,
+            handleType: state => state.Servicebill.handleType
         })
     },
     components: {
-        editEvaluation,
+        evaluateList,
         /* eslint-disable */
         noData
         /* eslint-disable */
@@ -95,6 +103,9 @@ export default {
                 let starStr = "";
                 for (let i = 0; i < num; i++) {
                     starStr += "*"
+                }
+                if (str.length == 2) {
+                    return str.slice(0, startIndex) + starStr
                 }
                 return str.slice(0, startIndex) + starStr + str.slice(endIndex - str.length + 1)
             } else {
@@ -120,17 +131,14 @@ export default {
                         this.loading = false;
                         return;
                     }
+                    item.handleType = item.type || 4;
                     item.isDown = false;
                     item.identifier = this.strSlice(item.identifier, 2, 4, 3);
-                    item.companyName = this.strSlice(item.companyName, 2, 4, 3);
+                    item.companyName = this.strSlice(item.companyName, 2, item.companyName.length - 6, 3);
                     item.mobile = this.strSlice(item.mobile, 3, 6, 4);
                     item.executorName = this.strSlice(item.executorName, 1, 1, 1);
                     item.userName = this.strSlice(item.userName, 1, 1, 1);
-                    if (item.evaluateContent[0]) {
-                        item.evaluateContent = item.evaluateContent || [];
-                    } else {
-                        item.evaluateContent = JSON.parse(item.evaluateContent) || [];
-                    }
+                    item.evaluateContent = item.evaluateContent || [];
                     this.list.push(item);
                 });
                 this.count = res.data.count || 0;
@@ -139,7 +147,7 @@ export default {
         },
         loadMore() {
             // 判断是否可以查询 
-            if (this.count <= this.list.length  && !this.loading && this.isSearch) {
+            if (this.count <= this.list.length && !this.loading && this.isSearch) {
                 return;
             }
             if (Math.ceil(this.count / this.pageSize) < this.pageNum + 1 && this.isSearch) {
@@ -156,17 +164,20 @@ export default {
   padding-top: 10px;
 }
 .case-item {
-  margin-bottom: 20px;
+  margin: 14px 22px 20px;
 }
 .case-item-header {
-  padding: 30px 0 0 30px;
-  background: #fff;
+  padding: 24px 0 0 0;
   margin-bottom: 2px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 4px 0 #cdcdcd;
 }
 .case-item-header h3 {
-  padding: 0 30px 0 0;
-  margin: 0 0 26px 0;
-  font-size: 30px;
+  padding: 0 30px 0 30px;
+  margin: 0 0 20px 0;
+  font-size: 28px;
   color: #444;
   text-overflow: -o-ellipsis-lastline;
   overflow: hidden;
@@ -179,7 +190,7 @@ export default {
   border-top: 2px solid #f4f4f4;
   font-size: 26px;
   color: #6e7790;
-  padding: 30px 30px 30px 0;
+  padding: 30px 30px 0;
   position: relative;
 }
 .case-item-header .info .arrow {
@@ -187,14 +198,22 @@ export default {
   width: 30px;
   height: 30px;
   right: 50px;
-  bottom: 28px;
+  top: 28px;
+}
+.case-item-header .info .info-handleType {
+  position: absolute;
+  right: 50px;
+  bottom: 0;
+  font-size: 24px;
+  color: #6e7790;
+  margin-bottom: 0;
 }
 .case-item-header .info div {
   height: 36px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-bottom: 20px;
+  padding-bottom: 20px;
 }
 .case-item-header .info img {
   width: 30px;
@@ -202,18 +221,31 @@ export default {
   margin-right: 16px;
 }
 .case-item-detail {
-  background: #fff;
-  padding: 30px 30px 0;
+  margin: 0 44px;
+  padding: 14px 62px 0;
+  background: #f3f3f3;
+  border-radius: 6px;
 }
 .case-item-detail .detail-item {
   font-size: 26px;
   color: #6e7790;
-  padding-bottom: 30px;
+  padding-bottom: 16px;
 }
 .case-item-evaluate {
-  padding: 30px 0;
   background: #fff;
-  margin-top: 2px;
+  box-shadow: 0 2px 4px 0 #cdcdcd;
+}
+.case-item-buttom {
+  width: 100%;
+  position: relative;
+  top: -2px;
+  height: 68px;
+}
+.case-item-buttom img {
+  display: block;
+  width: 735px;
+  left: -14px;
+  position: absolute;
 }
 .case-item-evaluate .evaluate-status {
   height: 40px;
