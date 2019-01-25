@@ -222,7 +222,8 @@ export default {
         finishWorkorder(id) {
             let params = {
                 workSheetId: id,
-                handleType: 3
+                handleType: 3,
+                customerSixiId: this.$store.state.User.wxUserInfo.customerSixiId || ""
             }
             setWorkSheetState(params).then(res => {
                 this.num = 1;

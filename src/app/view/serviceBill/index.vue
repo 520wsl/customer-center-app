@@ -304,6 +304,8 @@ export default {
   padding: 0 52px 6px;
 }
 .evaluate-btn .btn {
+  background: #fff;
+  width: 120px;
   height: 52px;
   font-size: 26px;
   color: #666;

@@ -501,6 +501,8 @@ export default {
 }
 .add-bill > div > div.btn-ok-cancel {
   margin-bottom: 0;
+  padding-bottom: 40px;
+  background: #fff;
 }
 </style>
 <style>
