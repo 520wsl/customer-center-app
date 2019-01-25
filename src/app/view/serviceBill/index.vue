@@ -214,7 +214,7 @@ export default {
   -webkit-box-orient: vertical;
 }
 .case-item-header .info {
-  border-top: 2px solid #f4f4f4;
+  border-top: 2px solid #f0f0f0;
   font-size: 26px;
   color: #6e7790;
   padding: 30px 30px 0;
@@ -260,7 +260,7 @@ export default {
 }
 .case-item-evaluate {
   background: #fff;
-  box-shadow: 0 2px 4px 0 #cdcdcd;
+  box-shadow: 0 1px 2px 0 #f0f0f0;
 }
 .case-item-buttom {
   width: 100%;
@@ -309,6 +309,7 @@ export default {
   font-size: 26px;
   color: #666;
   margin-left: 20px;
+  border: #ccc 1px solid;
 }
 </style>
 
