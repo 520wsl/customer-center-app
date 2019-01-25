@@ -222,12 +222,14 @@ export default {
         finishWorkorder(id) {
             let params = {
                 workSheetId: id,
-                handleType: 2
+                handleType: 3
             }
             setWorkSheetState(params).then(res => {
                 this.num = 1;
                 this.billList = [];
                 // this.getWorkSheetList();
+            }).catch(error => {
+                this.$messagebox("提醒", error.msg);
             })
         }
     }
