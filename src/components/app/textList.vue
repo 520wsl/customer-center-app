@@ -1,7 +1,7 @@
 <template>
     <div style="width:100%;">
         <textarea v-if="isEdit == true" class="textarea" v-model='showValue' @blur="descArea" :maxLength="maxLength" placeholder="还有其他想说的写这里"></textarea>
-        <div v-else class="show-textarea">{{value}}</div>
+        <div v-if="isEdit == false && value" class="show-textarea">{{value}}</div>
     </div>
   
 </template>

@@ -44,6 +44,7 @@
 <script>
 import { getCompanyList, changeMyCompany } from "@/api/customer/customer";
 import { createNamespacedHelpers } from 'vuex'
+import { MessageBox } from "mint-ui";
 const { mapState, mapActions } = createNamespacedHelpers('User')
 export default {
     data() {
@@ -69,8 +70,12 @@ export default {
                 return MessageBox("提示", res.msg);
             }
             this.getUserInfo()
-            this.$router.push({
-                name: 'personalServie'
+            MessageBox.alert("切换成功").then(res => {
+                if (res) {
+                    this.$router.push({
+                        name: 'personalServie'
+                    })
+                }
             })
         },
         async getCompanyList() {

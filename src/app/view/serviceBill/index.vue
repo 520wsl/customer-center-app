@@ -42,7 +42,7 @@
                             <i class="mintui mintui-back"></i>
                         </span>
                     </div>
-                    <div class="info-handleType" v-if="item.type != 3">
+                    <div class="info-handleType">
                         {{handleType[item.type]}}
                     </div>
                     <span v-if="item.type == 3" class="evaluate-btn">
@@ -196,7 +196,6 @@ export default {
 }
 .case-item-header {
   padding: 24px 0 0 0;
-  margin-bottom: 2px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   background: #fff;
@@ -231,7 +230,7 @@ export default {
 .case-item-header .info .info-handleType {
   position: absolute;
   right: 50px;
-  bottom: 0;
+  top: 198px;
   font-size: 24px;
   color: #6e7790;
   margin-bottom: 0;
