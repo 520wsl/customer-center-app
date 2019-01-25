@@ -278,7 +278,7 @@ export default {
                     }
                 })
                 if (list[0]) {
-                    this.params.companySixiId = list[0].sixiId;
+                    this.params.companySixiId = this.$store.state.User.wxUserInfo.companySixiId || list[0].sixiId;
                 }
             } else {
                 this.$messagebox("提示", res.msg);
@@ -301,7 +301,7 @@ export default {
 }
 .add-bill > div > div {
   width: 650px;
-  margin: 40px auto;
+  margin: 20px auto;
 }
 .add-bill > div > div.avator-img {
   margin: 42px auto;
@@ -424,7 +424,7 @@ export default {
   font-size: 32px;
   background: #fff;
   border-radius: 2px;
-  margin-top: 40px;
+  margin-top: 20px;
   margin-right: 60px;
   padding: 16px;
   color: #ccc;
@@ -436,7 +436,7 @@ export default {
   font-size: 32px;
   background: #697eff;
   border-radius: 2px;
-  margin-top: 40px;
+  margin-top: 20px;
   padding: 16px;
   color: #fff;
   outline: none;
