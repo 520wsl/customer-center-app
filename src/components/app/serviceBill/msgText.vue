@@ -12,15 +12,15 @@
                 <div>
                     工单类型：{{workType[info.workType]}}
                 </div>
-                <div>
+                <div v-if="info.executorInfo.extattr || info.executorInfo.userName">
                     执行人：{{info.executorInfo.extattr?info.executorInfo.extattr:info.executorInfo.userName}}{{"("+info.executorInfo.departmentName+")"}}
                 </div>
             </div>
             <div v-if="info.dynamicType == 3">
-                <div>
+                <div v-if="info.transferredUser.extattr || info.transferredUser.userName">
                     被移交人：{{info.transferredUser.extattr?info.transferredUser.extattr:info.transferredUser.userName}}{{"("+info.executorInfo.departmentName+")"}}
                 </div>
-                <div>
+                <div v-if="info.remark">
                     备注：{{info.remark}}
                 </div>
             </div>
@@ -29,10 +29,10 @@
             </div>
             <!-- 拒绝移交 -->
             <div v-if="info.dynamicType == 5">
-                <div>
+                <div v-if="info.transferredUser.extattr || info.transferredUser.userName">
                     移交人：{{info.transferredUser.extattr?info.transferredUser.extattr:info.transferredUser.userName}}{{"("+info.executorInfo.departmentName+")"}}
                 </div>
-                <div>
+                <div v-if="info.remark">
                     备注：{{info.remark}}
                 </div>
             </div>
