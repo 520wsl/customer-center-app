@@ -87,11 +87,13 @@ return post("/worksheet/getdefaultworkorder", {
 export const setWorkSheetState = ({
     workSheetId,
     handleType,
-    handlerMode = 0
+    handlerMode = 0,
+    customerSixiId
 }) => {
     return post("/worksheet/confirm", {
         workSheetId,
         handleType,
-        handlerMode
+        handlerMode,
+        customerSixiId
     });
 };
