@@ -3,10 +3,10 @@
         <span>{{evaluateName}}：</span>
         <div v-for="(item,index1) in list" :key="index1" class="star">
             <!-- 整星情况 -->
-            <img v-if="item<chooseNum && isHalf ==0" :src="$CDN('/star_choose.png')">
+            <img v-if="item<chooseNum && isHalf ==0" :src="$CDN('/star_show_choose.png')">
             <!-- 半星情况 -->
-            <img v-if="item<chooseNum && item!=chooseNum-0.5 && isHalf ==1" :src="$CDN('/star_choose.png')">
-            <img v-if="item==chooseNum-0.5 && isHalf ==1" :src="$CDN('/star_choose.png')" class="left-clip">
+            <img v-if="item<chooseNum && item!=chooseNum-0.5 && isHalf ==1" :src="$CDN('/star_show_choose.png')">
+            <img v-if="item==chooseNum-0.5 && isHalf ==1" :src="$CDN('/star_show_choose.png')" class="left-clip">
         </div>
     </div>
 </template>
