@@ -62,7 +62,7 @@
                             持续时间：{{item.durationStr}}
                         </div>
                         <div class="detail-item">
-                            客服人员：{{item.executorName}}
+                            客服人员：{{item.userVo && item.userVo.extattr ? item.userVo.extattr : item.userVo.userName}}
                         </div>
                         <div class="detail-item">
                             <!-- eslint-disable-next-line -->
