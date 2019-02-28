@@ -12,7 +12,7 @@
                 <div>
                     工单类型：{{workType[info.workType]}}
                 </div>
-                <div v-if="info.executorInfo.extattr || info.executorInfo.userName">
+                <div v-if="info.executorInfo && (info.executorInfo.extattr || info.executorInfo.userName)">
                     执行人：{{info.executorInfo.extattr?info.executorInfo.extattr:info.executorInfo.userName}}{{"("+info.executorInfo.departmentName+")"}}
                 </div>
             </div>
