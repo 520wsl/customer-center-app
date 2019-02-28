@@ -3,7 +3,7 @@ import App from "@/app/App.vue";
 import router from "@/app/router";
 import store from "@/store";
 import "@/libs/flexible";
-
+import config from "@/config";
 import Mint from "mint-ui";
 import "mint-ui/lib/style.css";
 import "@/assets/style/common.css";
@@ -17,6 +17,7 @@ Vue.use(Mint);
 Vue.prototype.$CDN = CDN;
 Vue.prototype.$FILE = FILE;
 Vue.config.productionTip = false;
+Vue.prototype.$config = config;
 
 /* eslint-disable no-new */
 new Vue({

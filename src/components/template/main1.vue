@@ -94,6 +94,8 @@
             let queryData = route.query;
             let codeData = queryData.code || "";
             let stateData = queryData.state || "";
+            let clientId = this.$config.ssoConfig.login.clientId
+            let pathname = this.$config.ssoConfig.login.pathname
 
             if (!codeData && !stateData) {
                 let isLogin = await this.getUserInfoAction();
@@ -105,6 +107,8 @@
             let res = await this.loginScheduler({
                 codeData,
                 stateData,
+                clientId,
+                pathname,
                 route: this.$route
             });
             if (res) {

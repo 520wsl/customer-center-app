@@ -90,15 +90,16 @@ export const getUUID = function(len, radix) {
 };
 // 登录信息过期，跳转到登录页 仅限手机端
 export const judgeLogin = function() {
-    MessageBox.confirm("未登录或登陆超时,请退出重新登陆!")
-        .then(action => {
-            if (action === "confirm") {
-                window.location.href = config.toLoginUrl;
-            }
-        })
-        .catch(action => {
-            console.log(action);
-        });
+    console.log('未登录或登陆超时,请退出重新登陆!')
+    // MessageBox.confirm("未登录或登陆超时,请退出重新登陆!")
+    //     .then(action => {
+    //         if (action === "confirm") {
+    //             window.location.href = config.toLoginUrl;
+    //         }
+    //     })
+    //     .catch(action => {
+    //         console.log(action);
+    //     });
 	
 };
 // 判断当前使用页面的是手机 还是PC
