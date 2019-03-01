@@ -32,7 +32,10 @@
             <div class="serviceRemark">
                 <h3>服务记录</h3>
                 <msgTpl v-for="(el,index) in talknews" :key="index" :info="el">
-                    <msgImg v-if="el.type === 2" :enclosure="el.enclosure"></msgImg>
+                    <template v-if="el.type === 2">
+                        <msgImg v-for="(item,index) in el.enclosureList" :key="'image-'+index" :enclosure="item"></msgImg>
+                    </template>
+                    
                     <msgAudio v-else-if="el.type === 8 || el.type === 3" :userType="el.sign" :src="el.enclosure" :record="el.record"></msgAudio>
                     <msgVedio v-else-if="el.type === 5" :userType="el.sign" :src="el.enclosure"></msgVedio>
                     <msgText v-else :info="el"></msgText>
@@ -149,6 +152,9 @@ export default {
                     // el.sign = 1;
                     // 记录用户语音的播放状态
                     // this.talknews.unshift(el);
+                    if(el.type == 2){
+                        el.enclosureList = el.enclosure.split(",");
+                    }
                     this.talknews.push(el);
                 });
                 this.num = ++e.data.num;
