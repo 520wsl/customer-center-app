@@ -132,6 +132,10 @@ export default {
                     value: 2
                 },
                 {
+                    label: '美工专员',
+                    value: 3
+                },
+                {
                     label: '运营专员',
                     value: 5
                 }
@@ -141,6 +145,10 @@ export default {
                 {
                     label: '客户主管',
                     value: 2
+                },
+                {
+                    label: '美工专员',
+                    value: 3
                 },
                 {
                     label: '运营专员',

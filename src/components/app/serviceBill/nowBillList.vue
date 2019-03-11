@@ -150,6 +150,7 @@ export default {
                     this.$messagebox("提示", e.msg);
                     return;
                 }
+                this.billList = [];
                 e.data.list.forEach(e => {
                     // console.log(e);
                     if (e.id == currentWorkorderId) {
@@ -175,8 +176,8 @@ export default {
                 }
                 revokeWorkorder(params).then(res => {
                     this.num = 1;
-                    this.billList = [];
-                    // this.getWorkSheetList();
+                    // this.billList = [];
+                    this.getWorkSheetList();
                 }).catch(error => {
                     this.$messagebox("提醒", error.msg || error.message || "");
                 })
@@ -227,8 +228,8 @@ export default {
             }
             setWorkSheetState(params).then(res => {
                 this.num = 1;
-                this.billList = [];
-                // this.getWorkSheetList();
+                // this.billList = [];
+                this.getWorkSheetList();
             }).catch(error => {
                 this.$messagebox("提醒", error.msg);
             })
