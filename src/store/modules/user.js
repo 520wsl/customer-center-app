@@ -116,8 +116,9 @@ export default {
                         return await dispatch("getUserInfo");
                     case "sso":
                         res = await ssoCode({code: codeData, clientId, pathname});
+                        console.log('sso',res)
                         res2 = await dispatch("getUserInfo");
-                        if (res2.status !== 200) {
+                        if (!res2) {
                             console.error("[debug]:getUserInfo", res2);
                             return false;
                         }
