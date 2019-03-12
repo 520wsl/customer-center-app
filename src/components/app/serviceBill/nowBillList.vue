@@ -221,18 +221,20 @@ export default {
         },
         // 客户完结工单
         finishWorkorder(id) {
-            let params = {
-                workSheetId: id,
-                handleType: 3,
-                customerSixiId: this.$store.state.User.wxUserInfo.customerSixiId || ""
-            }
-            setWorkSheetState(params).then(res => {
-                this.num = 1;
-                // this.billList = [];
-                this.getWorkSheetList();
-            }).catch(error => {
-                this.$messagebox("提醒", error.msg);
-            })
+            MessageBox.confirm("确定完结该工单?").then(action => {
+                let params = {
+                    workSheetId: id,
+                    handleType: 3,
+                    customerSixiId: this.$store.state.User.wxUserInfo.customerSixiId || ""
+                }
+                setWorkSheetState(params).then(res => {
+                    this.num = 1;
+                    // this.billList = [];
+                    this.getWorkSheetList();
+                }).catch(error => {
+                    this.$messagebox("提醒", error.msg);
+                })
+            }).catch(error => { })
         }
     }
 }
