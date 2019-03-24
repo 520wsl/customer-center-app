@@ -76,7 +76,7 @@ export default {
     return {
       isAdd: true,
       showpassword: false,
-      captcha: '/api/wechat-proxy-service/verifyCode/get',
+      captcha: '/api/work-order-service/wechat-proxy/verifyCode/get',
       companySixiId: '',
       companyAndMobile: {},
       subOk: false,
@@ -165,7 +165,7 @@ export default {
       this.getCode()
     },
     getCode() {
-      this.captcha = '/api/wechat-proxy-service/verifyCode/get?' + Math.random()
+      this.captcha = '/api/work-order-service/wechat-proxy/verifyCode/get?' + Math.random()
     },
     findCompanyAccount(sixiId) {
       if (!this.companyAndMobile.companys) {
