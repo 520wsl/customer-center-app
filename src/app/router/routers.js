@@ -223,9 +223,10 @@ export default [{
     {
         path: "/personal",
         name: "_personal",
-        redirect: {
-            name: "personal"
-        },
+        // 兼容客户端，不需要强制跳转
+        // redirect: {
+        //     name: "personal"
+        // },
         component: Main1,
         children: [{
             path: "index",

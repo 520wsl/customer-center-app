@@ -47,6 +47,7 @@
                 <nowBillList :companyiId="info.companySixiId"></nowBillList>
             </div>
         </div>
+        <div v-if="!info.mobile && !info.companyName && !bool" class="no-data"><h3>您还未登录，请重新关闭页面后重新打开！</h3></div>
         <div v-if="!info.mobile && !info.companyName && bool" class="no-data">
             <div class="img">
                 <img :src="$CDN('/null-icon.png')" alt="">
@@ -54,6 +55,7 @@
             <h3>非常抱歉，您的微信号还未关联公司！</h3>
             <p>注：请联系我们的业务员，将您的合作公司跟您的微信做关联操作；</p>
         </div>
+
     </div>
 </template>
 <script>

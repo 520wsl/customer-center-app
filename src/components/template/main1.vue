@@ -127,12 +127,14 @@
                 }
 
                 let pageName = query.pageName || "personalServie";
-                if (pageName && pageName !== "personalServie") {
-                    this.$router.push({
-                        name: pageName,
-                        query: query
-                    });
-                }
+                query['code'] = ''
+                query['state'] = ''
+                // if (pageName && pageName !== "personalServie") {
+                this.$router.push({
+                    name: pageName,
+                    query: query
+                });
+                // }
 
                 return;
             }
@@ -142,5 +144,5 @@
     };
 </script>
 
-<style>
+<style lang="less">
 </style>

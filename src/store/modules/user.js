@@ -22,12 +22,17 @@ export default {
             wechatAvatar: "",
             role: 1
         },
+        isShowNav: false,
         storeagewxUserInfoKey: storeagewxUserInfoKey,
         avatorImgPath: "http://1.img.dianjiangla.com/assets/user.png"
     },
     mutations: {
         setUserName(state, name) {
             state.userName = name;
+        },
+        setIsShowNav(state, isShowNav) {
+            setStore('isShowNav', isShowNav);
+            state.isShowNav = isShowNav;
         },
         setUserInfo(state, wxUserInfo) {
             setStore(state.storeagewxUserInfoKey, wxUserInfo);
@@ -56,6 +61,11 @@ export default {
             });
         },
         async getUserInfoAction({dispatch, state, commit}) {
+            let isShowNav = JSON.parse(getStore('isShowNav'));
+            if (isShowNav) {
+                commit('setIsShowNav', isShowNav)
+            }
+
             let userInfo = JSON.parse(getStore(state.storeagewxUserInfoKey));
             console.log("getUserInfoAction", userInfo);
             if (userInfo) {
@@ -113,6 +123,7 @@ export default {
                         // 	dispatch('getUserInfo');
                         // 	console.log("await dispatch('getUserInfo')");
                         //   }, 12000);
+                        commit("setIsShowNav", false);
                         return await dispatch("getUserInfo");
                     case "sso":
                         res = await ssoCode({code: codeData, clientId, pathname});
@@ -122,6 +133,7 @@ export default {
                             console.error("[debug]:getUserInfo", res2);
                             return false;
                         }
+                        commit("setIsShowNav", false);
                         return true;
                     case "electron":
                         res = await ssoSixiIdLogin({sixiId: codeData});
@@ -132,6 +144,7 @@ export default {
                             console.error("[debug]:getUserInfo", res2);
                             return false;
                         }
+                        commit("setIsShowNav", true);
                         return true;
                 }
             }
