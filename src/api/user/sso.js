@@ -18,3 +18,8 @@ export const ssoCode = ({code, clientId, pathname}) => {
     let redirectUri = getRedirectUri({pathname})
     return post("/wechat/code", {code, redirectUri, clientId});
 };
+
+
+export const ssoSixiIdLogin = ({sixiId}) => {
+    return post("/workorder/test/login", {sixiId});
+};

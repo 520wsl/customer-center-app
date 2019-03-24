@@ -7,7 +7,7 @@
  */
 import {getWxSnsapiUserInfoData, logout} from "@/api/wechatProxy/wxSDK";
 import {getUserInfoData} from "@/api/customer/customer";
-import {ssoCode} from "@/api/user/sso";
+import {ssoCode, ssoSixiIdLogin} from "@/api/user/sso";
 import {setStore, getStore} from "@/libs/util/storeage";
 import config from "@/config";
 
@@ -116,8 +116,18 @@ export default {
                         return await dispatch("getUserInfo");
                     case "sso":
                         res = await ssoCode({code: codeData, clientId, pathname});
-                        console.log('sso',res)
+                        console.log('sso', res)
                         res2 = await dispatch("getUserInfo");
+                        if (!res2) {
+                            console.error("[debug]:getUserInfo", res2);
+                            return false;
+                        }
+                        return true;
+                    case "electron":
+                        res = await ssoSixiIdLogin({sixiId: codeData});
+                        console.log('electron', res)
+                        res2 = await dispatch("getUserInfo");
+
                         if (!res2) {
                             console.error("[debug]:getUserInfo", res2);
                             return false;
