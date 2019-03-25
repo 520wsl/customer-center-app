@@ -196,6 +196,9 @@ export default {
             this.isComplaintsSuggestions = true;
             this.params.workOrderType = 9;
             this.showTextarea = true;
+            // 用于app端
+            this.$parent.$parent.setTitle("投诉/建议");
+            // 用于微信端
             document.title = "投诉/建议";
         }
         this.$parent.$parent.setTitle("创建客服工单");
