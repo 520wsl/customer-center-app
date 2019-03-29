@@ -1,4 +1,4 @@
-<template>
+<template class="main">
     <div>
         <div class="shop-titile">
             <img :src="$CDN('/shop_admin_bgImg.png')" alt="">

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <!-- <sixiheader title="线下销售记录"></sixiheader> -->
     <div class="sale-record">
       <div class="record-company">

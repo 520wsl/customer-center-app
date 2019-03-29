@@ -1,5 +1,5 @@
 <template>
-    <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="loading" infinite-scroll-distance="10" class="case-list">
+    <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="loading" infinite-scroll-distance="10" class="main case-list">
         <no-data v-if="billList.length<=0 && bool" message="抱歉，您还未创建工单！"></no-data>
         <!--此处改为整个div跳转-->
         <router-link :to="{ name: 'serviceBillInfo', query: { id: item.id,identity:2,companySixiId:companySixiId } }" tag="div" class="case-item" v-for="(item,index) in billList" :key="index">

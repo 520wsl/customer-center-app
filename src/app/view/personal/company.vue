@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="main">
         <div class="complany-list" v-if="companyList.length != 0">
             <div v-for="(item,index) in companyList" :key="index" class="company-item" @click="changeCompany(index)">
                 <div class="item-title">

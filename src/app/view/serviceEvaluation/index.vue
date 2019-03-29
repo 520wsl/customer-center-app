@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <!-- <sixiheader title="服务评价"></sixiheader> -->
     <ul class="evaluation-list" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
       <li v-for="(item,index) in list" :key="index">

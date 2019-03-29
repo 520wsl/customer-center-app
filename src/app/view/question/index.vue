@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <!-- <sixiheader title="常见问题"></sixiheader> -->
     <div class="navBar">
       <div v-for="el in navBarList" :key="el.id" :class="activeBar === el.id?'is-selected':''" @click="getNavBarActive(el.id)">{{el.name}}

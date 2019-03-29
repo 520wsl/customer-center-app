@@ -3,13 +3,13 @@
         <div class="content-center username">
             <img class="logo" :src="userInfo.wechatAvatar"/>
             <span>{{userInfo.wechatNickname}}</span>
-            <img class="dropdown" :src="$CDN('/icon_drop_down.png')"/>
+            <!--<img class="dropdown" :src="$CDN('/icon_drop_down.png')"/>-->
         </div>
-        <div class="dropdown-content">
-            <div style="text-align: right">
-                <Button type="text" icon="md-exit">退出登录</Button>
-            </div>
-        </div>
+        <!--<div class="dropdown-content">-->
+            <!--<div style="text-align: right">-->
+                <!--<Button type="text" icon="md-exit">退出登录</Button>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
 </template>
 

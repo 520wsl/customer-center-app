@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <!-- <sixiheader title="常见问题"></sixiheader> -->
     <div class="s-title">
       <span>如何报名参加阿里的活动？</span>

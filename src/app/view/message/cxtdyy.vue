@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="main">
         <div class="cctdyy">
             <img :src="$CDN('/cctdyy.jpg')" alt="">
         </div>

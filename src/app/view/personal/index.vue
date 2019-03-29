@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="main">
         <div class="personal" v-if="info.mobile || info.companyName">
             <!-- <div class="company" :style="'background-image: url('+$CDN('/my_company_bg.png')+')'"> -->
             <div class="company">

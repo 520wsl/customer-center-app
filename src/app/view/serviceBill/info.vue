@@ -1,5 +1,5 @@
 <template>
-    <div class="serviceBill">
+    <div class="main serviceBill">
         <!--可滑动，详情以记录-->
         <mt-loadmore :top-method="loadTop" ref="loadmore" class="serviceInfo">
             <!--标题及编号-->

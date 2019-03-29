@@ -1,5 +1,5 @@
 <template>
-    <div class="message-body" :style="'background-image: url('+$CDN('/save-message-bg.png')+')'">
+    <div class="main message-body" :style="'background-image: url('+$CDN('/save-message-bg.png')+')'">
         <!-- <img class="message-bg" :src="$CDN('/save-message-bg.png')" alt=""> -->
         <div class="message-content">
             <div class="message-item">

@@ -1,5 +1,5 @@
 <template>
-  <div class="bingPhone">
+  <div class="main bingPhone">
     <div v-if="!isBind">
       <dl>
         <dt class="title">手机号

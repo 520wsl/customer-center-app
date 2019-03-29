@@ -1,5 +1,5 @@
 <template>
-    <div class="wechat-service">
+    <div class="main wechat-service">
         <img class="img-logo" :src="$CDN('/wx_service_logo.png')" alt="">
         <p class="info">杭州四喜信息技术服务有限公司官方服务号，为您提供优质专业的电商服务！</p>
         <div class="QRcode">

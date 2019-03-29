@@ -1,5 +1,5 @@
 <template>
-  <div class="add-bill">
+  <div class="mian add-bill">
     <div class="marg-top">
       <div>
         <mt-cell :title="'工单编号：'+identifier">

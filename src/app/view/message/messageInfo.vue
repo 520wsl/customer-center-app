@@ -1,4 +1,4 @@
-<template>
+<template class="main">
   <div style="height:100%;background:#fff;">
     <div class="form-submited">
       <img :src="$CDN('/success_icon.png')">

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="main">
         <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="loading" :infinite-scroll-distance="10" class="case-list">
             <div class="case-item" v-for="(item,index) in list" :key="index">
                 <div class="case-item-header">

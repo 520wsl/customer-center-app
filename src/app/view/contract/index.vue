@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <!-- <sixiheader title='我的合同'></sixiheader> -->
     <div class="contract-list">
       <div class="contract-item" v-for="(item,index) in contractList" :key="index">

@@ -1,5 +1,5 @@
 <template>
-  <div class="password-store">
+  <div class="mian password-store">
     <div v-if="!subOk" class="msg-store">
       <i class="mintui mintui-field-warning"></i>
       请勿将账号密码直接告知我们的工作人员，请在此输入店铺的 账号密码，我们将以加密的形式进行保存，绝不泄露!

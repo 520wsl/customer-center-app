@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="main">
         <div class="success-body">
             <img :src="$CDN('/success_icon.png')">
             <span>感谢您的评价，您的信任是的对我们最大的<br>支持，我们将会再接再厉！</span>

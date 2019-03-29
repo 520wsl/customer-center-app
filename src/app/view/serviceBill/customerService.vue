@@ -1,5 +1,5 @@
 <template>
-    <div
+    <div class="main"
         v-infinite-scroll="loadMore"
         :infinite-scroll-disabled="loading"
         infinite-scroll-distance="10"

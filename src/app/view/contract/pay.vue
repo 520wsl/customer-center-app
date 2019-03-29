@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <!-- <sixiheader title="确认支付"></sixiheader> -->
     <div class="contract-number">合同编号:{{info.contractNumber}}</div>
     <div class="contract-info">

@@ -1,5 +1,5 @@
 <template>
-    <div class="add-bill">
+    <div class="mian add-bill">
         <div v-if="companyList.length>0 && state ===0">
             <div class="avator-img" v-if="!isComplaintsSuggestions">
                 <img class="avator-img-path" :src="avatorImgPath">

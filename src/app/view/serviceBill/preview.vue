@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <!-- <sixiheader title="返回" class="top"></sixiheader> -->
     <h3 class="m-title">附件预览</h3>
     <div class="file">

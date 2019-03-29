@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <!-- <sixiheader title="支付结果" :isBack="true"></sixiheader> -->
     <div class="success-body">
       <img :src="$CDN('/success_icon.png')">

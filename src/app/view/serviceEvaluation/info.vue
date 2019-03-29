@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="main">
         <div class="evaluation">请你为{{typeName}}
             <span>{{name}}</span>，本次服务做个评价
         </div>

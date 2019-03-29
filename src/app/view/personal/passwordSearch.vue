@@ -1,5 +1,5 @@
 <template>
-  <div style="height:100%;background:#fff;">
+  <div class="main" style="height:100%;background:#fff;">
     <div v-if="passwordlist.length>0">
       <ul>
         <li class="info-item" v-for="(item,index) in passwordlist" :key="index">

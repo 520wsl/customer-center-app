@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <div class="success-body">
       <img :src="$CDN('/success_icon.png')">
       <span>留言提交</span>

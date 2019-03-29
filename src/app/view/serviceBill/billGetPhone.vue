@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mian">
     <div class="bindPhone">
       <!-- <p v-if="!detail.mobile" class="notice">{{detail.customerDetailVo && detail.customerDetailVo.callName}}&ensp;您好，为了我们的客服人员，能够通过电话沟通，处理事情，请提供该工单的联系人电话</p> -->
       <!-- <div v-else class="notice"> -->

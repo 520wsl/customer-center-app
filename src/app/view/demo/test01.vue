@@ -1,5 +1,5 @@
 <template>
-    <div class="hello">
+    <div class="hello main">
         <div class="body">项目月考核</div>
         <a @click="showMessage" href="javascript:;">MintUI</a>
         <br>

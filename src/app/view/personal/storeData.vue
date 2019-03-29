@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <!-- <sixiheader title="店铺运营数据"></sixiheader> -->
     <div class="b-title" :style="'background-image: url('+$CDN('/moda_bottom_line.png')+')'">
       <span>苏州市嘉华聚氨酯制品有限公司</span>

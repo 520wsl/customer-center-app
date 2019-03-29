@@ -1,5 +1,5 @@
 <template>
-  <div class="bindSuccess">
+  <div class="mian bindSuccess">
     <img :src="$CDN('/success_icon.png')">
     <h3>{{type ==1 ? '手机号绑定成功':'联系人手机号提交成功'}}</h3>
     <p class="bindPhone">{{type ==1 ? '绑定手机号：':'联系人手机号：'}}{{hidePhone}} &emsp;
