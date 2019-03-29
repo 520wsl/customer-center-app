@@ -536,5 +536,26 @@ export default [{
                     "casebase"
                 )
         }]
+    },
+    {
+        path: "/checkRank",
+        name: "_checkRank",
+        redirect: {
+            name: "checkRank"
+        },
+        component: Main1,
+        children: [{
+            path: "index",
+            name: "checkRank",
+            meta: {
+                title: "查排名"
+            },
+            component: r =>
+                require.ensure(
+                    [],
+                    () => r(require("@/app/view/checkRank/index")),
+                    "checkRank"
+                )
+        }]
     }
 ];

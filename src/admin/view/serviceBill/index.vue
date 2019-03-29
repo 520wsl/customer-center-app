@@ -35,7 +35,7 @@
   </div>
 </template>
 <script>
-import sixiheader from "@/components/app/header.vue";
+import sixiheader from "@/components/app/header/header.vue";
 export default {
   components: { sixiheader },
   data() {
