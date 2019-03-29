@@ -137,11 +137,12 @@ export default {
                     this.$messagebox("提示", "服务器繁忙，请稍后再试！");
                     return;
                 }
-                e.data.list.forEach(e => {
+                e.data.list.forEach(item => {
                     // console.log(e);
-                    e.executorName = e.userVo && e.userVo.extattr ? e.userVo.extattr : e.userVo.userName || ""
-                    e.isDown = false;
-                    this.billList.push(e);
+                    item.executorName = item.userVo && item.userVo.extattr ? item.userVo.extattr : item.userVo.userName || ""
+                    item.isDown = false;
+                    item.evaluateInfoVo.evaluateContent = item.evaluateInfoVo && item.evaluateInfoVo.evaluateContent && JSON.stringify(item.evaluateInfoVo.evaluateContent) == '{}' ? [] : item.evaluateInfoVo.evaluateContent
+                    this.billList.push(item);
                 });
                 if (this.billList.length == 0) {
                     this.bool = true;
