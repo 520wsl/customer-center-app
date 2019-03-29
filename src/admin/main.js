@@ -5,7 +5,7 @@ import store from "@/store";
 
 import Mint from "mint-ui";
 import "mint-ui/lib/style.css";
-import "@/assets/style/common.css";
+import "@/assets/style/common.less";
 import "@/assets/style/adminBase.css";
 import { CDN } from "@/libs/tools";
 Vue.use(Mint);

@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <headerBar :title="title" :isBack='isBack' v-if="isShowNav"></headerBar>
-        <div class="main">
+        <div>
             <router-view></router-view>
         </div>
 
@@ -9,7 +9,8 @@
 </template>
 
 <script>
-    import headerBar from "@/components/app/header.vue";
+    import headerBar from "@/components/app/header/header.vue";
+
     import {mapState} from "vuex";
 
     export default {

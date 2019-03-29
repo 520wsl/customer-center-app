@@ -28,7 +28,7 @@
     </div>
 </template>
 <script>
-// import sixiheader from "@/components/app/header";
+// import sixiheader from "@/components/app/header/header.vue";
 import { getQRCodeUrl } from "@/api/wechatProxy/qrCode";
 import { MessageBox } from "mint-ui";
 export default {

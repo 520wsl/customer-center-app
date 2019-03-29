@@ -105,7 +105,7 @@
 
 <script>
 import { formatTime } from "@/libs/util/time";
-import sixiheader from "@/components/app/header.vue";
+import sixiheader from "@/components/app/header/header.vue";
 
 export default {
   components: { sixiheader },

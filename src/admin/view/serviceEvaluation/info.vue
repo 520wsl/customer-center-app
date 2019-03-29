@@ -7,7 +7,7 @@
   </div>
 </template>
 <script>
-import sixiheader from "@/components/app/header";
+import sixiheader from "@/components/app/header/header.vue";
 import editEvaluation from "@/components/app/editEvaluation";
 export default {
   data() {

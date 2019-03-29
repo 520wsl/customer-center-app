@@ -14,7 +14,7 @@
   </div>
 </template>
 <script>
-// import sixiheader from "@/components/app/header";
+// import sixiheader from "@/components/app/header/header.vue";
 import { formatTime } from "@/libs/util/time";
 export default {
   data() {
