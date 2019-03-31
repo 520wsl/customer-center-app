@@ -556,6 +556,20 @@ export default [{
                     () => r(require("@/app/view/checkRank/index")),
                     "checkRank"
                 )
-        }]
+        },
+            {
+                path: "myCheckRank",
+                name: "myCheckRank",
+                meta: {
+                    title: "在线查排名"
+                },
+                component: r =>
+                    require.ensure(
+                        [],
+                        () => r(require("@/app/view/checkRank/myCheckRank")),
+                        "checkRank"
+                    )
+            }
+        ]
     }
 ];

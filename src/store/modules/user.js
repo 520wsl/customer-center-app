@@ -23,6 +23,7 @@ export default {
             role: 1
         },
         isShowNav: false,
+        stateData: '',
         storeagewxUserInfoKey: storeagewxUserInfoKey,
         avatorImgPath: "http://1.img.dianjiangla.com/assets/user.png"
     },
@@ -136,6 +137,18 @@ export default {
                         commit("setIsShowNav", false);
                         return true;
                     case "electron":
+                        res = await ssoCode({code: codeData, clientId, pathname});
+
+                        console.log('electron', res)
+                        res2 = await dispatch("getUserInfo");
+
+                        if (!res2) {
+                            console.error("[debug]:getUserInfo", res2);
+                            return false;
+                        }
+                        commit("setIsShowNav", true);
+                        return true;
+                    case "electron2":
                         res = await ssoSixiIdLogin({sixiId: codeData});
                         console.log('electron', res)
                         res2 = await dispatch("getUserInfo");

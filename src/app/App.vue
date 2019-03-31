@@ -10,6 +10,7 @@
 
 <script>
     import headerBar from "@/components/app/header/header.vue";
+    import {initIpcRenderer} from "@/libs/AgentEmbed";
 
     import {mapState} from "vuex";
 
@@ -36,6 +37,7 @@
             setTimeout(() => {
                 this.setIsShowNav()
             }, 600)
+            initIpcRenderer('electron_xxb')
         }
     };
 </script>

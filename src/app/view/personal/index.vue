@@ -47,7 +47,7 @@
                 <nowBillList :companyiId="info.companySixiId"></nowBillList>
             </div>
         </div>
-        <div v-if="!info.mobile && !info.companyName && !bool" class="no-data"><h3>您还未登录，请重新关闭页面后重新打开！</h3></div>
+        <!--<div v-if="!info.mobile && !info.companyName && !bool" class="no-data"><h3>您还未登录，请重新关闭页面后重新打开！</h3></div>-->
         <div v-if="!info.mobile && !info.companyName && bool" class="no-data">
             <div class="img">
                 <img :src="$CDN('/null-icon.png')" alt="">
